@@ -412,7 +412,8 @@ canvas {
 
 .chipimg {
   filter: invert();
-  margin-right: 3px;
+  padding-right: 4px;
+  padding-left: 2px;
 }
 
 /* Opening Animation */
