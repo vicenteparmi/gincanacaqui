@@ -1,0 +1,224 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+
+#lock {
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    opacity: 0.5;
+}
+
+#countdown, #finalScreen {
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    margin-top: -2vw;
+}
+
+@keyframes pulse {
+    0% {transform: translate(-50%, -50%) scale(1);}
+    50% {transform: translate(-50%, -50%) scale(1.1);}
+    100% {transform: translate(-50%, -50%) scale(1);}
+}
+
+#showAll {
+    width: fit-content;
+    padding: 5px 15px;
+    border-radius: 100px;
+    color: dimgray;
+    border-color: dimgray;
+    border-style: solid;
+    border-width: 1px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+
+#showAll:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+#celebration {
+    width: 20vw;
+    height: 18vw;
+    position: relative;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: -2vw;
+}
+
+.numberHolder {
+    width: 20vw;
+    height: 18vw;
+    position: relative;
+}
+
+.textunder {
+    position: absolute;
+    bottom: 0;
+    width: 20vw;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;;
+}
+
+.bignumber {
+    font-size: 14vw;
+    text-align: center;
+    width: 20vw;
+    margin-top: -1vw;
+    font-weight: bolder;
+    background-size: cover;
+}
+
+#b1 {
+    color: #D40000;
+    background: linear-gradient(to bottom right, #D40000, #D40066);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+#b2 {
+    color: #FFC700;
+    background: linear-gradient(to bottom right, #FFC700, #D95B00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+#b3 {
+    color: #04BB00;
+    background: linear-gradient(to bottom right, #04BB00, #00ADD3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+#b4 {
+    color: #0019FA;
+    background: linear-gradient(to bottom right, #0019FA, #F500FA);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+#bf {
+    color: #0019FA;
+    background: linear-gradient(127deg, #00f5b6, #f300f5, #f5af00, #f53800, #545fff, #14d500);
+    background-size: 1200% 1200%;
+    -webkit-animation: AnimationName 59s ease infinite;
+    -moz-animation: AnimationName 59s ease infinite;
+    animation: AnimationName 59s ease infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+#lock.fadeout {
+    transition-duration: 0.5s;
+    opacity: 0;
+}
+
+.fadeout {
+    transition-duration: 0.7s;
+    opacity: 0;
+}
+
+#background {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -10;
+    overflow: hidden;
+    transition-duration: 2s;
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 4%}
+    50%{background-position:100% 97%}
+    100%{background-position:0% 4%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 4%}
+    50%{background-position:100% 97%}
+    100%{background-position:0% 4%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 4%}
+    50%{background-position:100% 97%}
+    100%{background-position:0% 4%}
+}
+
+#bfu, #bf {
+    transition-duration: 0.3s;
+}
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+/* 68747470733a2f2f796f7574752e62652f516353395a6e6445724863 */
+@media screen and (max-width: 800px) {
+    .col {
+      flex: 50%;
+      max-width: 50%;
+    }
+  }
+  
+  /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 600px) {
+    .col {
+      flex: 100%;
+      max-width: 100%;
+    }
+  }
+
+@media only screen and (max-width: 700px){
+    #countdown {
+        width: 90vw;
+        height: fit-content;
+        margin-top: 50px;
+        display: block;
+    }
+    #lock {
+        position: absolute;
+        left: 50%;
+        top: 10%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        opacity: 0.5;
+    }
+    .numberHolder {
+        width: 90vw;
+        height: 20vh;
+        position: relative;
+    }
+    .textunder {
+        position: absolute;
+        bottom: 0;
+        width: 90vw;
+        text-align: center;
+        font-family: 'Montserrat', sans-serif;;
+    }
+    
+    .bignumber {
+        font-size: 14vh;
+        text-align: center;
+        width: 90vw;
+        margin-top: -1vw;
+        font-weight: bolder;
+        background-size: cover;
+    }
+  }
