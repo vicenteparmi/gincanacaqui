@@ -1,0 +1,165 @@
+<!doctype= html>
+    <!-- Página criada por Vicente Parmigiani em 12/01/2020 às 22h-->
+    <html lang="pt">
+
+    <head>
+        <title>Configurações Gerais | Gincana CAQuí</title>
+        <link rel="icon" type="image/webp" href="files/image/CAQUI.webp" />
+        <link rel="stylesheet" type="text/css" href="management/manage.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Muli:400,700&display=swap&subset=latin-ext"
+            rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body onscroll="headerShadow()">
+        <div id="body">
+            <div style="margin-top: 100px">
+                <h1>Gerenciamento Geral</h1>
+                <p>Página para configurações da gincana.</p>
+                <div class="cardHolder">
+                    <div class="card" onclick="openPopup('popup1')">
+                        <h2>Equipes</h2>
+                        <p>Modificar pontuação e atividades concluídas.</p>
+                    </div>
+                    <div class="card" onclick="openPopup('popup2')">
+                        <h2>Atividades</h2>
+                        <p>Adicionar ou remover atividades, definir categoria e pontuação.</p>
+                    </div>
+                    <div class="card" onclick="openPopup('popup3')">
+                        <h2>Usuários</h2>
+                        <p>Alterar equipe, nome, ver informações.</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Popup to edit team points and activities done. -->
+
+            <div id="popup1" class="sidePannel">
+                <div class="sidePannelInner">
+                    <span class="close" onclick="closePopup('popup1')">&times; Fechar tela</span>
+                    <h2>Modificar pontuação e atividades concluídas</h2>
+                    <div style="display: flex; flex-direction: row; align-items: center;">
+                        <img id="teamImg" width="150px" height="150px" src="files/teams/unknown.webp"
+                            alt="Símbolo da equipe" style="transition-duration: 0.3s;">
+                        <div>
+                            <select name="team" id="selectTeam">
+                                <option value="0" disabled>Selecione uma equipe</option>
+                            </select>
+                            <div style="display: flex; flex-direction: row;">
+                                <input id="pointsTeam" type="number" name="points" placeholder="Pontuação" required>
+                                <i id="sandwich" class="material-icons" onclick="savePoints()" md-24 md-light
+                                    style="padding: 10px; cursor:pointer;">save_alt</i>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>Atividades</h3>
+                    <!-- Checklist -->
+                </div>
+            </div>
+
+            <!-- Popup to add or remove activities. -->
+
+            <div id="popup2" class="sidePannel">
+                <div class="sidePannelInner" style="display: flex; flex-direction: row;">
+                    <div>
+                        <span class="close" onclick="closePopup('popup2')">&times; Fechar tela</span>
+                        <h2>Adicionar ou remover atividades</h2>
+                        <div class="card2" style="background-color: white;">
+                            <label for="addTitulo">Título da atividade</label>
+                            <input type="text" name="addTitulo" id="addTitulo">
+                            <label for="addDescricao">Descrição da atividade</label>
+                            <textarea name="addDescricao" id="addDescricao" cols="30" rows="5"></textarea>
+                            <label for="addPontos">Pontuação</label>
+                            <input type="number" name="addPontos" id="addPontos">
+                            <h3>Categorias</h3>
+                            <p>Selecione as categorias que essa atividade faz parte.</p>
+                            <div class="checkboxHolder">
+                                <ul>
+                                    <li><input type="checkbox" name="addCategoria" id="addCategoria1" value="1">
+                                        <label for="addCategoria1">Envio pelo site</label>
+                                    </li>
+                                    <li><input type="checkbox" name="addCategoria" id="addCategoria2" value="2">
+                                        <label for="addCategoria2">Várias Imagens</label>
+                                    </li>
+                                    <li><input type="checkbox" name="addCategoria" id="addCategoria3" value="3">
+                                        <label for="addCategoria3">Uma Imagem</label>
+                                    </li>
+                                    <li><input type="checkbox" name="addCategoria" id="addCategoria4" value="4">
+                                        <label for="addCategoria4">Precisa de resposta</label>
+                                    </li>
+                                    <li><input type="checkbox" name="addCategoria" id="addCategoria5" value="5">
+                                        <label for="addCategoria5">Veterano necessário</label>
+                                    </li>
+                                    <li><input type="checkbox" name="addCategoria" id="addCategoria6" value="6">
+                                        <label for="addCategoria6">Vídeo</label>
+                                    </li>
+                                    <li><input type="checkbox" name="addCategoria" id="addCategoria7" value="7">
+                                        <label for="addCategoria7">Entrega presencial</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button id="addAtividade" onclick="addAtividade()">Adicionar atividade</button>
+                        </div>
+
+                    </div>
+                    <div>
+                        <h2>Atividades</h2>
+                    </div>
+
+                    <!-- Checklist -->
+                </div>
+
+                <!-- Default code -->
+
+                <div id="header" class="headerNoShadow">
+                    <i id="sandwich" class="menuIcons material-icons" onclick="openMenu()" md-24 md-light
+                        style="vertical-align: middle;padding: 10px; cursor:pointer;">menu</i>
+                    <img src="files/image/CAQUI.webp" class="headerImage">
+                    <text id="logo">Gincana CAQuí</text>
+                    <div id="menuHolder">
+                        <div id="menu">
+                            <a class="menu" href="./index.html"><i class="menuIcons material-icons" md-24 md-light
+                                    style="vertical-align: middle;padding: 10px;">home</i>Início</a>
+                            <a class="menu" href="./updates.html"><i class="menuIcons material-icons" md-24 md-light
+                                    style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
+                            <a class="menu" href="./send.html"><i class="menuIcons material-icons" md-24 md-light
+                                    style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
+                            <a class="menu" href="./schedule.html"><i class="menuIcons material-icons" md-24 md-light
+                                    style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
+                            <a class="menu" href="./about.html"><i class="menuIcons material-icons" md-24 md-light
+                                    style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
+                        </div>
+                    </div>
+                    <div id="userPhoto" onclick="popup()" />
+                </div>
+            </div>
+
+            <div id="popupMenu" class="popupMenu hide">
+                <a class="popupItem" href="./login.html"><i class="material-icons" md-24 md-light
+                        style="vertical-align: middle;padding: 10px;">person</i>Entrar</a>
+            </div>
+
+            <div id="popupMenuLogged" class="popupMenu hide">
+                <text class="popupTitle" id="userName">Nome do Usuário</text><br>
+                <text class="popupSubitle" id="userEmail">email@email.com</text><br><bR>
+                <a class="popupItem" href="./profile.html"><i class="material-icons" md-24 md-light
+                        style="vertical-align: middle;padding: 10px;">person</i>Perfil</a><br>
+                <text class="popupItem" onclick="signOut()"><i class="material-icons" md-24 md-light
+                        style="vertical-align: middle;padding: 10px;">input</i>Sair</text>
+            </div>
+
+            <!-- The core Firebase JS SDK is always required and must be listed first -->
+            <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+
+            <!-- TODO: Add SDKs for Firebase products that you want to use
+		     https://firebase.google.com/docs/web/setup#available-libraries -->
+            <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+
+            <script type="text/javascript" src="management/manage.js" onload="loadPage()"></script>
+    </body>
+
+    </html>

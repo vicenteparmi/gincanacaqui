@@ -1,0 +1,421 @@
+.cardHolder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.card {
+    width: 275px;
+    height: 150px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+    border-radius: 28px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    display: block;
+    padding: 24px;
+    background-image: radial-gradient(circle farthest-corner at 10% 20%, rgba(37, 145, 251, 0.98) 0.1%, rgba(0, 7, 128, 1) 99.8%);
+    color: #fff;
+    transition-duration: 200ms;
+    cursor: pointer;
+}
+
+.card:hover {
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.28);
+    transform: scale(1.05);
+}
+
+.card2 {
+    margin-right: 16px;
+    margin-bottom: 16px;
+    border-radius: 28px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    display: block;
+    padding: 24px;
+    background-color: #fff;
+    color: black;
+    transition-duration: 200ms;
+}
+
+#addDescricao {
+    width: 100%;
+    display: block;
+    padding: 12px;
+    color: black;
+    outline: none;
+    border-radius: 16px;
+    border: 1px solid #ccc;
+    font-family: 'Muli', sans-serif;
+}
+
+.sidePannel {
+    width: 0vw;
+    height: 100vh;
+    background-image: radial-gradient(circle farthest-corner at 10% 20%, rgba(37, 145, 251, 1) 0.1%, rgba(0, 7, 128, 1) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    transition-duration: 1s;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: fixed;
+    right: 0;
+    top: 0;
+}
+
+.sidePannelInner {
+    width: 40vw;
+    color: white;
+    margin: 20vh 5vw 12vh 5vw;
+}
+
+.close {
+    background-color: white;
+    border-radius: 8px;
+    padding: 4px 8px 4px 8px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+li {
+    list-style: none;
+}
+
+ul {
+    padding: 0;
+}
+
+select {
+    width: 100%;
+    height: 40px;
+    border-radius: 28px;
+    border: 1px solid #ccc;
+    padding: 0px 24px;
+    font-size: 16px;
+    transition-duration: 200ms;
+    outline: none;
+    margin-bottom: 4px;
+}
+
+select:active {
+    border: 1px solid #ccc;
+}
+
+input {
+    width: 100%;
+    height: 40px;
+    border-radius: 28px;
+    border: 1px solid #ccc;
+    padding: 0px 24px;
+    font-size: 16px;
+    transition-duration: 200ms;
+    outline: none;
+}
+
+#addAtividade {
+    width: 100%;
+    height: 40px;
+    border-radius: 28px;
+    border: 1px solid #ccc;
+    padding: 0px 24px;
+    font-size: 16px;
+    transition-duration: 200ms;
+    outline: none;
+    margin-top: 4px;
+    cursor: pointer;
+    background-color: #fff;
+    transition-duration: 0.2s;
+}
+
+#addAtividade:active {
+    border: 1px solid #ccc;
+}
+
+#addAtividade:hover {
+    background-color: #ccc;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.checkboxholder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border-radius: 28px;
+    border: 1px solid #ccc;
+    padding: 0px 24px;
+    font-size: 16px;
+    transition-duration: 200ms;
+    outline: none;
+}
+
+input[type=checkbox] > label {
+    margin-top: 0px;
+}
+
+/* Useful code */
+p {
+    max-width: 40vw;
+    width: fit-content;
+    top: 75%;
+}
+
+h1 {
+    text-align: center;
+    top: 65%;
+    width: fit-content;
+    max-width: 90vw;
+}
+
+#body {
+    margin-left: 5vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.center {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+/* Default Style */
+
+body {
+    margin: 0;
+    font-family: 'Muli', sans-serif;
+    overflow-x: hidden;
+}
+
+#header {
+    width: 100%;
+    height: 60px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.28);
+    padding-left: 3%;
+    line-height: 60px;
+    position: fixed;
+    transition-duration: 0.3s;
+    top: 0%;
+    left: 0%;
+    z-index: 99;
+    background-color: white;
+}
+
+#header.headerNoShadow {
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.0);
+    background-color: rgba(0, 0, 0, 0.0);
+}
+
+.headerImage {
+    height: 40px;
+    vertical-align: middle;
+}
+
+#logo {
+    font-weight: bold;
+    margin-left: 0.5%;
+    transition-duration: 1s;
+}
+
+.menu {
+    color: dimgray;
+    margin-left: 2%;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#menu {
+    transition-duration: 1s;
+}
+
+.menu:hover {
+    color: black;
+}
+
+.menuSelected {
+    color: black;
+    font-weight: 600;
+}
+
+#userPhoto {
+    border-radius: 100%;
+    background-color: gray;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.20);
+    position: fixed;
+    right: 2.5%;
+    top: 7.5px;
+    padding-top: 42px;
+    width: 42px;
+    cursor: pointer;
+    background-image: url('../files/image/unknownUser.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    transition-duration: 0.5s;
+}
+
+.popupMenu {
+    position: fixed;
+    top: 70px;
+    right: 1%;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.28);
+    padding: 20px;
+    padding-right: 25px;
+    min-width: 20vw;
+    border-radius: 4px;
+    transition-duration: 0.3s;
+    z-index: 100;
+    background-color: white;
+}
+
+.popupTitle {
+    font-weight: bold;
+    font-size: 18px;
+    width: 100%;
+}
+
+.popupSubitle {
+    color: dimgray;
+    font-size: 14px;
+}
+
+.popupItem {
+    transition-duration: 0.2s;
+    cursor: pointer;
+    color: black;
+    text-decoration: none;
+}
+
+.popupItem:hover {
+    padding-left: 10px;
+    text-decoration: underline;
+}
+
+.hide {
+    display: none;
+    position: fixed;
+    top: -1000%;
+}
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://example.com/MaterialIcons-Regular.eot);
+    /* For IE6-8 */
+    src: local('Material Icons'),
+        local('MaterialIcons-Regular'),
+        url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+        url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+        url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
+
+i.menuIcons {
+    display: none;
+}
+
+#menu, #menuHolder {
+    display: inline;
+}
+
+/* Mobile adjustments */
+
+@media all and (max-width: 50em) {
+    #menu {
+        background-color: white;
+        width: 60vw;
+        height: 100vh;
+        max-width: 16em;
+        box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.28);
+        display: block;
+        padding-left: 3vw;
+        padding-top: 30px;
+        position: absolute;
+        left: -65vw;
+        top: 0%;
+        transition-duration: 0.3s;
+    }
+
+    #menu.show {
+        left: 0%;
+    }
+
+    .menu {
+        display: block;
+    }
+
+    #menuHolder {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        position: fixed;
+        top: 0%;
+        left: 0%;
+        z-index: -101;
+        transition-duration: 0.3s;
+        visibility: hidden;
+    }
+
+    #menuHolder.shadow {
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 101;
+        visibility: visible;
+    }
+
+    i.menuIcons {
+        display: inline-block;
+    }
+
+    p {
+        max-width: 90vw;
+    }
+
+    h1 {
+        font-size: 6.5vw;
+    }
+}
+
