@@ -30,6 +30,10 @@
                         <h2>Usuários</h2>
                         <p>Alterar equipe, nome, ver informações.</p>
                     </div>
+                    <div class="card" onclick="openPopup('popup4')">
+                        <h2>Ajustes</h2>
+                        <p>Ativar login, envio, vencedor.</p>
+                    </div>
                 </div>
             </div>
 
@@ -37,7 +41,7 @@
             <!-- Popup to edit team points and activities done. -->
 
             <div id="popup1" class="sidePannel">
-                <div class="sidePannelInner">
+                <div class="sidePannelInner" style="display: block;">
                     <span class="close" onclick="closePopup('popup1')">&times; Fechar tela</span>
                     <h2>Modificar pontuação e atividades concluídas</h2>
                     <div style="display: flex; flex-direction: row; align-items: center;">
@@ -62,17 +66,30 @@
             <!-- Popup to add or remove activities. -->
 
             <div id="popup2" class="sidePannel">
-                <div class="sidePannelInner" style="display: flex; flex-direction: row;">
+                <div class="sidePannelInner">
                     <div>
                         <span class="close" onclick="closePopup('popup2')">&times; Fechar tela</span>
                         <h2>Adicionar ou remover atividades</h2>
                         <div class="card2" style="background-color: white;">
+                            <h3>Criar nova atividade</h3>
                             <label for="addTitulo">Título da atividade</label>
                             <input type="text" name="addTitulo" id="addTitulo">
                             <label for="addDescricao">Descrição da atividade</label>
                             <textarea name="addDescricao" id="addDescricao" cols="30" rows="5"></textarea>
                             <label for="addPontos">Pontuação</label>
-                            <input type="number" name="addPontos" id="addPontos">
+                            <div style="display: flex; flex-direction: row;">
+                                <input type="number" name="addPontos" id="addPontos">
+                                <input type="text" name="addPontosDesc" id="addPontosDesc"
+                                    placeholder="por foto, por pessoa">
+                            </div>
+
+                            <!-- Upload photo -->
+                            <label for="addFoto" id="addFotoLabel">
+                                <i class="material-icons" style="font-size: 42px;">add_a_photo</i>
+                                Foto da atividade
+                            </label>
+                            <input type="file" name="addFoto" id="addFoto" accept="image/*">
+
                             <h3>Categorias</h3>
                             <p>Selecione as categorias que essa atividade faz parte.</p>
                             <div class="checkboxHolder">
@@ -100,40 +117,155 @@
                                     </li>
                                 </ul>
                             </div>
-                            <button id="addAtividade" onclick="addAtividade()">Adicionar atividade</button>
+                            <button class="saveButton" id="addAtividade" onclick="addAtividade()">Adicionar
+                                atividade</button>
                         </div>
 
                     </div>
                     <div>
                         <h2>Atividades</h2>
+                        <div id="activities">
+                        </div>
                     </div>
 
                     <!-- Checklist -->
                 </div>
+            </div>
 
-                <!-- Default code -->
+            <!-- Modal to edit activities. -->
 
-                <div id="header" class="headerNoShadow">
-                    <i id="sandwich" class="menuIcons material-icons" onclick="openMenu()" md-24 md-light
-                        style="vertical-align: middle;padding: 10px; cursor:pointer;">menu</i>
-                    <img src="files/image/CAQUI.webp" class="headerImage">
-                    <text id="logo">Gincana CAQuí</text>
-                    <div id="menuHolder">
-                        <div id="menu">
-                            <a class="menu" href="./index.html"><i class="menuIcons material-icons" md-24 md-light
-                                    style="vertical-align: middle;padding: 10px;">home</i>Início</a>
-                            <a class="menu" href="./updates.html"><i class="menuIcons material-icons" md-24 md-light
-                                    style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
-                            <a class="menu" href="./send.html"><i class="menuIcons material-icons" md-24 md-light
-                                    style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
-                            <a class="menu" href="./schedule.html"><i class="menuIcons material-icons" md-24 md-light
-                                    style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
-                            <a class="menu" href="./about.html"><i class="menuIcons material-icons" md-24 md-light
-                                    style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
+            <div id="modalEdit" class="modal">
+                <div class="modal-content">
+                    <h2>Editar atividade</h2>
+                    <div>
+                        <label for="editTitulo">Título da atividade</label>
+                        <input type="text" name="editTitulo" id="editTitulo">
+                        <label for="editDescricao">Descrição da atividade</label>
+                        <textarea name="editDescricao" id="editDescricao" cols="30" rows="5"></textarea>
+                        <label for="editPontos">Pontuação</label>
+                        <div style="display: flex; flex-direction: row;">
+                            <input type="number" name="editPontos" id="editPontos">
+                            <input type="text" name="editPontosDesc" id="editPontosDesc"
+                                placeholder="por foto, por pessoa">
+                        </div>
+
+                        <!-- Upload photo -->
+                        <label for="editFoto" id="editFotoLabel">
+                            <i class="material-icons" style="font-size: 42px;">flip_camera_ios</i>
+                            Modificar foto
+                        </label>
+                        <input type="file" name="editFoto" id="editFoto" accept="image/*" style="display: none;">
+
+                        <h3>Categorias</h3>
+                        <p>Selecione as categorias que essa atividade faz parte.</p>
+                        <div class="checkboxHolder">
+                            <ul>
+                                <li><input type="checkbox" name="editCategoria" id="editCategoria1" value="1">
+                                    <label for="editCategoria1">Envio pelo site</label>
+                                </li>
+                                <li><input type="checkbox" name="editCategoria" id="editCategoria2" value="2">
+                                    <label for="editCategoria2">Várias Imagens</label>
+                                </li>
+                                <li><input type="checkbox" name="editCategoria" id="editCategoria3" value="3">
+                                    <label for="editCategoria3">Uma Imagem</label>
+                                </li>
+                                <li><input type="checkbox" name="editCategoria" id="editCategoria4" value="4">
+                                    <label for="editCategoria4">Precisa de resposta</label>
+                                </li>
+                                <li><input type="checkbox" name="editCategoria" id="editCategoria5" value="5">
+                                    <label for="editCategoria5">Veterano necessário</label>
+                                </li>
+                                <li><input type="checkbox" name="editCategoria" id="editCategoria6" value="6">
+                                    <label for="editCategoria6">Vídeo</label>
+                                </li>
+                                <li><input type="checkbox" name="editCategoria" id="editCategoria7" value="7">
+                                    <label for="editCategoria7">Entrega presencial</label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div style="display: flex; flex-direction: row;">
+                            <button class="saveButton" id="editAtividade">Editar atividade</button>
+                            <button class="saveButton" id="deleteAtividade">Deletar atividade</button>
                         </div>
                     </div>
-                    <div id="userPhoto" onclick="popup()" />
                 </div>
+            </div>
+
+            <!-- Popup to manage users -->
+
+            <div id="popup3" class="sidePannel">
+                <div class="sidePannelInner" style="display: block;">
+                    <span class="close" onclick="closePopup('popup3')">&times; Fechar tela</span>
+                    <h2>Modificar pontuação e atividades concluídas</h2>
+                    <div style="display: flex; flex-direction: row; align-items: center;">
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popup to ajust general settings -->
+
+            <div id="popup4" class="sidePannel">
+                <div class="sidePannelInner" style="display: block;">
+                    <span class="close" onclick="closePopup('popup4')">&times; Fechar tela</span>
+                    <h2>Ajuste de configurações gerais</h2>
+                    <div style="display: block">
+                        <!-- Add toggler to every setting -->
+                        <div style="display: flex; flex-direction: row; align-items: flex-start;">
+                            <div id="ajustescard1" style="display: flex; flex-direction: column; max-width: 250px;"
+                                class="card2 disabled">
+                                <h3 style="margin: 0;">Envio de atividades</h3>
+                                <p>Permite o envio de atividades através do site. É necessário ter o login ativado.</p>
+                                <div style="display: flex; flex-direction: row; align-items: center;">
+                                    <input type="checkbox" name="ajustes1" id="ajustes1">
+                                    <label for="ajustes1">Ativar</label>
+                                </div>
+                            </div>
+                            <div id="ajustescard2" style="display: flex; flex-direction: column; max-width: 250px;"
+                                class="card2 disabled">
+                                <h3 style="margin: 0;">Login</h3>
+                                <p>Autorizar login de usuários e criação de novas contas.</p>
+                                <div style="display: flex; flex-direction: row; align-items: center;">
+                                    <input type="checkbox" name="ajustes2" id="ajustes2">
+                                    <label for="ajustes2">Ativar</label>
+                                </div>
+                            </div>
+                            <div id="ajustescard3" style="display: flex; flex-direction: column; max-width: 250px;"
+                                class="card2 disabled">
+                                <h3 style="margin: 0;">Temos um vencedor</h3>
+                                <p>Ativar coroa e confetti na tela inicial.</p>
+                                <div style="display: flex; flex-direction: row; align-items: center;">
+                                    <input type="checkbox" name="ajustes3" id="ajustes3">
+                                    <label for="ajustes3">Ativar</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Default code -->
+
+            <div id="header" class="headerNoShadow">
+                <i id="sandwich" class="menuIcons material-icons" onclick="openMenu()" md-24 md-light
+                    style="vertical-align: middle;padding: 10px; cursor:pointer;">menu</i>
+                <img src="files/image/CAQUI.webp" class="headerImage">
+                <text id="logo">Gincana CAQuí</text>
+                <div id="menuHolder">
+                    <div id="menu">
+                        <a class="menu" href="./index.html"><i class="menuIcons material-icons" md-24 md-light
+                                style="vertical-align: middle;padding: 10px;">home</i>Início</a>
+                        <a class="menu" href="./updates.html"><i class="menuIcons material-icons" md-24 md-light
+                                style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
+                        <a class="menu" href="./send.html"><i class="menuIcons material-icons" md-24 md-light
+                                style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
+                        <a class="menu" href="./schedule.html"><i class="menuIcons material-icons" md-24 md-light
+                                style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
+                        <a class="menu" href="./about.html"><i class="menuIcons material-icons" md-24 md-light
+                                style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
+                    </div>
+                </div>
+                <div id="userPhoto" onclick="popup()"></div>
             </div>
 
             <div id="popupMenu" class="popupMenu hide">
@@ -157,6 +289,7 @@
 		     https://firebase.google.com/docs/web/setup#available-libraries -->
             <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
             <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-storage.js"></script>
             <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
 
             <script type="text/javascript" src="management/manage.js" onload="loadPage()"></script>
