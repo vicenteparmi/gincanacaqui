@@ -221,6 +221,45 @@ canvas {
   transition-duration: 0.3s;
 }
 
+#superUserMenu {
+  position: fixed;
+  bottom: 5vh;
+  right: 5vh;
+  z-index: 1000;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 16px rgba(0,0,0,0.38);
+  padding: 16px;
+  max-width: 300px;
+}
+
+#superUserMenu > a {
+  display: flex;
+  width: auto;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid #333;
+  border-radius: 16px;
+  margin: 4px;
+  flex-direction: column;
+  transition-duration: 0.1s;
+  padding: 8px 12px;
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#superUserMenu > a:hover {
+  background-color: #ccc;
+}
+
+#superUserMenu > a:active {
+  background-color: rgb(59, 59, 59);
+  color: white;
+}
+
 /* Positions for the list */
 
 .pos3 {

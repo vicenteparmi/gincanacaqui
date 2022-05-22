@@ -332,6 +332,13 @@ function stopConfetti() {
   confetti.stop();
 }
 
+// Management menu
+// Check if user can access management menu
+
+firebase.database().ref('management').once('value').then(function(snap) {
+  document.getElementById('superUserMenu').style.display = "block";
+})
+
 // Header shadow
 
 function headerShadow() {
