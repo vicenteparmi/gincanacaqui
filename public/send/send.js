@@ -153,7 +153,7 @@ function send() {
 
     // Check if the team has the activity
     firebase.database().ref('teams/' + (team - 1) + '/tasks/' + itemSelected).once('value').then(function (snapshot) {
-      if (snapshot.val() == null || activitiesList[itemSelected].categories.includes("7")) {
+      if (snapshot.val() == null || activitiesList[itemSelected].categories.includes("8")) {
 
         // Upload images if it is required by the activity
         if (currentMode == 0) { // One pic mode

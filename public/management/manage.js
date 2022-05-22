@@ -454,6 +454,126 @@ document.getElementById("addFoto").addEventListener("change", function () {
     console.log(document.getElementById("addFoto").value);
 });
 
+// Posts
+
+// Send post
+
+function sendPost() {
+    const title = document.getElementById('postTitle').value;
+    const content = document.getElementById('postContent').value;
+
+    if (title != "" && content != "") {
+        const ref = firebase.database().ref("posts");
+
+        const post = {
+            title: title,
+            content: content,
+            date: Date.now()
+        };
+
+        ref.push(post);
+
+        const pop = toast("Post enviado!");
+
+        setTimeout(function () {
+            pop.remove();
+        }, 3000);
+
+        document.getElementById('postTitle').value = "";
+        document.getElementById('postContent').value = "";
+    } else {
+        const pop = toast("Preencha todos os campos!");
+
+        setTimeout(function () {
+            pop.remove();
+        }, 3000);
+    }
+}
+
+// Load posts
+
+firebase.database().ref("posts").on("value", function (snapshot) {
+    const posts = snapshot.val();
+
+    const postList = document.getElementById("postsAtivos");
+
+    postList.innerHTML = "";
+
+    for (let key in posts) {
+        const post = posts[key];
+
+        const postDiv = document.createElement("div");
+        postDiv.className = "post";
+
+        const postTitle = document.createElement("input");
+        postTitle.className = "postTitle";
+        postTitle.value = post.title;
+
+        const postContent = document.createElement("textarea");
+        postContent.className = "postContent";
+        postContent.value = post.content;
+
+        const postDate = document.createElement("p");
+        postDate.className = "postDate";
+        postDate.innerHTML = "Publicado em " + new Date(post.date).toLocaleDateString();
+
+        const postDelete = document.createElement("i");
+        postDelete.className = "material-icons";
+        postDelete.innerHTML = "delete";
+
+        postDelete.addEventListener("click", function () {
+
+            // Confirm
+            if (confirm("Tem certeza que deseja excluir o post?")) {
+                firebase.database().ref("posts/" + key).remove();
+                const pop = toast("Post deletado!");
+
+                setTimeout(function () {
+                    pop.remove();
+                }, 3000);
+            }
+
+        });
+
+        const postSaveEdits = document.createElement("i");
+        postSaveEdits.className = "material-icons";
+        postSaveEdits.innerHTML = "save";
+
+        postSaveEdits.addEventListener("click", function () {
+            const ref = firebase.database().ref("posts/" + key);
+
+            const post = {
+                title: postTitle.value,
+                content: postContent.value,
+                date: Date.now()
+            };
+
+            ref.update(post);
+
+            const pop = toast("Post editado!");
+
+            setTimeout(function () {
+                pop.remove();
+            }, 3000);
+        });
+
+        postDiv.appendChild(postTitle);
+        postDiv.appendChild(postContent);
+        postDiv.appendChild(postDate);
+        postDiv.appendChild(postDelete);
+        postDiv.appendChild(postSaveEdits);
+
+        // Card
+
+        const card = document.createElement("div");
+        card.className = "card2";
+
+        card.appendChild(postDiv);
+
+        postList.appendChild(card);
+    }
+});
+
 // Toast
 
 function toast(message) {

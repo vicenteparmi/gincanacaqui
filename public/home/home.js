@@ -1,36 +1,53 @@
 // Your web app's Firebase configuration
 var firebaseConfig = {
-    apiKey: "AIzaSyA07lUMH1HyCjBi_eKe-4gaz1b9FhdSZiE",
-    authDomain: "havarena-f3d87.firebaseapp.com",
-    databaseURL: "https://havarena-f3d87.firebaseio.com",
-    projectId: "havarena-f3d87",
-    storageBucket: "havarena-f3d87.appspot.com",
-    messagingSenderId: "259369291947",
-    appId: "1:259369291947:web:6233862e160cc6bfce67ee",
-    measurementId: "G-STKZ9T8L1C"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
+  apiKey: "AIzaSyA07lUMH1HyCjBi_eKe-4gaz1b9FhdSZiE",
+  authDomain: "havarena-f3d87.firebaseapp.com",
+  databaseURL: "https://havarena-f3d87.firebaseio.com",
+  projectId: "havarena-f3d87",
+  storageBucket: "havarena-f3d87.appspot.com",
+  messagingSenderId: "259369291947",
+  appId: "1:259369291947:web:6233862e160cc6bfce67ee",
+  measurementId: "G-STKZ9T8L1C"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 
 // Constants
 
-const teamNames = ["Hidrogênio","Hélio","Lítio","Berílio","Boro","Carbono","Nitrogênio","Oxigênio","Flúor","Neônio","Sódio","Magnésio","Alumínio","Silício","Fósforo","Enxofre"];
+const teamNames = ["Hidrogênio", "Hélio", "Lítio", "Berílio", "Boro", "Carbono", "Nitrogênio", "Oxigênio", "Flúor", "Neônio", "Sódio", "Magnésio", "Alumínio", "Silício", "Fósforo", "Enxofre"];
 
 // Load Teams
-var fbTeamData = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+var fbTeamData = [
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  []
+];
 
 function loadLeaderborad() {
 
   var fbRef = firebase.database().ref('teams');
-  fbRef.on('child_added', function(snapshot) {
+  fbRef.on('child_added', function (snapshot) {
     var tn = snapshot.key;
     fbTeamData[tn][1] = snapshot.val().name;
     fbTeamData[tn][0] = snapshot.val().points;
     fbTeamData[tn][2] = tn;
     fbTeamData[tn][0] = fbTeamData[tn][0].toString().padStart(6, "0");
   });
-  fbRef.on('child_changed', function(snapshot) {
+  fbRef.on('child_changed', function (snapshot) {
     var tn = snapshot.key;
     fbTeamData[tn][1] = snapshot.val().name;
     fbTeamData[tn][0] = snapshot.val().points;
@@ -41,7 +58,7 @@ function loadLeaderborad() {
   });
 
   // Display loaded data
-  firebase.database().ref('/teams/15').once('value').then(function(snapshot) {
+  firebase.database().ref('/teams/15').once('value').then(function (snapshot) {
     inflateLB();
     inflateACT();
   });
@@ -56,15 +73,15 @@ function inflateLB() {
   // Leaderboard podium
 
   for (var i = 1; i < 4; i++) {
-    document.getElementById('podiumImage'+i).style.backgroundImage = "url('files/teams/"+(Number(lbOrder[i-1][2])+1)+".webp')";
-    document.getElementById('teamName'+i).innerHTML = lbOrder[i-1][1];
-    document.getElementById('teamPoints'+i).innerHTML = lbOrder[i-1][0].replace(/^0+/, '')+" pontos";
+    document.getElementById('podiumImage' + i).style.backgroundImage = "url('files/teams/" + (Number(lbOrder[i - 1][2]) + 1) + ".webp')";
+    document.getElementById('teamName' + i).innerHTML = lbOrder[i - 1][1];
+    document.getElementById('teamPoints' + i).innerHTML = lbOrder[i - 1][0].replace(/^0+/, '') + " pontos";
 
-    if (lbOrder[i-1][0] == '000000') {
-      document.getElementById('teamPoints'+i).innerHTML = "0 pontos";
+    if (lbOrder[i - 1][0] == '000000') {
+      document.getElementById('teamPoints' + i).innerHTML = "0 pontos";
     }
 
-    document.getElementById('p'+i).className = 'podium loaded p'+i;
+    document.getElementById('p' + i).className = 'podium loaded p' + i;
   }
 
   // Leaderboard list
@@ -80,10 +97,10 @@ function inflateLBChild(lbOrder2, child) { // Arguments: [OrderedArray, Position
   const spanPoints = document.createElement('span');
   const spanPosition = document.createElement('span');
 
-  lbDiv.className = 'leaderBoard center pos'+child;
+  lbDiv.className = 'leaderBoard center pos' + child;
   spanName.innerHTML = lbOrder2[child][1];
-  spanPoints.innerHTML = lbOrder2[child][0].replace(/^0+/, '')+" pontos";
-  spanPosition.innerHTML = (child+1)+'º';
+  spanPoints.innerHTML = lbOrder2[child][0].replace(/^0+/, '') + " pontos";
+  spanPosition.innerHTML = (child + 1) + 'º';
 
   if (lbOrder2[child][0] == '000000') {
     spanPoints.innerHTML = "0 pontos";
@@ -112,32 +129,32 @@ function updateLB() {
     for (var i2 = 0; i2 < fbTeamData.length; i2++) { // Change the position
       if (fbTeamData[i][2] == lbOrder[i2][2]) {
         if (i2 <= 2) {
-          document.getElementById('podiumImage'+(i2+1)).style.backgroundImage = "url('files/teams/"+(Number(lbOrder[i2][2])+1)+".webp')";
-          document.getElementById('teamName'+(i2+1)).innerHTML = lbOrder[i2][1];
-          document.getElementById('teamPoints'+(i2+1)).innerHTML = lbOrder[i2][0].replace(/^0+/, '')+" pontos";
+          document.getElementById('podiumImage' + (i2 + 1)).style.backgroundImage = "url('files/teams/" + (Number(lbOrder[i2][2]) + 1) + ".webp')";
+          document.getElementById('teamName' + (i2 + 1)).innerHTML = lbOrder[i2][1];
+          document.getElementById('teamPoints' + (i2 + 1)).innerHTML = lbOrder[i2][0].replace(/^0+/, '') + " pontos";
 
           if (lbOrder[i2][0] == '000000') {
-            document.getElementById('teamPoints'+(i2+1)).innerHTML = "0 pontos";
+            document.getElementById('teamPoints' + (i2 + 1)).innerHTML = "0 pontos";
           }
 
           try {
-            document.getElementById('lbd'+i).remove();
+            document.getElementById('lbd' + i).remove();
           } catch (e) {
             continue;
           }
         } else {
           try {
-            const div = document.getElementById('lbd'+i);
-            div.className = 'leaderBoard center pos'+i2;
-            const spoints = document.getElementById('lbsp'+i);
-            spoints.innerHTML = lbOrder[i2][0].replace(/^0+/, '')+" pontos";
+            const div = document.getElementById('lbd' + i);
+            div.className = 'leaderBoard center pos' + i2;
+            const spoints = document.getElementById('lbsp' + i);
+            spoints.innerHTML = lbOrder[i2][0].replace(/^0+/, '') + " pontos";
 
             if (lbOrder[i2][0] == '000000') {
               spoints.innerHTML = "0 pontos";
             }
 
-            const spos = document.getElementById('lbspos'+i);
-            spos.innerHTML = (i2+1)+'º';
+            const spos = document.getElementById('lbspos' + i);
+            spos.innerHTML = (i2 + 1) + 'º';
           } catch (e) {
             inflateLBChild(lbOrder, i2);
           } finally {
@@ -152,7 +169,7 @@ function updateLB() {
 
 // Last updated message;
 
-firebase.database().ref('last_updated/date').on('value', function(snaps) {
+firebase.database().ref('last_updated/date').on('value', function (snaps) {
   document.getElementById('lastUpdatedHolder').className = "lastUpdatedClass center";
   var d = new Date(snaps.val());
   const spanDate = document.getElementById('lastUpdated');
@@ -168,10 +185,9 @@ function inflateACT() {
   // Get holder
   const actListHolder = document.getElementById('activities');
 
-  // Build cards from activity list
-  for (var i = 0; i < activityList.length; i++) {
-    // Skip null activities
-    if (activityList[i]) {
+  // Build cards from activity database
+  firebase.database().ref('/activities').once('value').then(function (snap) {
+    snap.forEach(function (act) {
       // Create Elements
       const card = document.createElement('div');
       const title = document.createElement('h2');
@@ -179,6 +195,7 @@ function inflateACT() {
       const img = document.createElement('img');
       const actNumber = document.createElement('span');
       const pointsAct = document.createElement('span');
+
       // Infobox
       const infobox = document.createElement('div');
       const photoNumber = document.createElement('div');
@@ -195,11 +212,11 @@ function inflateACT() {
       pointsAct.className = 'points'
 
       // Add information
-      title.innerHTML = activityList[i];
-      description.innerHTML = descriptions[i];
-      img.src = 'files/icons/'+i+'.svg';
+      title.innerHTML = act.val().title;
+      description.innerHTML = act.val().description;
+      img.src = act.val().image;
       actNumber.innerHTML = stage;
-      pointsAct.innerHTML = "+"+getPoints(i, true);
+      pointsAct.innerHTML = "+" + act.val().points + " " + act.val().pointsDesc;
       stage++;
 
       // Setup Infobox
@@ -212,13 +229,13 @@ function inflateACT() {
       // Inflate infobox;
 
       // Pictures to send;
-      if (onePicMode.includes(i+1)) {
+      if (act.val().categories.includes("3")) {
         photoNumber.innerHTML = "<img src='files/image/onePicMode.svg' class='chipimg'/>Uma imagem";
         photoNumber.style.backgroundColor = '#673ab7';
-      } else if (somePicsMode.includes(i+1)) {
+      } else if (act.val().categories.includes("2")) {
         photoNumber.innerHTML = "<img src='files/image/somePicsMode.svg' class='chipimg'/>Várias imagens";
         photoNumber.style.backgroundColor = '#e91e63';
-      } else if (videoMode.includes(i+1)) {
+      } else if (act.val().categories.includes("6")) {
         photoNumber.innerHTML = "<img src='files/image/videoMode.svg' class='chipimg'/>Vídeo";
         photoNumber.style.backgroundColor = '#f44336';
       } else {
@@ -226,16 +243,16 @@ function inflateACT() {
       }
 
       // Places to send
-      if (nonWebsite.includes(i)) {
+      if (act.val().categories.includes("7")) {
         sendOn.innerHTML = "<img src='files/image/noWebsite.svg' class='chipimg'/>Entrega presencial";
         sendOn.style.backgroundColor = '#0097a7';
-      } else {
+      } else if (act.val().categories.includes("1")) {
         sendOn.innerHTML = "<img src='files/image/websiteMode.svg' class='chipimg'/>Envio pelo site";
         sendOn.style.backgroundColor = '#ff9800';
       }
 
       // Need answers
-      if (needsInput.includes(i+1)) {
+      if (act.val().categories.includes("4")) {
         needAnswer.innerHTML = "<img src='files/image/answerNeeded.svg' class='chipimg'/>Precisa de resposta";
         needAnswer.style.backgroundColor = '#009688';
       } else {
@@ -243,7 +260,7 @@ function inflateACT() {
       }
 
       // Veteran needed
-      if (needsVeteran.includes(i)) {
+      if (act.val().categories.includes("5")) {
         veteran.innerHTML = "<img src='files/image/veteran.svg' class='chipimg'/>Veterano necessário";
         veteran.style.backgroundColor = '#4caf50';
       } else {
@@ -263,14 +280,15 @@ function inflateACT() {
       infobox.appendChild(veteran);
       card.appendChild(infobox);
       actListHolder.appendChild(card);
-    }
-  }
+
+    });
+  });
 
   const atr = document.createElement('p');
   atr.innerHTML = "Criado por Vicente K. Parmigiani • <u>Direitos autorais de terceiros<u>";
   atr.style.color = "#ffffff82";
   atr.style.cursor = 'pointer';
-  atr.onclick = function() {
+  atr.onclick = function () {
     const x = document.getElementById('iconSrcs');
     if (x.style.display === "none") {
       x.style.display = "block";
@@ -283,17 +301,17 @@ function inflateACT() {
 
 function handleDate(date) {
   var day = ("0" + date.getDate()).slice(-2);
-  var month = ("0" + (date.getMonth()+1)).slice(-2);
+  var month = ("0" + (date.getMonth() + 1)).slice(-2);
   var year = date.getFullYear();
   var hours = date.getHours();
   var minutes = ("0" + date.getMinutes()).slice(-2);
 
-  return day+"/"+month+"/"+year+" às "+hours+"h"+minutes;
+  return day + "/" + month + "/" + year + " às " + hours + "h" + minutes;
 }
 
 // Posts
 
-firebase.database().ref('posts').limitToLast(10).orderByKey().on('child_added', function(child) {
+firebase.database().ref('posts').limitToLast(10).orderByKey().on('child_added', function (child) {
   document.getElementById('pubTitle').style.display = "block";
   const postsHolder = document.getElementById('posts');
   var postDiv = document.createElement('div');
@@ -320,7 +338,7 @@ firebase.database().ref('posts').limitToLast(10).orderByKey().on('child_added', 
 
 // Do we have a winner?
 
-firebase.database().ref('settings').once('value').then(function(snapsw) {
+firebase.database().ref('settings').once('value').then(function (snapsw) {
   if (snapsw.val().we_have_a_winner == true) {
     confetti.start();
     document.getElementById('crown').className = 'loaded';
@@ -335,19 +353,19 @@ function stopConfetti() {
 // Management menu
 // Check if user can access management menu
 
-firebase.database().ref('management').once('value').then(function(snap) {
+firebase.database().ref('management').once('value').then(function (snap) {
   document.getElementById('superUserMenu').style.display = "block";
 })
 
 // Header shadow
 
 function headerShadow() {
-	if (document.body.scrollTop == 0 || document.documentElement.scrollTop == 0){
-		document.getElementById("header").className = "headerNoShadow";
-	}
+  if (document.body.scrollTop == 0 || document.documentElement.scrollTop == 0) {
+    document.getElementById("header").className = "headerNoShadow";
+  }
   if (document.body.scrollTop != 0 || document.documentElement.scrollTop != 0) {
-		document.getElementById("header").className = "";
-	}
+    document.getElementById("header").className = "";
+  }
 
   // Remove lag when canvasis out of the screen;
   if (elementInViewport2(document.getElementById('canvas'))) {
@@ -364,7 +382,7 @@ function elementInViewport2(el) {
   var width = el.offsetWidth;
   var height = el.offsetHeight;
 
-  while(el.offsetParent) {
+  while (el.offsetParent) {
     el = el.offsetParent;
     top += el.offsetTop;
     left += el.offsetLeft;
@@ -397,7 +415,7 @@ function popup() {
     }
     popupShow = true;
 
-    window.onclick = function() {
+    window.onclick = function () {
       if (event.target != popupMenu && event.target != popupLogged && event.target != userPhoto) {
         popupMenu.className = "popupMenu hide";
         popupLogged.className = "popupMenu hide";
@@ -420,7 +438,7 @@ function loadPage() {
   var user = firebase.auth().currentUser;
   var name, email, photoUrl, uid, emailVerified;
 
-  firebase.auth().onAuthStateChanged(function(user) {
+  firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       name = user.displayName;
       email = user.email;
@@ -430,12 +448,12 @@ function loadPage() {
 
       document.getElementById('userName').innerHTML = name;
       document.getElementById('userEmail').innerHTML = email;
-      document.getElementById("userPhoto").style.backgroundImage = "url('"+photoUrl+"')";
+      document.getElementById("userPhoto").style.backgroundImage = "url('" + photoUrl + "')";
 
       // Define team
       const currentUser = firebase.auth().currentUser;
       var dbRef = firebase.database().ref('users/' + currentUser.uid + "/team");
-      dbRef.on('value', function(snapshot) {
+      dbRef.on('value', function (snapshot) {
         team = snapshot.val();
       });
     }
@@ -443,15 +461,16 @@ function loadPage() {
 }
 
 function signOut() {
-  firebase.auth().signOut().then(function() {
+  firebase.auth().signOut().then(function () {
     console.log('Signed Out');
     location.reload();
-  }, function(error) {
+  }, function (error) {
     console.error('Sign Out Error', error);
   });
 }
 
 var menuOpen = false;
+
 function openMenu() {
   const menu = document.getElementById("menu");
   const menuHolder = document.getElementById("menuHolder");
@@ -460,7 +479,7 @@ function openMenu() {
   if (menuOpen == false) {
     menu.className = "show";
     menuHolder.className = "shadow"
-    window.onclick = function() {
+    window.onclick = function () {
       if (event.target != menu && event.target != sandwich) {
         menu.className = "";
         menuHolder.className = ""

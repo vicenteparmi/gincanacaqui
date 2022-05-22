@@ -34,6 +34,10 @@
                         <h2>Ajustes</h2>
                         <p>Ativar login, envio, vencedor.</p>
                     </div>
+                    <div class="card" onclick="openPopup('popup5')">
+                        <h2>Postagens</h2>
+                        <p>Criar, modificar e remover postagens</p>
+                    </div>
                 </div>
             </div>
 
@@ -115,7 +119,7 @@
                                     <li><input type="checkbox" name="addCategoria" id="addCategoria7" value="7">
                                         <label for="addCategoria7">Entrega presencial</label>
                                     </li>
-                                    <li><input type="checkbox" name="addCategoria" id="addCategoria8" value="7">
+                                    <li><input type="checkbox" name="addCategoria" id="addCategoria8" value="8">
                                         <label for="addCategoria8">Múltiplos envios</label>
                                     </li>
                                 </ul>
@@ -182,7 +186,7 @@
                                     <li><input type="checkbox" name="editCategoria" id="editCategoria7" value="7">
                                         <label for="editCategoria7">Entrega presencial</label>
                                     </li>
-                                    <li><input type="checkbox" name="editCategoria" id="editCategoria8" value="7">
+                                    <li><input type="checkbox" name="editCategoria" id="editCategoria8" value="8">
                                         <label for="editCategoria8">Múltiplos envios</label>
                                     </li>
                                 </ul>
@@ -246,6 +250,29 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posts -->
+
+            <div id="popup5" class="sidePannel">
+                <div class="sidePannelInner">
+                    <div>
+                        <span class="close" onclick="closePopup('popup5')">&times; Fechar tela</span>
+                        <div class="card2" style="margin-top: 24px">
+                            <h2 style="margin-top: 0;">Enviar Post</h2>
+                            <p>Preencha os campos abaixo para fazer uma postagem no mural de início.</p>
+                            <span>Título da publicação</span><br>
+                            <input type="text" placeholder="Título" id="postTitle"><br>
+                            <span>Conteúdo</span><br>
+                            <textarea name="name" rows="8" id="postContent"></textarea><br><br>
+                            <button type="button" onclick="sendPost()">Enviar</button>
+                        </div>
+                    </div>
+                    <div>
+                        <h2>Posts ativos</h2>
+                        <div id="postsAtivos"></div>
                     </div>
                 </div>
             </div>
