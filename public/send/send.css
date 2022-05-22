@@ -34,65 +34,82 @@ body {
 }
 
 #body {
-  margin-left: 5vw;
-  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 
 .bodyItem {
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 3vw;
-  max-width: 40vw;
-}
-
-#scrollDiv {
-	height: 60vh;
-	overflow-y: scroll;
-	transition-duration: 0.5s;
-}
-
-table {
-  width: 37vw;
-  text-align: left;
   display: block;
-  padding: 2px;
-  transition-duration: 0.5s;
+  width: 100%;
+  height: 100vh;
+  padding-top: 100px;
+  padding-left: 4%;
+  padding-right: 4%;
+  padding-bottom: 4%;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
-td {
-  padding: 8px;
+#somethingSelected, #nothingSelected {
+  background-color: #3f51b5;
+  color: white;
 }
 
-tr {
-  border-radius: 4px;
-  transition-duration: 0.1s;
+#nothingSelected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activity-list {
+  width: 60vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Activity list cards */
+
+.bodyActItem {
+  width: auto;
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.28);
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
+  text-align: left;
+  transition-duration: 0.2s;
+  border: 1px solid rgba(0, 0, 0, 0.0);
 }
 
-tr:hover {
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+.title {
+  text-align: left;
 }
 
-tr.noShadow:hover {
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.3);
+.active {
+  border: 1px solid limegreen;
 }
 
-tr.selected {
-  box-shadow: 0px 0px 0px 1px rgb(12, 128, 36);
-}
+/* Upload pictures */
 
 #insertPicture {
-  width: 32vw;
+  width: 100%;
   height: 18vw;
-  background-color: #ffecb3;
+  background-color: hsl(231deg 48% 95%);
   background-size: cover;
   background-position: center;
-  margin-left: 3%;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition-duration: 0.3s;
   cursor: pointer;
-  color: chocolate;
+  color: #3f51b5;
 }
 
 #insertPicture:hover, #insertSmallPicture:hover {
@@ -104,7 +121,7 @@ tr.selected {
 #insertSmallPicture, .smallPicture {
   width: 10vw;
   height: 10vw;
-  background-color: #ffecb3;
+  background-color: hsl(231deg 48% 95%);
   background-size: cover;
   background-position: center;
   margin-right: 1vw;
@@ -112,7 +129,7 @@ tr.selected {
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition-duration: 0.3s;
-  color: chocolate;
+  color: #3f51b5;
   display: inline-block;
   vertical-align: top;
 }
@@ -169,23 +186,68 @@ tr.selected {
   cursor: pointer;
 }
 
+/* Send activity area */
+
+#description {
+  max-width: 500px;
+}
+
+#points {
+  color: lime;
+  font-weight: bold;
+}
+
+#taskAnswer {
+  display: flex;
+  flex-direction: column;
+}
+
+#taskAnswerValue {
+  width: 100%;
+  height: 42px;
+  border-radius: 30px;
+  background-color: hsl(231deg 48% 95%);
+  color: black;
+  border: none;
+  padding-left: 12px;
+  font-size: 16px;
+  margin-top: 12px;
+}
+
+#taskAnswerValue:focus {
+  outline: none;
+}
+
 .waitingToChoose {
-  margin: auto;
-  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  top: 50%;
-  transform: translate(0, -50%);
-  min-width: 40vw;
+}
+
+#sendContainer {
+  margin-top: 12px;
+  margin-bottom: 32px;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: hsl(231deg 48% 95%);
+  color: black;
+  box-shadow:  2px 4px 4px rgb(0 0 0 / 20%);
+  display: flex;
+  flex-direction: column;
+  transition-duration: 0.3s;
 }
 
 #errorMessage {
   color: red;
-  font-size: 1vw;
+  font-size: smaller;
   vertical-align: middle;
   transition-duration: 0.2s;
   float: right;
-  line-height: 4vw;
-  margin-right: 1vw;
+  line-height: 20px;
+  text-align: center;
+  width: 100%;
 }
 
 #errorMessage.hide {
@@ -208,7 +270,7 @@ tr.selected {
 .points {
   color: green;
   font-weight: bold;
-  text-align: center;
+  margin-top: 8px;
 }
 
 #noUser, #noTeam, #loading, #noVer  {
@@ -309,6 +371,10 @@ tr.selected {
   top: -1000%;
 }
 
+.hidden {
+  display: none;
+}
+
 .hidden, #noUser.hidden, #noTeam.hidden, #loading.hidden, #body.hidden, #noVer.hidden {
   visibility: hidden;
   filter: opacity(0%);
@@ -366,54 +432,55 @@ h1 {
 /* Progress Bar */
 
 #progressbar {
-  background-color: orange;
-  border-radius: 13px;
-  /* (height of inner div) / 2 + padding */
-  padding: 2px;
+  background-color: white;
+  border-radius: 100vh;
   margin-top: 12px;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.18);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border: 2px solid #3f51b5;
 }
 
 #progressbar>div {
-  background-color: white;
+  background-color: #3f51b5;
   width: 40%;
-  /* Adjust with JavaScript */
-  height: 2vw;
-  border-radius: 10px;
+  height: 28px;
+  border-radius: 100vh;
   transition-duration: 0.2s;
 }
 
 #progressInd {
-  font-size: 1.4vw;
+  font-size: 12px;
   width: 100%;
   text-align: center;
-  float: left;
   line-height: 2vw;
   color: black;
   font-weight: bold;
+  position: absolute;
+  left: 0;
 }
 
 /* Buttons */
 
 a.button3{
-  display:inline-block;
-  padding:0.3em 1.0em;
-  margin:0.5em 0.25em 0.25em 0;
-  border-radius:3em;
+  padding: 12px 16px;
+  margin: 12px 0;
+  border-radius: 100px;
   box-sizing: border-box;
   text-decoration:none;
-  font-weight:300;
-  color:#FFFFFF;
-  background-color:orange;
-  text-align:center;
-  transition: all 0.2s;
+  font-weight: bold;
+  color:#3f51b5;
+  background-color: none;
+  text-align: center;
+  transition: 0.2s;
   cursor: pointer;
-  font-size: 1.5vw;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18);
-  float: right;
+  font-size: large;
+  border: 1px solid #3f51b5;
 }
 a.button3:hover{
-  background-color:darkorange;
+  background-color: #3f51b5;
+  color: white;
 }
 a.button3:active{
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.25);
@@ -482,12 +549,11 @@ i.menuIcons {
     margin-top: 40px;
   }
   #insertPicture {
-    width: 80vw;
     height: 45vw;
   }
   #insertSmallPicture, .smallPicture {
-    width: 40vw;
-    height: 40vw;
+    width: 45vw;
+    height: 45vw;
   }
   .closeSmallPic {
     width: 7vw;
@@ -539,9 +605,10 @@ i.menuIcons {
     min-height: -webkit-fill-available;
   }
   .bodyItem {
-    width: 90vw;
-    min-width: 90vw;
+    width: 100vw;
     display: block;
+    border-radius: 16px 16px 0px 0px;
+    padding-top: 32px;
   }
   .waitingToChoose {
     position: relative;
@@ -595,5 +662,13 @@ i.menuIcons {
   }
   i.menuIcons {
     display: inline-block;
+  }
+
+  .activity-list {
+    width: 100%;
+  }
+
+  #body {
+    flex-direction: column;
   }
 }

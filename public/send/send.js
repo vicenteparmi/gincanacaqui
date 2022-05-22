@@ -22,9 +22,6 @@ fullList = false;
 
 // Inflate list
 
-const listHolder = document.getElementById('table');
-const tbody = document.createElement('tbody');
-
 var numberOnList = 1;
 
 let activitiesList = [];
@@ -35,28 +32,34 @@ firebase.database().ref('activities/').once('value').then(function (snapshot) {
     // Save info to activitiesList with key
     activitiesList[childSnapshot.key] = childSnapshot.val();
 
-    const tr = document.createElement('tr');
-    tr.id = 'ti' + childSnapshot.key;
-    tr.onclick = function () {
+    // Create div for each activity
+    const div = document.createElement('div');
+    div.className = "bodyActItem";
+    div.id = "ti" + childSnapshot.key;
+    div.onclick = function () {
       sti(this.id)
     };
 
-    const titleList = document.createElement('td');
-    const pointsList = document.createElement('td');
+    // Title and points blocks
+    const title = document.createElement('span');
+    title.className = "title";
+    title.innerHTML = numberOnList + ". " + childSnapshot.val().title;
 
-    titleList.innerHTML = numberOnList + '. ' + childSnapshot.val().title;
-    pointsList.innerHTML = "+" + childSnapshot.val().points + " " + childSnapshot.val().pointsDesc // (Activity number, with text description);
-    pointsList.className = 'points';
+    const points = document.createElement('span');
+    points.className = "points";
+    points.innerHTML = "+" + childSnapshot.val().points + " pontos " + childSnapshot.val().pointsDesc;
 
-    tr.appendChild(titleList);
-    tr.appendChild(pointsList);
-    tbody.appendChild(tr);
+    // Add title and points to div
+    div.appendChild(title);
+    div.appendChild(points);
+
+    // Add div to activityContainer
+    const activityContainer = document.getElementById('activityContainer');
+    activityContainer.appendChild(div);
 
     numberOnList++;
   });
 });
-
-listHolder.appendChild(tbody);
 
 // Activity Selector
 
@@ -77,14 +80,15 @@ function sti(id) {
   const somethingSelected = document.getElementById('somethingSelected');
   somethingSelected.className = "bodyItem";
 
-  const scrollDiv = document.getElementById('scrollDiv');
-  scrollDiv.className = "afterClick";
-
-  try {
-    document.getElementsByClassName('selected')[0].className = "";
-  } finally {
-    document.getElementById(id).className = "selected";
+  // Clear previous selection
+  if (itemSelected != -1) {
+    const previousSelection = document.getElementById('ti' + itemSelected);
+    previousSelection.className = "bodyActItem";
   }
+
+  // Set active class to div
+  const div = document.getElementById(id);
+  div.className = "bodyActItem active";
 
   // Remove first 3 characters from id
   itemSelected = id.substring(2);
@@ -111,15 +115,15 @@ function sti(id) {
     mode1Holder.className = "";
   } else if (categories.includes("6")) {
     currentMode = 2; // Video mode
-    mode2Holder.className = "";
+    taskAnswer.className = '';
   } else if (categories.includes("4")) {
     console.log("Link modeee");
     currentMode = 3; // Link mode
-    mode3Holder.className = "";
-    taskAnswer.className = 'hidden';
+    taskAnswer.className = '';
   }
 
   document.getElementById('description').innerHTML = activitiesList[itemSelected].description;
+  document.getElementById('points').innerHTML = "+" + activitiesList[itemSelected].points + " pontos " + activitiesList[itemSelected].pointsDesc;
 
   // Clear fields
   document.getElementById('taskAnswer').value = "";
@@ -221,6 +225,7 @@ function sendToReview() {
     document.getElementById('progressPercentage').style.width = "0%";
     document.getElementById('progressPercentage').style.width = "100%";
     document.getElementById('progressInd').innerHTML = "100%";
+    document.getElementById('progressInd').style.color = "white";
     document.getElementById("sendingStatus").innerHTML = "Atividade enviada";
     const dbutton2 = document.getElementById('doneButton');
     dbutton2.className = "button3";
@@ -273,7 +278,7 @@ function testforSend() {
       }
       break;
     case 3: // URL
-      const urlInput = document.getElementById('mode1input').value;
+      const urlInput = document.getElementById('taskAnswerValue').value;
       if (urlInput != '') {
         return true;
       } else {
@@ -389,6 +394,11 @@ function storeImage(path, img, isLast) {
     console.log(progress);
     progressPercentage.style.width = progress + "%";
     progressInd.innerHTML = Math.round(progress, 2) + "%";
+
+    if (progress > 50) {
+      progressInd.style.color = "white";
+    }
+
   }, error => {
     console.log(error)
   }, () => {
@@ -586,10 +596,6 @@ function openMenu() {
     menuHolder.className = ""
     menuOpen = false;
   }
-}
-
-function warning() {
-  alert("Antes de enviar certifique-se de que a atividade contém os ítens necessários para sua aprovação, que podem ser encontrados na página \"Sobre\".");
 }
 
 // Modal popup
