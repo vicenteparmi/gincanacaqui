@@ -420,7 +420,7 @@ a.button3:active{
 }
 @media all and (max-width:30em){
   a.button3{
-    font-size: 4vw;
+    font-size: 4vw
  }
 }
 

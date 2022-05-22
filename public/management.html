@@ -115,6 +115,9 @@
                                     <li><input type="checkbox" name="addCategoria" id="addCategoria7" value="7">
                                         <label for="addCategoria7">Entrega presencial</label>
                                     </li>
+                                    <li><input type="checkbox" name="addCategoria" id="addCategoria8" value="7">
+                                        <label for="addCategoria8">Múltiplos envios</label>
+                                    </li>
                                 </ul>
                             </div>
                             <button class="saveButton" id="addAtividade" onclick="addAtividade()">Adicionar
@@ -130,65 +133,68 @@
 
                     <!-- Checklist -->
                 </div>
-            </div>
+                <!-- Modal to edit activities. -->
 
-            <!-- Modal to edit activities. -->
+                <div id="modalEdit" class="modal">
+                    <div class="modal-content">
+                        <h2>Editar atividade</h2>
+                        <div>
+                            <label for="editTitulo">Título da atividade</label>
+                            <input type="text" name="editTitulo" id="editTitulo">
+                            <label for="editDescricao">Descrição da atividade</label>
+                            <textarea name="editDescricao" id="editDescricao" cols="30" rows="5"></textarea>
+                            <label for="editPontos">Pontuação</label>
+                            <div style="display: flex; flex-direction: row;">
+                                <input type="number" name="editPontos" id="editPontos">
+                                <input type="text" name="editPontosDesc" id="editPontosDesc"
+                                    placeholder="por foto, por pessoa">
+                            </div>
 
-            <div id="modalEdit" class="modal">
-                <div class="modal-content">
-                    <h2>Editar atividade</h2>
-                    <div>
-                        <label for="editTitulo">Título da atividade</label>
-                        <input type="text" name="editTitulo" id="editTitulo">
-                        <label for="editDescricao">Descrição da atividade</label>
-                        <textarea name="editDescricao" id="editDescricao" cols="30" rows="5"></textarea>
-                        <label for="editPontos">Pontuação</label>
-                        <div style="display: flex; flex-direction: row;">
-                            <input type="number" name="editPontos" id="editPontos">
-                            <input type="text" name="editPontosDesc" id="editPontosDesc"
-                                placeholder="por foto, por pessoa">
-                        </div>
+                            <!-- Upload photo -->
+                            <label for="editFoto" id="editFotoLabel">
+                                <i class="material-icons" style="font-size: 42px;">flip_camera_ios</i>
+                                Modificar foto
+                            </label>
+                            <input type="file" name="editFoto" id="editFoto" accept="image/*" style="display: none;">
 
-                        <!-- Upload photo -->
-                        <label for="editFoto" id="editFotoLabel">
-                            <i class="material-icons" style="font-size: 42px;">flip_camera_ios</i>
-                            Modificar foto
-                        </label>
-                        <input type="file" name="editFoto" id="editFoto" accept="image/*" style="display: none;">
-
-                        <h3>Categorias</h3>
-                        <p>Selecione as categorias que essa atividade faz parte.</p>
-                        <div class="checkboxHolder">
-                            <ul>
-                                <li><input type="checkbox" name="editCategoria" id="editCategoria1" value="1">
-                                    <label for="editCategoria1">Envio pelo site</label>
-                                </li>
-                                <li><input type="checkbox" name="editCategoria" id="editCategoria2" value="2">
-                                    <label for="editCategoria2">Várias Imagens</label>
-                                </li>
-                                <li><input type="checkbox" name="editCategoria" id="editCategoria3" value="3">
-                                    <label for="editCategoria3">Uma Imagem</label>
-                                </li>
-                                <li><input type="checkbox" name="editCategoria" id="editCategoria4" value="4">
-                                    <label for="editCategoria4">Precisa de resposta</label>
-                                </li>
-                                <li><input type="checkbox" name="editCategoria" id="editCategoria5" value="5">
-                                    <label for="editCategoria5">Veterano necessário</label>
-                                </li>
-                                <li><input type="checkbox" name="editCategoria" id="editCategoria6" value="6">
-                                    <label for="editCategoria6">Vídeo</label>
-                                </li>
-                                <li><input type="checkbox" name="editCategoria" id="editCategoria7" value="7">
-                                    <label for="editCategoria7">Entrega presencial</label>
-                                </li>
-                            </ul>
-                        </div>
-                        <div style="display: flex; flex-direction: row;">
-                            <button class="saveButton" id="editAtividade">Editar atividade</button>
-                            <button class="saveButton" id="deleteAtividade">Deletar atividade</button>
+                            <h3>Categorias</h3>
+                            <p>Selecione as categorias que essa atividade faz parte.</p>
+                            <div class="checkboxHolder">
+                                <ul>
+                                    <li><input type="checkbox" name="editCategoria" id="editCategoria1" value="1">
+                                        <label for="editCategoria1">Envio pelo site</label>
+                                    </li>
+                                    <li><input type="checkbox" name="editCategoria" id="editCategoria2" value="2">
+                                        <label for="editCategoria2">Várias Imagens</label>
+                                    </li>
+                                    <li><input type="checkbox" name="editCategoria" id="editCategoria3" value="3">
+                                        <label for="editCategoria3">Uma Imagem</label>
+                                    </li>
+                                    <li><input type="checkbox" name="editCategoria" id="editCategoria4" value="4">
+                                        <label for="editCategoria4">Precisa de resposta</label>
+                                    </li>
+                                    <li><input type="checkbox" name="editCategoria" id="editCategoria5" value="5">
+                                        <label for="editCategoria5">Veterano necessário</label>
+                                    </li>
+                                    <li><input type="checkbox" name="editCategoria" id="editCategoria6" value="6">
+                                        <label for="editCategoria6">Vídeo</label>
+                                    </li>
+                                    <li><input type="checkbox" name="editCategoria" id="editCategoria7" value="7">
+                                        <label for="editCategoria7">Entrega presencial</label>
+                                    </li>
+                                    <li><input type="checkbox" name="editCategoria" id="editCategoria8" value="7">
+                                        <label for="editCategoria8">Múltiplos envios</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div style="display: flex; flex-direction: row;">
+                                <button class="saveButton" id="editAtividade">Editar atividade</button>
+                                <button class="saveButton" id="deleteAtividade">Deletar atividade</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <!-- Popup to manage users -->

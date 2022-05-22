@@ -3,13 +3,88 @@ body {
   font-family: 'Muli', sans-serif;
 }
 
-.markAsDone {
-  max-width: 50vw;
-  margin-bottom: 30px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-  padding: 15px;
-  border-radius: 4px;
+/* Review card */
+
+#activitiesHolder {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
 }
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: 12px;
+  border-radius: 8px;
+  padding: 0px;
+  background-color: white;
+}
+
+.card-body {
+  padding: 24px;
+}
+
+.card-header {
+  padding: 24px;
+  border-radius: 8px 8px 0px 0px;
+  background-color: #3b3b3b;
+  color: white;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.answer-text {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.image-holder {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  border-radius: 28px;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.btn {
+  border-radius: 28px;
+  background-color: white;
+  border: 1px solid #3b3b3b;
+  color: #3b3b3b;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 100ms;
+}
+
+.btn:hover {
+  background-color: #ccc;
+}
+
+.btn:active {
+  background-color: #3b3b3b;
+  color: white;
+}
+
+/* ****************************** */
 
 #header {
   width: 100%;
@@ -27,71 +102,6 @@ body {
   margin-left: 5%;
   margin-right: 5%;
   margin-top: 100px;
-}
-
-.reviewBox {
-  padding-bottom: 10px;
-}
-
-.imageToReview {
-  width: 20vw;
-  height: 20vw;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: gray;
-  border-radius: 8px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-  display: inline-block;
-  margin-right: 2%;
-  margin-bottom: 2%;
-  transition-duration: 0.2s;
-}
-
-.imageToReview:hover {
-  filter: opacity(0.8);
-  opacity: 80%;
-}
-
-.listItemDescription {
-  margin: 2vw;
-  color: white;
-  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.7);
-  padding: 5px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
-  width: fit-content;
-}
-
-.validate {
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 5px;
-  width: fit-content;
-  margin: auto;
-  margin-right: 2vw;
-  margin-bottom: 2vw;
-  border-radius: 4px;
-}
-
-.acceptButton {
-  width: 2vw;
-  height: 2vw;
-  background-color: green;
-  margin-bottom: 5px;
-  border-radius: 4px;
-}
-
-.rejectButton {
-  width: 2vw;
-  height: 2vw;
-  background-color: red;
-  border-radius: 4px;
-}
-
-#reviewImage {
-  width: 50vw;
-  border-radius: 4px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 a {

@@ -14,50 +14,13 @@
 			<h1>Revisar atividades enviadas</h1>
 			<p>O acesso à esta página e suas informações é garantido apenas a gerenciadores.
 			Não sendo esse seu caso, retorne ao início.</p>
-			<div id="activitiesHolder"></div>
-			<br/><div class="markAsDone">
-				<p>Insira o número da equipe e a atividade a ser marcada como concluída na
-					base de dados:<br/>
-					<input type="number" min="1" max="16" id="masdTeam" placeholder="Equipe">
-					<input type="number" min="1" max="32" id="masdActivity" placeholder="Atividade">
-					<button type="button" name="button" class="button3" onclick="markAsDone(0)">Marcar como OK</button>
-					<button type="button" name="button" class="button3" onclick="markAsDone(1)">Remover registro</button>
-				</p>
-
-			</div>
-		</div>
-
-		<div id="myModal" class="modal">
-			<div class="modal-content">
-				<h1>Aprovar ou rejeitar atividade</h1>
-				<img alt="Imagem da atividade" id="reviewImage"/>
-				<h3 id="md-actnum">Atividade</h3>
-				<p id="md-actdesc">Descrição</p>
-				<h3>Dados do envio</h3>
-				<span id="sentData"></span>
-				<h3>Motivos para rejeição</h3>
-				<input type="checkbox" id="problem0">
-				<text>Integrante da equipe não aparece</text><br/>
-				<input type="checkbox" id="problem1">
-				<text>Crachá da equipe não visível</text><br/>
-				<input type="checkbox" id="problem2">
-				<text>Local de realização da atividade incorreto</text><br/>
-				<input type="checkbox" id="problem3">
-				<text>Resposta da atividade incorreta</text><br/>
-				<input type="checkbox" id="problem4">
-				<input type="text" id="expl4"></input><br/>
-				<input type="checkbox" id="problem5">
-				<input type="text" id="expl5"></input><br/><br/>
-				<button type="button" id="md-aprove">Aprovar</button>
-				<button type="button" id="md-reject">Rejeitar</button>
-				<button type="button" id="md-cancel">Cancelar</button>
-			</div>
+			<div id="activitiesHolder">Carregando...</div>
 		</div>
 
 		<div id="header">
 			<i id="sandwich" class="menuIcons material-icons" onclick="openMenu()" md-24 md-light style="vertical-align: middle;padding: 10px; cursor:pointer;">menu</i>
-			<img src="files/image/CAQUI.webp"/ class="headerImage">
-			<text id="logo">Gincana CAQuí 2020</text>
+			<img src="files/image/CAQUI.webp" class="headerImage">
+			<text id="logo">Gincana CAQuí</text>
 			<div id="menuHolder">
 				<div id="menu">
 					<a class="menu" href="./index.html"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">home</i>Início</a>
@@ -67,7 +30,7 @@
 					<a class="menu" href="./about.html"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
 				</div>
 			</div>
-			<div id="userPhoto" onclick="popup()"/></div>
+			<div id="userPhoto" onclick="popup()"></div>
 		</div>
 
 		<div id="popupMenu" class="popupMenu hide">

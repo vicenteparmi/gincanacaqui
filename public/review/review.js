@@ -1,412 +1,288 @@
 // Your web app's Firebase configuration
 var firebaseConfig = {
-    apiKey: "AIzaSyA07lUMH1HyCjBi_eKe-4gaz1b9FhdSZiE",
-    authDomain: "havarena-f3d87.firebaseapp.com",
-    databaseURL: "https://havarena-f3d87.firebaseio.com",
-    projectId: "havarena-f3d87",
-    storageBucket: "havarena-f3d87.appspot.com",
-    messagingSenderId: "259369291947",
-    appId: "1:259369291947:web:6233862e160cc6bfce67ee",
-    measurementId: "G-STKZ9T8L1C"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
+  apiKey: "AIzaSyA07lUMH1HyCjBi_eKe-4gaz1b9FhdSZiE",
+  authDomain: "havarena-f3d87.firebaseapp.com",
+  databaseURL: "https://havarena-f3d87.firebaseio.com",
+  projectId: "havarena-f3d87",
+  storageBucket: "havarena-f3d87.appspot.com",
+  messagingSenderId: "259369291947",
+  appId: "1:259369291947:web:6233862e160cc6bfce67ee",
+  measurementId: "G-STKZ9T8L1C"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 
 // Now my code ;D
 
 // Get all images
 
 var storageRef = firebase.storage().ref().child('review');
-const teamNames = ["Hidrogênio","Hélio","Lítio","Berílio","Boro","Carbono","Nitrogênio","Oxigênio","Flúor","Neônio","Sódio","Magnésio","Alumínio","Silício","Fósforo","Enxofre"];
-const teamColors = ["#005c8d","#c43030","#d1ad1e","#00b661","#94007e","#4d4d4d","#e7660b","#00b87e","#e91e63","#009ae6","#9e9c00","#00a89b","#a9a9a9","#172c88","#653c32","#01be87"];
+// const teamColors = ["#005c8d", "#c43030", "#d1ad1e", "#00b661", "#94007e", "#4d4d4d", "#e7660b", "#00b87e", "#e91e63", "#009ae6", "#9e9c00", "#00a89b", "#a9a9a9", "#172c88", "#653c32", "#01be87"];
+let activityList = [];
+let teamList = [];
+
 
 // Inflate interface
 
 function inflateInterface() {
   const listHolder = document.getElementById('activitiesHolder');
-  var state = 1
-  for (var i = 0; i < activityList.length; i++) {
-    if (activityList[i]) {
-      const title = document.createElement('h3');
-      title.innerHTML = state + ". " + activityList[i];
-      const reviewBox = document.createElement('span');
-      reviewBox.id = "review" + (i+1);
-      reviewBox.className = "reviewBox";
-      listHolder.appendChild(title);
-      listHolder.appendChild(reviewBox);
-      state++;
-    }
-  }
-}
 
-// Getting posts from activity 1 and videos
+  // Get all activities to review
+  firebase.database().ref('activities').on('value', function (snapshot) {
+    snapshot.forEach(function (childSnapshot) {
+      activityList[childSnapshot.key] = childSnapshot.val();
+    });
+  });
 
-var db1Ref = firebase.database().ref('review/Activity 1');
-db1Ref.on('child_added', function(data) {
-  var postKey = data.key;
-  var postURL = data.val().url;
-  var postUser = data.val().sentBy;
-  var postDate = data.val().sentOn;
-  var team = data.val().team;
+  // Get all teams
+  firebase.database().ref('teams').on('value', function (snapshot) {
+    snapshot.forEach(function (childSnapshot) {
+      teamList[childSnapshot.key] = childSnapshot.val();
+    });
+  });
 
-  populateURL(postKey, postURL, postUser, postDate, team, 1);
-});
+  // Get all activities to review
 
-var db2Ref = firebase.database().ref('review/Activity 6');
-db2Ref.on('child_added', function(data) {
-  var postKey = data.key;
-  var postURL = data.val().url;
-  var postUser = data.val().sentBy;
-  var postDate = data.val().sentOn;
-  var team = data.val().team;
+  firebase.database().ref('review').once('value', function (snapshot) {
 
-  populateURL(postKey, postURL, postUser, postDate, team, 6);
-});
+    // Clear list
+    listHolder.innerHTML = "";
 
-var db3Ref = firebase.database().ref('review/Activity 18');
-db3Ref.on('child_added', function(data) {
-  var postKey = data.key;
-  var postURL = data.val().url;
-  var postUser = data.val().sentBy;
-  var postDate = data.val().sentOn;
-  var team = data.val().team;
+    snapshot.forEach(function (childSnapshot) {
+      // Show all tasks to approve
+      const title = activityList[childSnapshot.val().activity].title;
+      const description = activityList[childSnapshot.val().activity].description;
+      const answer = childSnapshot.val().answer;
+      const team = teamList[childSnapshot.val().team - 1].name;
 
-  populateURL(postKey, postURL, postUser, postDate, team, 18);
-});
+      const color = teamList[childSnapshot.val().team - 1].color;
 
-function populateURL(postKey, postURL, postUser, postDate, team, activity) {
-  const span = document.getElementById('review'+activity);
-  const div = document.createElement('div');
-  const text = document.createElement('p');
-  const link = document.createElement('a');
+      let imageURLs = [];
 
-  link.href = postURL;
-  link.innerHTML = postURL;
-  text.innerHTML = "URL: "
-  text.appendChild(link);
-  text.innerHTML += "<br/>Equipe: "+teamNames[team-1]+" | Usuário: "+postUser+" | Data: "+Date(postDate)+"<br/>";
-  text.innerHTML += "<a id='a/"+team+"/"+postKey+"/"+activity+"' onclick='validateURL(true, this.id, "+activity+")' href='#'>Aceitar</a> | ";
-  text.innerHTML += "<a id='a/"+team+"/"+postKey+"/"+activity+"' onclick='validateURL(false, this.id, "+activity+")' href='#'>Recusar</a>";
-  div.appendChild(text);
-  div.id = "d/"+team+"/"+postKey+"/"+activity;
-
-  span.appendChild(div);
-}
-
-function validateURL(status, id, activity) {
-  var data = id.split("/");
-  var oldRef = firebase.database().ref("review/Activity "+activity+"/"+data[2]);
-  var newRef = firebase.database().ref("approved/Activity "+activity+"/"+data[2]);
-  if (status == true) {
-    moveFbRecord(oldRef, newRef); // Move activity location
-    var teamRef = firebase.database().ref('teams/'+(Number(data[1])-1));
-    teamRef.transaction(function(tra) { // Update team punctuation
-      if (tra) {
-        if (tra.points) {
-          tra.points += points[(activity-1)];
-        } else {
-          tra.points += points[(activity-1)];
-          if (!tra.points) {
-            tra.points += points[(activity-1)];
-          }
-        }
+      if (childSnapshot.val().imageURLs != null) {
+        imageURLs = childSnapshot.val().imageURLs;
       }
-      return tra;
+
+      const user = firebase.database().ref('users/' + childSnapshot.val().userId);
+      let userName = "";
+      let userEmail = "";
+
+      user.once('value', function (snap) {
+        userName = snap.val().name;
+        userEmail = snap.val().email;
+      }).then(function () {
+        const card = buildCard(title, description, answer, team, color, userName, userEmail, imageURLs, childSnapshot.key);
+        listHolder.appendChild(card);
+      });
     });
 
-    update();
-    sendAnal(activity, "Approved");
-
-  } else {
-    newRef = firebase.database().ref("rejected/Activity "+activity+"/"+data[2]);
-    moveFbRecord(oldRef, newRef);
-    sendAnal(activity, "Rejected");
-  }
-  document.getElementById('d/'+data[1]+'/'+data[2]+'/'+data[3]).style.display = "none";
+    // If empty
+    if (snapshot.numChildren() == 0) {
+      listHolder.innerHTML = "<h3>Não há nada para avaliar!</h3>";
+    }
+  });
 }
 
-function markAsDone(mode) {
-  const masdTeam = document.getElementById('masdTeam');
-  const masdActivity = document.getElementById('masdActivity');
+function buildCard(actTitle, actDescription, answerInput, teamName, color, userName, userEmail, imageURLs, reference) {
+  // Create all elements
+  const card = document.createElement('div');
+  const cardBody = document.createElement('div');
+  const cardHeader = document.createElement('div');
+  const teamString = document.createElement('h2');
+  const summary = document.createElement('span');
+  const ativityTitle = document.createElement('h3');
+  const ativityDescription = document.createElement('p');
+  const answerText = document.createElement('h3');
+  const answer = document.createElement('p');
 
-  var theTeam = Number(masdTeam.value) - 1;
-  var theActivity = Number(masdActivity.value);
+  // Set all elements attributes
+  card.className = "card";
+  cardBody.className = "card-body";
+  cardHeader.className = "card-header";
+  teamString.className = "card-title";
+  summary.className = "card-text";
+  ativityTitle.className = "card-title";
+  ativityDescription.className = "card-text";
+  answerText.className = "answer-text";
+  answer.className = "card-text";
 
-  if (theTeam >= 1 && theActivity >= 1) {
-    if (mode == 0) {
-      firebase.database().ref('teams/'+theTeam+"/tasks/"+theActivity).set({
-        done: "Ok",
+  // Set id to card body
+  cardBody.id = reference;
+
+  // Set all elements text
+  teamString.innerHTML = teamName;
+  summary.innerHTML = "Enviado por " + userName + " (" + userEmail + ") em " + new Date(Date.now()).toLocaleString() + ".";
+  ativityTitle.innerHTML = actTitle;
+  ativityDescription.innerHTML = actDescription;
+  answerText.innerHTML = "Resposta:";
+  answer.innerHTML = answerInput;
+
+  // Create image elements
+  const imageHolder = document.createElement('div');
+  imageHolder.className = "image-holder";
+
+  if (imageURLs.length > 0) {
+    imageURLs.forEach(function (url) {
+      const image = document.createElement('img');
+      image.src = url;
+      image.className = "img-fluid";
+      imageHolder.appendChild(image);
+    });
+  }
+
+  // Change header color
+  cardHeader.style.backgroundColor = color;
+
+  // Create buttons
+  const buttons = document.createElement('div');
+  const approveButton = document.createElement('button');
+  const rejectButton = document.createElement('button');
+
+  buttons.id = "buttons+" + reference;
+
+  // Set buttons attributes
+  approveButton.className = "btn btn-success";
+  rejectButton.className = "btn btn-danger";
+
+  // Set buttons text
+  approveButton.innerHTML = "Aprovar";
+  rejectButton.innerHTML = "Rejeitar";
+
+  // Set buttons events
+  approveButton.addEventListener('click', function () {
+    approve(reference);
+  });
+
+  rejectButton.addEventListener('click', function () {
+    reject(reference);
+  });
+
+  // Append all elements
+  cardHeader.appendChild(teamString);
+  cardHeader.appendChild(summary);
+
+  buttons.appendChild(approveButton);
+  buttons.appendChild(rejectButton);
+
+  cardBody.appendChild(ativityTitle);
+  cardBody.appendChild(ativityDescription);
+  cardBody.appendChild(answerText);
+  cardBody.appendChild(answer);
+  cardBody.appendChild(imageHolder);
+  cardBody.appendChild(buttons);
+
+  card.appendChild(cardHeader);
+  card.appendChild(cardBody);
+
+  return card;
+}
+
+// Accept review
+
+function approve(reference) {
+
+  // Add points to team
+
+  const review = firebase.database().ref('review/' + reference);
+
+  review.once('value', function (snapshot) {
+    const activity = snapshot.val().activity;
+    const team = snapshot.val().team;
+
+    const teamRef = firebase.database().ref('teams/' + (team - 1));
+
+    teamRef.once('value', function (snapshot) {
+      const points = snapshot.val().points;
+
+      teamRef.update({
+        points: Number(points) + Number(activityList[activity].points)
+      });
+
+      // Mark task as done on team
+
+      const teamActivity = firebase.database().ref('teams/' + (team - 1) + '/tasks/' + activity);
+
+      teamActivity.update({
+        done: true,
         time: Date.now()
       });
-      update();
-      sendAnal(theActivity, "Approved");
-    } else {
-      firebase.database().ref('teams/'+theTeam+"/tasks/"+theActivity).remove();
-      sendAnal(theActivity, "Rejected");
-    }
-    alert('Atividade atualizada.');
-  } else {
-    alert('Preencha os campos ao lado antes de enviar.');
-  }
+    });
+  });
+
+  // Move record to approved
+  const oldRef = firebase.database().ref('review/' + reference);
+  const newRef = firebase.database().ref('approved/' + reference);
+
+  moveFbRecord(oldRef, newRef);
+
+  // Change card color
+  document.getElementById(reference).style.backgroundColor = "#dff0d8";
+
+  // Remove buttons
+  document.getElementById("buttons+" + reference).innerHTML = "";
+}
+
+// Reject review
+
+function reject(reference) {
+
+  // Ask for reason
+  const reason = prompt("Por favor, digite o motivo do rejeição:", "");
+
+  // Move record to rejected
+  const oldRef = firebase.database().ref('review/' + reference);
+  const newRef = firebase.database().ref('rejected/' + reference);
+
+  moveFbRecord(oldRef, newRef);
+
+  // Add reason to rejected record
+  newRef.update({
+    reason: reason
+  });
+
+  // Change card color
+  document.getElementById(reference).style.backgroundColor = "#f2dede";
+
+  // Remove buttons
+  document.getElementById("buttons+" + reference).innerHTML = "";
+
 }
 
 function moveFbRecord(oldRef, newRef) {
-     oldRef.once('value', function(snap)  {
-          newRef.set( snap.val(), function(error) {
-               if( !error ) {  oldRef.remove(); }
-               else if( typeof(console) !== 'undefined' && console.error ) {  console.error(error); }
-          });
-     });
-}
-
-// Posts from activities with more pictures;
-
-const listRef = firebase.storage().ref('review'); // Review path
-
-for (var i = 0; i <= 16; i++) { // To select the team folder
-  listRefNow = listRef.child(i.toString());
-  listRefNow.listAll().then(function(res) { // List all contents on team folder
-    res.prefixes.forEach(function(folderRef) { // List folders on team folder
-      folderRef.listAll().then(function(res1) { // Open folder on team folder
-        res1.items.forEach(function(itemRef) { // Do something to each item
-          itemRef.getDownloadURL().then(function(url) {
-
-            var urlValues = url.toString().split('%2F');
-            teamName = Number(urlValues[1])-1;
-            activity = Number(urlValues[2]);
-            imageName = getImageName(itemRef);
-
-            const activityHolder = document.getElementById('review'+activity);
-
-            const listItem = document.createElement('div');
-            const listItemDescription = document.createElement('p');
-
-            listItem.style.backgroundColor = teamColors[teamName];
-            listItem.style.backgroundImage = "url('"+url+"')";
-            listItem.className = "imageToReview";
-
-            listItemDescription.innerHTML = "Equipe: " + teamNames[teamName];
-            listItemDescription.className = "listItemDescription";
-            listItemDescription.id = "p/"+teamName+"/"+activity+"/"+imageName;
-
-            listItem.id = url+"<->"+activity+"<->"+teamName+"<->"+imageName;
-            listItem.onclick = function() {inflateReview(this.id)};
-
-            listItem.appendChild(listItemDescription);
-            activityHolder.appendChild(listItem);
-          }).catch(function(error) {
-            console.log(error);
-          });
-        })
-      })
+  oldRef.once('value', function (snap) {
+    newRef.set(snap.val(), function (error) {
+      if (!error) {
+        oldRef.remove();
+      } else if (typeof (console) !== 'undefined' && console.error) {
+        console.error(error);
+      }
     });
-  }).catch(function(error) {
-    console.log(error);
   });
 }
 
-function inflateReview(id) {
-  const data = id.split('<->'); // url, activity, teamName, imageName
+// function deleteFile(refURL) {
+//   var ref = firebase.storage().ref(refURL);
 
-  document.getElementById('reviewImage').src = data[0];
-  document.getElementById('md-actnum').innerHTML = "Atividade "+ data[1];
-  document.getElementById('md-actdesc').innerHTML = descriptions[data[1]-1];
+//   ref.delete().then(function () {
+//     console.log("File deleted successfully!");
+//   }).catch(function (error) {
+//     console.log("Uh-oh, an error occurred! Error: " + error);
+//   });
+// }
 
-  var hasntWorked = true;
-  for (var i = 0; i <= 28; i++) {
-    if (data[1] == somePicsMode[i]) {
-      firebase.database().ref('review/Activity '+data[1]+'/'+(Number(data[2])+1)+'/'+data[3].substring(0, data[3].length - 4)).once('value').then(function(snapshot) {
-        inflateMoreInfo(snapshot);
-      });
-      hasntWorked = false;
-    }
-  }
+// function update() {
+//   firebase.database().ref('last_updated').set({
+//     date: Date.now()
+//   });
+// }
 
-  if (hasntWorked) {
-    firebase.database().ref('review/Activity '+data[1]+'/'+(Number(data[2])+1)).once('value').then(function(snapshot) {
-      inflateMoreInfo(snapshot);
-    });
-  }
-
-  // Make the buttons 'clickable'
-
-  const buttonA = document.getElementById('md-aprove');
-  const buttonR = document.getElementById('md-reject');
-  const buttonC = document.getElementById('md-cancel');
-
-  buttonA.name = id;
-  buttonR.name = id;
-
-  buttonA.onclick = function() {accept(this.name)};
-  buttonR.onclick = function() {reject(this.name)};
-  buttonC.onclick = function() {document.getElementById('myModal').style.display = 'none';};
-
-  openModal();
-}
-
-const sentData = document.getElementById('sentData');
-sentData.innerHTML = "";
-const dataToFill = document.createElement('p');
-
-function inflateMoreInfo(snapshot) {
-  var userNameReview = snapshot.val().sentBy;
-  var userEmailReview = snapshot.val().email;
-  var sentOnDate = snapshot.val().sentOn;
-  var answer = snapshot.val().number;
-
-  dataToFill.innerHTML = "Nome do usuário: "+userNameReview+"<br/>";
-  dataToFill.innerHTML += "Email: "+userEmailReview+"<br/>";
-
-  if (answer != null) {
-    dataToFill.innerHTML += "Resposta: " + answer +"<br/>";
-  } else {
-    dataToFill.innerHTML += "Resposta: Não é necessária<br/>";
-  }
-
-  dataToFill.innerHTML += "Data do envio: " + new Date(sentOnDate);
-
-  sentData.appendChild(dataToFill);
-}
-
-function getActivity(url) {
-  var charAt87 = Number(url.charAt(87)).toString();
-  if (charAt87 != "NaN") {
-    var answer = url.charAt(86) + url.charAt(87);
-    return Number(answer);
-  } else {
-    return Number(url.charAt(86));
-  }
-}
-
-function getImageName(itemRef) {
-  var imageName = itemRef.toString().slice(-24);
-  var split = imageName.split('/');
-  if (split.length > 1) {
-    imageName = split[split.length - 1];
-  }
-  return imageName;
-}
-
-function accept(id) {
-  var teamActivity = id.split('<->');  // url, activity, teamName, imageName
-  teamActivity[2] = Number(teamActivity[2]);
-  teamActivity[2]++; // Be careful, this might not be useful;
-
-  const oldRef001 = 'review/'+teamActivity[2]+"/"+teamActivity[1]+"/"+teamActivity[3];
-  const newRef001 = 'approved/'+teamActivity[2]+"/"+teamActivity[1]+"/"+teamActivity[3];
-
-  // Remove file from storage
-  var storageRef = firebase.storage().ref('review/'+teamActivity[2]+"/"+teamActivity[1]+"/"+teamActivity[3]);
-  deleteFile("review/"+teamActivity[2]+"/"+teamActivity[1]+"/"+teamActivity[3]);
-
-  // Update points
-  var teamRef = firebase.database().ref('teams/'+(Number(teamActivity[2])-1)+'/points');
-  teamRef.transaction(function (current_value) {
-    return (current_value || 0) + points[(Number(teamActivity[1])-1)];
-  });
-
-  // Move database records
-  var oldRef000;
-  var newRef000;
-
-  for (var i = 0; i <= 28; i++) {
-    if (teamActivity[1] == somePicsMode[i]) {
-      oldRef000 = firebase.database().ref('review/Activity '+teamActivity[1]+'/'+teamActivity[2]+'/'+teamActivity[3].substring(0, teamActivity[3].length - 4));
-      newRef000 = firebase.database().ref('approved/Activity '+teamActivity[1]+'/'+teamActivity[2]).push();
-      break;
-    } else {
-      oldRef000 = firebase.database().ref('review/Activity '+teamActivity[1]+'/'+teamActivity[2]);
-      newRef000 = firebase.database().ref('approved/Activity '+teamActivity[1]+'/'+teamActivity[2]);
-    }
-  }
-  moveFbRecord(oldRef000, newRef000);
-
-  // The following code must be used only when one photo is submitted
-  for (var i = 0; i < onePicMode.length; i++) {
-    if (teamActivity[1] == onePicMode[i]) {
-      firebase.database().ref('teams/'+(Number(teamActivity[2])-1)+"/tasks/"+teamActivity[1]).set({
-        done: "Ok",
-        time: Date.now()
-      });
-    }
-  }
-
-  document.getElementById(id).style.display = "none";
-  document.getElementById('myModal').style.display = 'none';
-  update();
-  sendAnal(teamActivity[1], "Approved");
-}
-
-function reject(id) {
-  var teamActivity = id.split('<->'); // [team/activity/filename] // url, activity, teamName, imageName
-  teamActivity[2] = Number(teamActivity[2]);
-  teamActivity[2]++;
-  const storageRef = 'review/'+teamActivity[2]+"/"+teamActivity[1]+"/"+teamActivity[3];
-  deleteFile(storageRef);
-
-  // Get Reasons;
-  var reasons = getReasons();
-
-  // Move database records
-  var oldRef000 = firebase.database().ref('review/Activity '+teamActivity[1]+'/'+teamActivity[2]);
-  var newRef000 = firebase.database().ref('rejected/Activity '+teamActivity[1]).push();
-
-  // Push reasons
-  oldRef000.update({reasons: reasons});
-  moveFbRecord(oldRef000, newRef000);
-
-  document.getElementById(id).style.display = "none";
-
-  document.getElementById('myModal').style.display = 'none';
-  update();
-  sendAnal(teamActivity, "Rejected");
-}
-
-const reasonsDesc = ["Integrante da equipe não aparece","Crachá da equipe não visível","Local de realização da atividade incorreto","Resposta da atividade incorreta"];
-
-function getReasons() {
-  var reasons = "";
-  for (var i = 0; i <= 3; i++) {
-    const checkbox = document.getElementById('problem'+i).checked;
-    if (checkbox == true) {
-      reasons += reasonsDesc[i];
-      reasons += "/";
-    }
-  }
-  for (var i = 4; i <= 5; i++) {
-    const checkbox = document.getElementById('problem'+i).checked;
-    if (checkbox == true) {
-      reasons += document.getElementById('expl'+i).value;
-      reasons += "/";
-    }
-  }
-
-  return reasons;
-}
-
-function deleteFile(refURL) {
-  var ref = firebase.storage().ref(refURL);
-
-  ref.delete().then(function() {
-  console.log("File deleted successfully!");
-  }).catch(function(error) {
-    console.log("Uh-oh, an error occurred! Error: "+error);
-  });
-}
-
-function update() {
-  firebase.database().ref('last_updated').set({
-  date: Date.now()
-  });
-}
-
-function sendAnal(activity, status) {
-  firebase.analytics().logEvent('activity_reviewed', {
-    activity: activity,
-    status: status,
-  })
-}
+// function sendAnal(activity, status) {
+//   firebase.analytics().logEvent('activity_reviewed', {
+//     activity: activity,
+//     status: status,
+//   })
+// }
 
 // Default Code
 
@@ -427,7 +303,7 @@ function popup() {
     }
     popupShow = true;
 
-    window.onclick = function() {
+    window.onclick = function () {
       if (event.target != popupMenu && event.target != popupLogged && event.target != userPhoto) {
         popupMenu.className = "popupMenu hide";
         popupLogged.className = "popupMenu hide";
@@ -450,7 +326,7 @@ function loadPage() {
 
   var inflateState = true;
 
-  firebase.auth().onAuthStateChanged(function(user) {
+  firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       name = user.displayName;
       email = user.email;
@@ -460,7 +336,7 @@ function loadPage() {
 
       document.getElementById('userName').innerHTML = name;
       document.getElementById('userEmail').innerHTML = email;
-      document.getElementById("userPhoto").style.backgroundImage = "url('"+photoUrl+"')";
+      document.getElementById("userPhoto").style.backgroundImage = "url('" + photoUrl + "')";
 
       if (inflateState) {
         inflateInterface();
@@ -472,15 +348,16 @@ function loadPage() {
 }
 
 function signOut() {
-  firebase.auth().signOut().then(function() {
+  firebase.auth().signOut().then(function () {
     console.log('Signed Out');
     location.reload();
-  }, function(error) {
+  }, function (error) {
     console.error('Sign Out Error', error);
   });
 }
 
 var menuOpen = false;
+
 function openMenu() {
   const menu = document.getElementById("menu");
   const menuHolder = document.getElementById("menuHolder");
@@ -489,7 +366,7 @@ function openMenu() {
   if (menuOpen == false) {
     menu.className = "show";
     menuHolder.className = "shadow"
-    window.onclick = function() {
+    window.onclick = function () {
       if (event.target != menu && event.target != sandwich) {
         menu.className = "";
         menuHolder.className = "";
