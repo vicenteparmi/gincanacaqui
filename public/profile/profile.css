@@ -151,12 +151,22 @@ table.teamTable {
   padding: 1vw;
 }
 
+.activity {
+  padding: 8px 12px;
+  background-color: white;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  color: black;
+  text-shadow: none;
+}
+
 h2 {
   font-size: 2vw;
 }
 
 .done {
-  color: lightgray;
+  color: darkgray;
   text-decoration: line-through;
   text-shadow: 0px 0px;
   list-style-type: circle;
@@ -379,7 +389,7 @@ a.button3:active, label.active{
 @media all and (max-width:30em){
   a.button3, label.button3{
     display:block;
-    margin:0.2em auto;
+    margin: 0.2em auto
  }
 }
 
