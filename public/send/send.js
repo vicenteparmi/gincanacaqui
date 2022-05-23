@@ -29,41 +29,49 @@ let activitiesList = [];
 firebase.database().ref('activities/').once('value').then(function (snapshot) {
 
   snapshot.forEach(function (childSnapshot) {
-    // Save info to activitiesList with key
-    activitiesList[childSnapshot.key] = childSnapshot.val();
 
-    // Create div for each activity
-    const div = document.createElement('div');
-    div.className = "bodyActItem";
-    div.id = "ti" + childSnapshot.key;
-    div.onclick = function () {
-      sti(this.id)
-    };
+    // Check if the activity is not of category 7 (entrega presencial)
+    if (!childSnapshot.val().categories.includes("7")) {
 
-    // Title and points blocks
-    const title = document.createElement('span');
-    title.className = "title";
-    title.innerHTML = numberOnList + ". " + childSnapshot.val().title;
+      // Save info to activitiesList with key
+      activitiesList[childSnapshot.key] = childSnapshot.val();
 
-    const points = document.createElement('span');
-    points.className = "points";
-    points.innerHTML = "+" + childSnapshot.val().points + " pontos " + childSnapshot.val().pointsDesc;
+      // Create div for each activity
+      const div = document.createElement('div');
+      div.className = "bodyActItem";
+      div.id = "ti" + childSnapshot.key;
+      div.onclick = function () {
+        sti(this.id)
+      };
 
-    // Add title and points to div
-    div.appendChild(title);
-    div.appendChild(points);
+      // Title and points blocks
+      const title = document.createElement('span');
+      title.className = "title";
+      title.innerHTML = numberOnList + ". " + childSnapshot.val().title;
 
-    // Add div to activityContainer
-    const activityContainer = document.getElementById('activityContainer');
-    activityContainer.appendChild(div);
+      const points = document.createElement('span');
+      points.className = "points";
+      points.innerHTML = "+" + childSnapshot.val().points + " pontos " + childSnapshot.val().pointsDesc;
 
-    numberOnList++;
+      // Add title and points to div
+      div.appendChild(title);
+      div.appendChild(points);
+
+      // Add div to activityContainer
+      const activityContainer = document.getElementById('activityContainer');
+      activityContainer.appendChild(div);
+
+      numberOnList++;
+    }
   });
 });
 
 // Activity Selector
 
 function sti(id) {
+
+  // Clear error
+  errorMessage.className = "hide";
 
   const mode0Holder = document.getElementById('sendOnePhoto');
   const mode1Holder = document.getElementById('sendMorePhotos');
@@ -158,44 +166,70 @@ function send() {
     // Check if the team has the activity
     firebase.database().ref('teams/' + (team - 1) + '/tasks/' + itemSelected).once('value').then(function (snapshot) {
       if (snapshot.val() == null || activitiesList[itemSelected].categories.includes("8")) {
-
-        // Upload images if it is required by the activity
-        if (currentMode == 0) { // One pic mode
-          var image = document.getElementById('insertPicture');
-          var style = image.currentStyle || window.getComputedStyle(image, false);
-          var bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
-          var file = dataURLtoFile(bi, "filename");
-          storeImage('review/' + team + '/' + itemSelected + '/' + itemSelected + makeid(6), file[0], true);
-          recordSendFB(itemSelected, team);
-
-        } else if (currentMode == 1) { // More pics mode
-          for (var i = 0; i < imagesUploaded; i++) {
-            var image = document.getElementById('dpic/' + i);
-            if (image) {
-              var style = image.currentStyle || window.getComputedStyle(image, false);
-              var bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
-              var file = dataURLtoFile(bi, "filename");
-
-              // Check if it's the last image
-              let lastImage = false;
-              if (i == imagesUploaded - 1) {
-                lastImage = true;
-              }
-
-              storeImage('review/' + team + '/' + itemSelected + '/' + makeid(12), file[0], lastImage);
-              recordSendFB(itemSelected, team);
-
-            }
-          }
-        } else {
-          sendToReview();
-        }
-
+        isInReview(team, itemSelected);
       } else {
         // If yes, warn the user
-        alert("Sua equipe já enviou essa atividade!");
+        errorMessage.innerHTML = "Essa atividade já foi aprovada para sua equipe.";
+        errorMessage.className = "";
       }
     });
+  }
+}
+
+function isInReview(team, activity) {
+  // Verify if an activity in review matches the selected activity
+  firebase.database().ref('review').once('value').then(function (snapshot) {
+
+    let safe = true;
+
+    // If there is a review
+    snapshot.forEach(function (childSnapshot) {
+      if ((childSnapshot.val().activity == activity && childSnapshot.val().team == team) && !activitiesList[itemSelected].categories.includes("8")) {
+        errorMessage.innerHTML = "A atividade já foi enviada e está em revisão.";
+        errorMessage.className = "";
+        safe = false;
+      }
+    })
+
+    // Check if there is any activity in review
+    if (snapshot.numChildren() == 0 || snapshot.val() == null || safe == true) {
+      proceed();
+    }
+
+  });
+}
+
+function proceed() {
+  // Upload images if it is required by the activity
+  if (currentMode == 0) { // One pic mode
+    var image = document.getElementById('insertPicture');
+    var style = image.currentStyle || window.getComputedStyle(image, false);
+    var bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
+    var file = dataURLtoFile(bi, "filename");
+    storeImage('review/' + team + '/' + itemSelected + '/' + itemSelected + makeid(6), file[0], true);
+    recordSendFB(itemSelected, team);
+
+  } else if (currentMode == 1) { // More pics mode
+    for (var i = 0; i < imagesUploaded; i++) {
+      var image = document.getElementById('dpic/' + i);
+      if (image) {
+        var style = image.currentStyle || window.getComputedStyle(image, false);
+        var bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
+        var file = dataURLtoFile(bi, "filename");
+
+        // Check if it's the last image
+        let lastImage = false;
+        if (i == imagesUploaded - 1) {
+          lastImage = true;
+        }
+
+        storeImage('review/' + team + '/' + itemSelected + '/' + makeid(12), file[0], lastImage);
+        recordSendFB(itemSelected, team);
+
+      }
+    }
+  } else {
+    sendToReview();
   }
 }
 
@@ -244,9 +278,9 @@ function recordSendFB(activity, team) {
 
 function testforSend() {
   var inputAnswer = document.getElementById('taskAnswerValue').value;
-  if (activitiesList[itemSelected].categories.includes("4")) {
+  if (activitiesList[itemSelected].categories.includes("4") || activitiesList[itemSelected].categories.includes("6")) {
     if (inputAnswer == "") {
-      inputAnswer = "34863484647867412972416";
+      return false;
     }
   }
 
@@ -256,37 +290,37 @@ function testforSend() {
       const image = document.getElementById('insertPicture');
       var style = image.currentStyle || window.getComputedStyle(image, false);
       var bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
-      if (bi != "" && inputAnswer != '34863484647867412972416') {
+      if (bi != "") {
         return true;
       } else {
         return false;
       }
       break;
     case 1: // Some pics mode
-      if (imagesUploaded > 0 && inputAnswer != '34863484647867412972416') {
+      if (imagesUploaded > 0) {
         return true;
       } else {
         return false;
       }
       break;
-    case 2: // Video
-      const videoInput = document.getElementById('mode2input').value;
-      if (videoInput != '') {
-        return true;
-      } else {
-        return false;
-      }
-      break;
-    case 3: // URL
-      const urlInput = document.getElementById('taskAnswerValue').value;
-      if (urlInput != '') {
-        return true;
-      } else {
-        return false;
-      }
-      break;
+      // case 2: // Video
+      //   const videoInput = document.getElementById('tas').value;
+      //   if (videoInput != '') {
+      //     return true;
+      //   } else {
+      //     return false;
+      //   }
+      //   break;
+      // case 3: // URL
+      //   const urlInput = document.getElementById('taskAnswerValue').value;
+      //   if (urlInput != '') {
+      //     return true;
+      //   } else {
+      //     return false;
+      //   }
+      //   break;
     default:
-      return false;
+      return true;
   }
 }
 
