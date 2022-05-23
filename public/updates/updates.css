@@ -6,20 +6,36 @@
 .card {
   width: 40vw;
   min-height: 30vw;
-  background-color: white;
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
-  border-radius: 4px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
   padding: 8px;
-  text-shadow: 0 0 14px rgba(0,0,0,0.5);
+  text-shadow: 0 0 14px rgba(0, 0, 0, 0.5);
   margin-right: 2vw;
   margin-bottom: 2vw;
   display: inline-block;
   transition-duration: 0.2s;
   vertical-align: top;
+  color: white;
+  background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
 }
 
 .card:hover {
-  box-shadow: 0px 6px 12px rgba(0,0,0,0.3);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.cardSubheader {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardBody {
+  padding: 0px 24px;
 }
 
 .teamName {
@@ -38,6 +54,10 @@
   padding: 1vw;
 }
 
+.userCard {
+  text-transform: capitalize;
+}
+
 ul {
   list-style-type: circle;
 }
@@ -46,6 +66,7 @@ ul {
   display: flex;
   flex-direction: column;
   flex-flow: wrap;
+  padding-top: 12px;
 }
 
 /* team gradients */
@@ -137,7 +158,7 @@ body {
 #header {
   width: 100%;
   height: 60px;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.28);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.28);
   background-color: white;
   padding-left: 3%;
   line-height: 60px;
@@ -148,7 +169,7 @@ body {
 }
 
 #header.headerNoShadow {
-  box-shadow: 0px 0px 0px rgba(0,0,0,0.0);
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.0);
   background-color: white;
 }
 
@@ -198,7 +219,7 @@ body {
 
 .popupMenu {
   position: fixed;
-  top:70px;
+  top: 70px;
   right: 1%;
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.28);
   padding: 20px;
@@ -241,33 +262,36 @@ body {
 
 /* Buttons */
 
-a.button3{
-  display:inline-block;
-  padding:0.3em 1.0em;
-  margin:0.5em 0.5em 0.25em 0;
-  border-radius:2em;
+a.button3 {
+  display: inline-block;
+  padding: 0.3em 1.0em;
+  margin: 0.5em 0.5em 0.25em 0;
+  border-radius: 2em;
   box-sizing: border-box;
-  text-decoration:none;
-  font-weight:300;
-  color:#FFFFFF;
-  background-color:orange;
-  text-align:center;
+  text-decoration: none;
+  font-weight: 300;
+  color: #FFFFFF;
+  background-color: orange;
+  text-align: center;
   transition: all 0.2s;
   cursor: pointer;
   font-size: 80%;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18);
 }
-a.button3:hover{
-  background-color:darkorange;
+
+a.button3:hover {
+  background-color: darkorange;
 }
-a.button3:active{
+
+a.button3:active {
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.25);
 }
-@media all and (max-width:30em){
-  a.button3{
-    display:block;
-    margin:0.2em auto;
- }
+
+@media all and (max-width:30em) {
+  a.button3 {
+    display: block;
+    margin: 0.2em auto
+  }
 }
 
 
@@ -275,18 +299,21 @@ a.button3:active{
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: url(https://example.com/MaterialIcons-Regular.eot);
+  /* For IE6-8 */
   src: local('Material Icons'),
     local('MaterialIcons-Regular'),
     url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
     url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
     url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
 }
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;  /* Preferred icon size */
+  font-size: 24px;
+  /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -332,12 +359,15 @@ i.menuIcons {
     top: 0%;
     transition-duration: 0.3s;
   }
+
   #menu.show {
     left: 0%;
   }
+
   .menu {
     display: block;
   }
+
   #menuHolder {
     width: 100vw;
     height: 100vh;
@@ -349,17 +379,19 @@ i.menuIcons {
     transition-duration: 0.3s;
     visibility: hidden;
   }
+
   #menuHolder.shadow {
     background-color: rgba(0, 0, 0, 0.4);
     z-index: 101;
     visibility: visible;
   }
+
   i.menuIcons {
     display: inline-block;
   }
 }
 
-@media all and (max-width:30em){
+@media all and (max-width:30em) {
   .card {
     width: 85vw;
     min-height: 33vh;
@@ -367,19 +399,24 @@ i.menuIcons {
     margin-bottom: 5vw;
     margin-right: 0px;
   }
+
   .teamImage {
     width: 30vw;
     height: 30vw;
   }
+
   .teamName {
     font-size: 8vw;
   }
+
   .points {
     font-size: 5.5vw;
   }
+
   table {
     margin-top: 4vw;
   }
+
   .card:hover {
     transform: scale(1.0);
   }
