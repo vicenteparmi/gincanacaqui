@@ -269,8 +269,6 @@ function proceed() {
     var bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
     var file = dataURLtoFile(bi, "filename");
     storeImage('review/' + team + '/' + itemSelected + '/' + itemSelected + makeid(6), file[0], true);
-    recordSendFB(itemSelected, team);
-
   } else if (currentMode == 1) { // More pics mode
     for (var i = 0; i < imagesUploaded; i++) {
       var image = document.getElementById('dpic/' + i);
@@ -286,8 +284,6 @@ function proceed() {
         }
 
         storeImage('review/' + team + '/' + itemSelected + '/' + makeid(12), file[0], lastImage);
-        recordSendFB(itemSelected, team);
-
       }
     }
   } else {
@@ -329,6 +325,9 @@ function sendToReview() {
     dbutton2.onclick = function () {
       location.reload();
     };
+
+    // Save analytics
+    recordSendFB(activitiesList[itemSelected].title, team)
   });
 }
 
