@@ -610,17 +610,6 @@ i.menuIcons {
   table {
     width: 85vw;
   }
-  #progressbar>div {
-    height: 4vw;
-    border-radius: 10vw;
-  }
-  #progressInd {
-    font-size: 3vw;
-    line-height: 4vw;
-  }
-  #progressbar {
-    padding: 3px;
-  }
   #errorMessage {
     font-size: 3.5vw;
     display: block;

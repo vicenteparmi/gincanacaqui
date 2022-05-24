@@ -268,30 +268,12 @@ function moveFbRecord(oldRef, newRef) {
       }
     });
   });
+
+  // Set saved date
+  firebase.database().ref('last_updated').update({
+    date: Date.now()
+  });
 }
-
-// function deleteFile(refURL) {
-//   var ref = firebase.storage().ref(refURL);
-
-//   ref.delete().then(function () {
-//     console.log("File deleted successfully!");
-//   }).catch(function (error) {
-//     console.log("Uh-oh, an error occurred! Error: " + error);
-//   });
-// }
-
-// function update() {
-//   firebase.database().ref('last_updated').set({
-//     date: Date.now()
-//   });
-// }
-
-// function sendAnal(activity, status) {
-//   firebase.analytics().logEvent('activity_reviewed', {
-//     activity: activity,
-//     status: status,
-//   })
-// }
 
 // Default Code
 

@@ -189,6 +189,7 @@ canvas {
   animation-name: listLoadAnimation;
   animation-timing-function: ease-out;
   overflow: hidden;
+  user-select: none;
 }
 
 .position {
