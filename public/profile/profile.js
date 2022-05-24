@@ -28,8 +28,10 @@ function selectTeam(team) {
     firebase.database().ref('users/' + userId).set({
       team: team,
       name: user.displayName,
-      email: user.email
+      email: user.email,
+      token: token
     });
+    firebase.analytics().setUserProperties({team: team});
     modal.style.display = "none";
     setTeam(team);
   }
@@ -230,9 +232,8 @@ function uploadImage(input) {
       alert('A imagem selecionada é muito grande. ' +
         'Apenas imagens com menos de 5 MB são aceitas. ' +
         'E cara, não sei como vc consegiu uma imagem desse tamanho. ' +
-        'Tá enviando em RAW só pode. ' +
         'Ah, e só dá pra enviar em PNG, JPG e TIFF.' +
-        'O site vai até tentar enviar a foto, mas já te adianto que n vai salvar. Pega o tempo que vai demorar enviando pra fazer algo melhor.');
+        'O site vai até tentar enviar a foto, mas já te adianto que n vai salvar.');
     }
 
     var reader = new FileReader();
