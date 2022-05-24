@@ -133,6 +133,65 @@ function sti(id) {
   document.getElementById('description').innerHTML = activitiesList[itemSelected].description;
   document.getElementById('points').innerHTML = "+" + activitiesList[itemSelected].points + " pontos " + activitiesList[itemSelected].pointsDesc;
 
+  // Setup Infobox
+  const infobox = document.getElementById('infobox');
+  const photoNumber = document.createElement('div');
+  const sendOn = document.createElement('div');
+  const needAnswer = document.createElement('div');
+  const veteran = document.createElement('div');
+
+  photoNumber.className = 'chips';
+  sendOn.className = 'chips';
+  needAnswer.className = 'chips';
+  veteran.className = 'chips';
+
+  // Inflate infobox;
+  infobox.innerHTML = "";
+
+  // Pictures to send;
+  if (activitiesList[itemSelected].categories.includes("3")) {
+    photoNumber.innerHTML = "<img src='files/image/onePicMode.svg' class='chipimg'/>Uma imagem";
+    photoNumber.style.backgroundColor = '#421d85';
+  } else if (activitiesList[itemSelected].categories.includes("2")) {
+    photoNumber.innerHTML = "<img src='files/image/somePicsMode.svg' class='chipimg'/>Várias imagens";
+    photoNumber.style.backgroundColor = '#e91e63';
+  } else if (activitiesList[itemSelected].categories.includes("6")) {
+    photoNumber.innerHTML = "<img src='files/image/videoMode.svg' class='chipimg'/>Vídeo";
+    photoNumber.style.backgroundColor = '#f44336';
+  } else {
+    photoNumber.style.display = 'none';
+  }
+
+  // Places to send
+  if (activitiesList[itemSelected].categories.includes("7")) {
+    sendOn.innerHTML = "<img src='files/image/noWebsite.svg' class='chipimg'/>Entrega presencial";
+    sendOn.style.backgroundColor = '#0097a7';
+  } else if (activitiesList[itemSelected].categories.includes("1")) {
+    sendOn.innerHTML = "<img src='files/image/websiteMode.svg' class='chipimg'/>Envio pelo site";
+    sendOn.style.backgroundColor = '#ff9800';
+  }
+
+  // Need answers
+  if (activitiesList[itemSelected].categories.includes("4")) {
+    needAnswer.innerHTML = "<img src='files/image/answerNeeded.svg' class='chipimg'/>Precisa de resposta";
+    needAnswer.style.backgroundColor = '#009688';
+  } else {
+    needAnswer.style.display = 'none';
+  }
+
+  // Veteran needed
+  if (activitiesList[itemSelected].categories.includes("5")) {
+    veteran.innerHTML = "<img src='files/image/veteran.svg' class='chipimg'/>Veterano necessário";
+    veteran.style.backgroundColor = '#4caf50';
+  } else {
+    veteran.style.display = 'none';
+  }
+
+  infobox.appendChild(photoNumber);
+  infobox.appendChild(sendOn);
+  infobox.appendChild(needAnswer);
+  infobox.appendChild(veteran);
+
   // Clear fields
   document.getElementById('taskAnswer').value = "";
   document.getElementById('mode1input').value = "";

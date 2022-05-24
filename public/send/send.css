@@ -274,6 +274,38 @@ body {
   margin-top: 8px;
 }
 
+.infobox {
+  margin: 0 0 24px 0;
+}
+
+.chips {
+  height: 20px;
+  border-radius: 15px;
+  background-color: gray;
+  padding: 4px 8px 4px 8px;
+  vertical-align: middle;
+  line-height: 20px;
+  color: white;
+  font-size: 8pt;
+  display: inline-flex;
+  margin: 2px;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+  white-space: nowrap;
+  cursor: default;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.chips:hover {
+    filter: opacity(0.8);
+}
+
+.chipimg {
+  filter: invert();
+  padding-right: 4px;
+  padding-left: 2px;
+}
+
 #noUser, #noTeam, #loading, #noVer  {
   margin-top: 100px;
   padding-left: 5%;
@@ -616,6 +648,10 @@ i.menuIcons {
     height: 70vh;
   }
 
+  #somethingSelected {
+    height: auto;
+  }
+
   .activity-list {
     width: 100%;
   }
@@ -671,6 +707,10 @@ i.menuIcons {
 
   #bodyActList.afterClick {
     height: 70vh;
+  }
+
+  #somethingSelected {
+    height: auto;
   }
 
   #body {
