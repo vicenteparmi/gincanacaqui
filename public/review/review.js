@@ -193,22 +193,34 @@ function approve(reference) {
     const teamRef = firebase.database().ref('teams/' + (team - 1));
 
     teamRef.once('value', function (snapshot) {
-      const points = snapshot.val().points;
+      let points = snapshot.val().points;
 
-      teamRef.update({
-        points: Number(points) + Number(activityList[activity].points)
-      });
+      // Check if multiple category is active
+      if (activityList[activity].categories.includes("2")) {
 
-      // Mark task as done on team
+        // Points
+        let pointsNew = Number(activityList[activity].points)
 
-      const teamActivity = firebase.database().ref('teams/' + (team - 1) + '/tasks/' + activity);
+        // Get input from user
+        pointsNew = prompt("Como a pontuação dessa atividade varia de acordo com o envio, escolha a pontuação para dar.\n\nEsta atividade vale " + activityList[activity].points + " " + activityList[activity].pointsDesc, "");
 
-      teamActivity.update({
-        done: true,
-        time: Date.now()
-      });
+        teamRef.update({
+          points: Number(points) + Number(pointsNew)
+        });
+
+        // Mark task as done on team
+
+        const teamActivity = firebase.database().ref('teams/' + (team - 1) + '/tasks/' + activity);
+
+        teamActivity.update({
+          done: true,
+          time: Date.now()
+        });
+
+      }
     });
   });
+
 
   // Move record to approved
   const oldRef = firebase.database().ref('review/' + reference);
