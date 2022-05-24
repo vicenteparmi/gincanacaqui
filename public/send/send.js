@@ -251,7 +251,8 @@ function sendToReview() {
     userId: currentUser.uid,
     answer: answer,
     imageURLs: imageDownloadURL,
-    activity: itemSelected
+    activity: itemSelected,
+    date: Date.now()
   }).then(function () {
     // Open modal
     document.getElementById('myModal').style.display = "block";

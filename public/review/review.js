@@ -72,7 +72,7 @@ function inflateInterface() {
         userName = snap.val().name;
         userEmail = snap.val().email;
       }).then(function () {
-        const card = buildCard(title, description, answer, team, color, userName, userEmail, imageURLs, childSnapshot.key);
+        const card = buildCard(title, description, answer, team, color, userName, userEmail, imageURLs, childSnapshot.key, childSnapshot.val().date);
         listHolder.appendChild(card);
       });
     });
@@ -84,7 +84,7 @@ function inflateInterface() {
   });
 }
 
-function buildCard(actTitle, actDescription, answerInput, teamName, color, userName, userEmail, imageURLs, reference) {
+function buildCard(actTitle, actDescription, answerInput, teamName, color, userName, userEmail, imageURLs, reference, date) {
   // Create all elements
   const card = document.createElement('div');
   const cardBody = document.createElement('div');
@@ -112,7 +112,7 @@ function buildCard(actTitle, actDescription, answerInput, teamName, color, userN
 
   // Set all elements text
   teamString.innerHTML = teamName;
-  summary.innerHTML = "Enviado por " + userName + " (" + userEmail + ") em " + new Date(Date.now()).toLocaleString() + ".";
+  summary.innerHTML = "Enviado por " + userName + " (" + userEmail + ") em " + new Date(date).toLocaleString() + ".";
   ativityTitle.innerHTML = actTitle;
   ativityDescription.innerHTML = actDescription;
   answerText.innerHTML = "Resposta:";
@@ -239,9 +239,6 @@ function approve(reference) {
 
 function reject(reference) {
 
-  // Ask for reason
-  const reason = prompt("Por favor, digite o motivo do rejeição:", "");
-
   // Move record to rejected
   const oldRef = firebase.database().ref('review/' + reference);
   const newRef = firebase.database().ref('rejected/' + reference);
@@ -250,7 +247,7 @@ function reject(reference) {
 
   // Add reason to rejected record
   newRef.update({
-    reason: reason
+    reason: prompt("Por favor, digite o motivo do rejeição:", "")
   });
 
   // Change card color
@@ -263,7 +260,7 @@ function reject(reference) {
 
 function moveFbRecord(oldRef, newRef) {
   oldRef.once('value', function (snap) {
-    newRef.set(snap.val(), function (error) {
+    newRef.update(snap.val(), function (error) {
       if (!error) {
         oldRef.remove();
       } else if (typeof (console) !== 'undefined' && console.error) {

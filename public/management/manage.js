@@ -107,7 +107,7 @@ function markDoneActivities(team) {
         checkboxes[i].checked = false;
     }
 
-    firebase.database().ref('teams/' + (team - 1) + '/tasks').on('value', function (snapshot) {
+    firebase.database().ref('teams/' + (team - 1) + '/tasks').once('value', function (snapshot) {
         let index = 0;
 
         snapshot.forEach(function (activity) {
