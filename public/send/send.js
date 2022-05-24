@@ -137,6 +137,9 @@ function sti(id) {
   document.getElementById('taskAnswer').value = "";
   document.getElementById('mode1input').value = "";
 
+  // Smaller list if on mobile
+  document.getElementById('bodyActList').className = "bodyItem activity-list afterClick";
+
 }
 
 function helpVideo() {

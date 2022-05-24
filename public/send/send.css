@@ -52,6 +52,7 @@ body {
   padding-bottom: 4%;
   box-sizing: border-box;
   overflow-y: auto;
+  transition-duration: 0.5s;
 }
 
 #somethingSelected, #nothingSelected {
@@ -615,8 +616,13 @@ i.menuIcons {
     text-align: left;
     transform: translate(0,0);
   }
-  #scrollDiv.afterClick {
-    height: 20vh;
+
+  #bodyActList.afterClick {
+    height: 70vh;
+  }
+
+  .activity-list {
+    width: 100%;
   }
 }
 
@@ -666,6 +672,10 @@ i.menuIcons {
 
   .activity-list {
     width: 100%;
+  }
+
+  #bodyActList.afterClick {
+    height: 70vh;
   }
 
   #body {
