@@ -38,6 +38,9 @@ document.getElementById("selectTeam").addEventListener("change", function () {
     const t = parseInt(document.getElementById("selectTeam").value) + 1;
     document.getElementById("teamImg").src = "files/teams/" + t + ".webp";
     document.getElementById("pointsTeam").value = teams[t - 1].points;
+
+    // Mark done activities
+    markDoneActivities(t);
 });
 
 function savePoints() {
@@ -56,6 +59,100 @@ function savePoints() {
         alert("Pontos não salvos!");
     }
 }
+
+// Load activities
+
+firebase.database().ref('activities').on('value', function (activities) {
+
+    let index = 0;
+
+    // Add activities to option list
+    activities.forEach(function (activity) {
+        const checkbox = document.createElement("input");
+        const act = document.createElement("label");
+        const div = document.createElement("div");
+
+        checkbox.type = "checkbox";
+        checkbox.id = "teamCheckbox" + activity.key;
+        checkbox.value = index;
+        checkbox.name = "teamCheckbox" + index;
+        checkbox.className = "teamCheckbox";
+
+        act.innerHTML = activity.val().title;
+        act.className = "act";
+        act.htmlFor = "teamCheckbox" + index;
+
+        div.className = "actDiv";
+
+        div.appendChild(checkbox);
+        div.appendChild(act);
+
+        document.getElementById("atividadesEquipe").appendChild(div);
+
+        if (activities.numChildren() == index + 1) {
+            markDoneActivities(1);
+        }
+
+        index++;
+    });
+});
+
+// Mark done activities
+function markDoneActivities(team) {
+
+    // Clear checkboxes
+    const checkboxes = document.getElementsByClassName("teamCheckbox");
+
+    for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = false;
+    }
+
+    firebase.database().ref('teams/' + (team - 1) + '/tasks').on('value', function (snapshot) {
+        let index = 0;
+
+        snapshot.forEach(function (activity) {
+            document.getElementById("teamCheckbox" + activity.key).checked = activity.val().done;
+
+            index++;
+        });
+    });
+}
+
+// Save done activities
+
+function saveActivityDone() {
+    const teamID = document.getElementById("selectTeam").value;
+    const activities = document.getElementsByClassName("teamCheckbox");
+
+    const confirmSave = confirm("Após salvar, as atividades e datas serão alteradas, deseja mesmo proceder?");
+
+    if (confirmSave == true) {
+        firebase.database().ref('activities').once('value', function (snapshot) {
+            let index = 0;
+
+            snapshot.forEach(function (activity) {
+                
+                // Save activity done if checkbox is checked
+                if (activities[index].checked) {
+                    firebase.database().ref('teams/' + teamID + '/tasks/' + activity.key).set({done: true});
+                }
+
+                // Verify unchecked checkboxes
+                if (!activities[index].checked) {
+                    firebase.database().ref('teams/' + teamID + '/tasks/' + activity.key).remove();
+                }
+
+                index++;
+            });
+        });
+
+        const toa = toast("Atividades salvas!");
+        setTimeout(function () {
+            toa.remove();
+        }, 3000);
+    }
+}
+
 
 // Add activity
 
@@ -428,10 +525,16 @@ document.getElementById("ajustes3").addEventListener("click", function () {
 });
 
 // Open and close popups
+let breakI = false;
 function openPopup(popup) {
     document.getElementById(popup).style.width = "100%";
     document.getElementById("logo").style.color = "white";
     document.getElementById("menu").style.filter = "brightness(2.5)";
+
+    if (popup == "popup1" && !breakI) {
+        markDoneActivities(1);
+        breakI = true;
+    }
 }
 
 function closePopup(popup) {

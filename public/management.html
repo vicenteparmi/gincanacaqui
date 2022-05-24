@@ -48,22 +48,26 @@
                 <div class="sidePannelInner" style="display: block;">
                     <span class="close" onclick="closePopup('popup1')">&times; Fechar tela</span>
                     <h2>Modificar pontuação e atividades concluídas</h2>
-                    <div style="display: flex; flex-direction: row; align-items: center;">
-                        <img id="teamImg" width="150px" height="150px" src="files/teams/unknown.webp"
-                            alt="Símbolo da equipe" style="transition-duration: 0.3s;">
-                        <div>
-                            <select name="team" id="selectTeam">
-                                <option value="0" disabled>Selecione uma equipe</option>
-                            </select>
-                            <div style="display: flex; flex-direction: row;">
-                                <input id="pointsTeam" type="number" name="points" placeholder="Pontuação" required>
-                                <i id="sandwich" class="material-icons" onclick="savePoints()" md-24 md-light
-                                    style="padding: 10px; cursor:pointer;">save_alt</i>
+                    <div class="card2">
+                        <div style="display: flex; flex-direction: row; align-items: center;">
+                            <img id="teamImg" width="150px" height="150px" src="files/teams/unknown.webp"
+                                alt="Símbolo da equipe" style="transition-duration: 0.3s;">
+                            <div>
+                                <select name="team" id="selectTeam">
+                                    <option value="0" disabled>Selecione uma equipe</option>
+                                </select>
+                                <div style="display: flex; flex-direction: row;">
+                                    <input id="pointsTeam" type="number" name="points" placeholder="Pontuação" required>
+                                    <i id="sandwich" class="material-icons" onclick="savePoints()" md-24 md-light
+                                        style="padding: 10px; cursor:pointer;">save_alt</i>
+                                </div>
                             </div>
                         </div>
+                        <h3>Atividades</h3>
+                        <div id="atividadesEquipe"></div>
+                        <br>
+                        <input type="button" value="Salvar alterações" onclick="saveActivityDone()" class="saveButton">
                     </div>
-                    <h3>Atividades</h3>
-                    <!-- Checklist -->
                 </div>
             </div>
 
