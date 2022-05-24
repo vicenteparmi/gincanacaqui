@@ -69,11 +69,8 @@ firebase.auth().onAuthStateChanged(function (user) {
         team = snapshot.val();
         setTeam(team);
 
-        // Update activity list
-
         // Display all activities
         firebase.database().ref('activities').once('value').then(function (snap) {
-
           snap.forEach(function (childSnapshot) {
             const title = childSnapshot.val().title;
             var activity = document.createElement("div");
@@ -90,6 +87,24 @@ firebase.auth().onAuthStateChanged(function (user) {
               activity.className = "activity done";
             });
           })
+        }).then(function () {
+          firebase.database().ref('activities').once('value').then(function (snap) {
+            snap.forEach(function (currentAct) {
+
+              // Get activities in review for the current team
+              firebase.database().ref('review').once('value').then(function (snapshot) {
+
+                // If there is a review
+                snapshot.forEach(function (childSnapshot2) {
+
+                  if ((currentAct.key == childSnapshot2.val().activity && childSnapshot2.val().team == team)) {
+                    var activity = document.getElementById("act+" + currentAct.key);
+                    activity.className += " review";
+                  }
+                })
+              });
+            });
+          });
         });
 
       });

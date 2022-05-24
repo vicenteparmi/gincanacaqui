@@ -166,10 +166,18 @@ h2 {
 }
 
 .done {
-  color: darkgray;
+  color: #008900;
   text-decoration: line-through;
   text-shadow: 0px 0px;
-  list-style-type: circle;
+}
+
+.review {
+  color: #003ff0
+}
+
+.review::before {
+  content: "Aguardando revisão";
+  font-size: 12px;
 }
 
 .card {
