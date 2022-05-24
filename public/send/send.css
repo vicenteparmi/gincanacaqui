@@ -611,11 +611,6 @@ i.menuIcons {
     border-radius: 16px 16px 0px 0px;
     padding-top: 32px;
   }
-  .waitingToChoose {
-    position: relative;
-    text-align: left;
-    transform: translate(0,0);
-  }
 
   #bodyActList.afterClick {
     height: 70vh;

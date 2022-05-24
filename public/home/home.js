@@ -284,19 +284,15 @@ function inflateACT() {
     });
   });
 
-  const atr = document.createElement('p');
-  atr.innerHTML = "Criado por Vicente K. Parmigiani • <u>Direitos autorais de terceiros<u>";
-  atr.style.color = "#ffffff82";
-  atr.style.cursor = 'pointer';
-  atr.onclick = function () {
+  const atr = document.getElementById('credits');
+  atr.addEventListener('click', function () {
     const x = document.getElementById('iconSrcs');
     if (x.style.display === "none") {
       x.style.display = "block";
     } else {
       x.style.display = "none";
     }
-  }
-  actListHolder.appendChild(atr);
+  });
 }
 
 function handleDate(date) {
