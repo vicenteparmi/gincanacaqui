@@ -25,16 +25,21 @@ function selectTeam(team) {
   if (team == 0) {
     openModal();
   } else {
-    firebase.database().ref('users/' + userId).set({
+    firebase.database().ref('users/' + userId).update({
       team: team,
       name: user.displayName,
       email: user.email,
-      token: token
+      photo: user.photoURL
     });
-    firebase.analytics().setUserProperties({team: team});
+
     modal.style.display = "none";
     setTeam(team);
   }
+
+  firebase.analytics().setUserProperties({
+    team: team
+  });
+
 }
 
 // User stuff
@@ -54,7 +59,7 @@ firebase.auth().onAuthStateChanged(function (user) {
       uid = profile.uid;
       userName = profile.displayName;
       email = profile.email;
-      photoURL = profile.photoURL;
+      photoURL = user.photoURL;
       emailVerified = user.emailVerified;
 
       console.log(profile.photoURL);
@@ -130,6 +135,10 @@ firebase.auth().onAuthStateChanged(function (user) {
 // Set team
 
 function setTeam(teamNumber) {
+
+  firebase.analytics().setUserProperties({
+    team: teamNumber
+  });
 
   if (teamNumber != null) {
     const teamNames = ["Hidrogênio", "Hélio", "Lítio", "Berílio", "Boro", "Carbono", "Nitrogênio", "Oxigênio", "Flúor", "Neônio", "Sódio", "Magnésio", "Alumínio", "Silício", "Fósforo", "Enxofre"];
@@ -257,11 +266,20 @@ $("#profilePicture").change(function () {
 // Delete account
 
 function deleteAccount() {
-  var user = firebase.auth().currentUser;
-  var userIsSure = confirm('Você tem certeza que deseja apagar sua conta? Essa ação é irreversível.');
+  let user = firebase.auth().currentUser;
+  let userId = user.uid;
+  let userIsSure = confirm('Você tem certeza que deseja apagar sua conta? Essa ação é irreversível.');
   if (userIsSure == true) {
     user.delete().then(function () {
       alert('Sua conta foi apagada com sucesso.');
+
+      // Remove the user from the database
+      firebase.database().ref('users/' + userId).remove().then(function () {
+        console.log('User removed from database');
+      }).catch(function (error) {
+        console.log('User not removed from database');
+      });
+
       location.replace('./index.html');
     }).catch(function (error) {
       alert('Não foi possível apagar a conta. Saia e faça login novamente.');
@@ -310,6 +328,9 @@ function updateProfileURL() {
   var gsReference = storage.refFromURL('gs://havarena-f3d87.appspot.com/user_photos/' + user.uid + extension);
   gsReference.getDownloadURL().then(function (url) {
     console.log(url);
+    firebase.database().ref('users/' + user.uid).update({
+      photo: url
+    });
     user.updateProfile({
       photoURL: url
     }).then(function () {
@@ -320,6 +341,8 @@ function updateProfileURL() {
   }).catch(function (error) {
     console.log(error);
   });
+
+
 }
 
 

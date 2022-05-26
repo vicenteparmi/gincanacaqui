@@ -54,8 +54,35 @@
   padding: 1vw;
 }
 
+.teamPlaceholder {
+  display: flex;
+  flex-direction: column;
+}
+
 .userCard {
   text-transform: capitalize;
+  background-color: white;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgb(0 0 0 / 30%);
+  color: black;
+  text-shadow: none;
+  margin-bottom: 8px;
+}
+
+.userImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 16px;
+}
+
+.userName {
+  font-weight: bold;
 }
 
 ul {

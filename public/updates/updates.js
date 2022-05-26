@@ -96,11 +96,15 @@ firebase.database().ref('teams').once('value', function (snapshot) {
 
     }
 
+    // Create teams title
+    var teamsTitle = document.createElement('h3');
+    teamsTitle.innerHTML = "Membros da Equipe";
+    cardBody.appendChild(teamsTitle);
+
     // Create teams placeholder
     const teamPlaceholder = document.createElement('div');
     teamPlaceholder.className = 'teamPlaceholder';
     teamPlaceholder.id = 'teamPlaceholder+' + childKey;
-    teamPlaceholder.innerHTML = "<h3>Membros da Equipe</h3>";
     cardBody.appendChild(teamPlaceholder);
 
     // Append activities to card body
@@ -133,11 +137,22 @@ function loadTeamMembers() {
         let teamPlaceholder = document.getElementById('teamPlaceholder+' + (userTeam - 1));
 
         // Create user card
-        let userCard = document.createElement('li');
+        let userCard = document.createElement('div');
         userCard.className = 'userCard';
 
-        // Fill user card with user data
-        userCard.innerHTML = "<text>" + user.name + "</text>";
+        // Create user image
+        let userImage = document.createElement('img');
+        userImage.className = 'userImage';
+        userImage.src = user.photo;
+
+        // Create user name
+        let userName = document.createElement('span');
+        userName.className = 'userName';
+        userName.innerHTML = user.name;
+
+        // Append user info to user card
+        userCard.appendChild(userImage);
+        userCard.appendChild(userName);
 
         // Append user card to team placeholder
         teamPlaceholder.appendChild(userCard);
