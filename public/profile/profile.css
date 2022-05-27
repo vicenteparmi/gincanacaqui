@@ -197,6 +197,7 @@ table.teamTable {
   margin-right: 16px;
   background-size: cover;
   background-position: center;
+  border: 2px solid #ccc;
 }
 
 .userName {

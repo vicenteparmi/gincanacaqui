@@ -203,7 +203,7 @@ function loadTeamMembers() {
         // Create user image
         let userImage = document.createElement('div');
         userImage.className = 'userImage';
-        userImage.style.backgroundImage = "url('" + user.photo + "')";
+        userImage.style.backgroundImage = "url('" + childSnapshot.val().photo + "')";
 
         // Create user name
         let userName = document.createElement('span');
