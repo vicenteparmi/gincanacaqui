@@ -15,7 +15,6 @@
   transition-duration: 0.2s;
   vertical-align: top;
   color: white;
-  background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
 }
 
 .card:hover {
