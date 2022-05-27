@@ -58,20 +58,23 @@ firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     user.providerData.forEach(function (profile) {
       uid = profile.uid;
-      userName = profile.displayName;
       email = profile.email;
       photoURL = user.photoURL;
       emailVerified = user.emailVerified;
 
       console.log(profile.photoURL);
 
-      document.getElementById('userName').innerHTML = userName;
+      const currentUser1 = firebase.auth().currentUser;
+      firebase.database().ref('users/' + currentUser1.uid).once('value').then(function (snapshot) {
+        document.getElementById('userName').innerHTML = snapshot.val().name;
+      });
+
       document.getElementById('userEmail').innerHTML = email;
       document.getElementById("profileImage").style.backgroundImage = "url('" + photoURL + "')";
 
       // Get team
       var team;
-      const currentUser1 = firebase.auth().currentUser;
+      
       var dbRef = firebase.database().ref('users/' + currentUser1.uid + "/team");
       dbRef.on('value', function (snapshot) {
         team = snapshot.val();
@@ -190,30 +193,30 @@ function loadTeamMembers() {
       // Check if is from the current team
       if (childSnapshot.val().team == globalTeam) {
 
-          // Get user team placeholder
-          let teamPlaceholder = document.getElementById("teamHolder");
+        // Get user team placeholder
+        let teamPlaceholder = document.getElementById("teamHolder");
 
-          // Create user card
-          let userCard = document.createElement('div');
-          userCard.className = 'userCard';
+        // Create user card
+        let userCard = document.createElement('div');
+        userCard.className = 'userCard';
 
-          // Create user image
-          let userImage = document.createElement('img');
-          userImage.className = 'userImage';
-          userImage.src = childSnapshot.val().photo;
+        // Create user image
+        let userImage = document.createElement('img');
+        userImage.className = 'userImage';
+        userImage.src = childSnapshot.val().photo;
 
-          // Create user name
-          let userName = document.createElement('span');
-          userName.className = 'userName';
-          userName.innerHTML = childSnapshot.val().name;
+        // Create user name
+        let userName = document.createElement('span');
+        userName.className = 'userName';
+        userName.innerHTML = childSnapshot.val().name;
 
-          // Append user info to user card
-          userCard.appendChild(userImage);
-          userCard.appendChild(userName);
+        // Append user info to user card
+        userCard.appendChild(userImage);
+        userCard.appendChild(userName);
 
-          // Append user card to team placeholder
-          teamPlaceholder.appendChild(userCard);
-        }
+        // Append user card to team placeholder
+        teamPlaceholder.appendChild(userCard);
+      }
     });
   });
 }
@@ -262,7 +265,7 @@ function updateUserName() {
   var user = firebase.auth().currentUser;
   var name = prompt("Qual o novo nome de usuário?", user.displayName);
   if ((name != null && name != "") && name.length <= 25) {
-    if (user) {
+    if (user != null) {
       user.updateProfile({
         displayName: name,
       }).then(function () {
