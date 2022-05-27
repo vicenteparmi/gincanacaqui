@@ -41,12 +41,15 @@
 			</div>
 			<div class="mobileSpace">
 				<h3 style="margin-bottom:12px; margin-top: 0;">Configurações de usuário</h3>
-				<a class="button3" onclick="updateUserName()">Alterar Nome</a>
-				<input type="file" name="file" id='profilePicture' accept="image/*">
-				<label for="profilePicture" class="button3">Alterar Imagem</label>
-				<a class="button3" onclick="changePassword()">Alterar Senha</a>
-				<a class="button3" onclick="signOut()">Sair</a>
-				<a class="button3" onclick="deleteAccount()" style="background-color:#ff4400">Apagar Conta</a>
+				<div style="display: flex; flex-direction:row; align-items:center; flex-wrap: wrap; justify-content: center;">
+					<a class="button3" onclick="updateUserName()">Alterar Nome</a>
+					<input type="file" name="file" id='profilePicture' accept="image/*">
+					<label for="profilePicture" class="button3">Alterar Imagem</label>
+					<a class="button3" onclick="changePassword()">Alterar Senha</a>
+					<a class="button3" onclick="signOut()">Sair</a>
+					<a class="button3" onclick="deleteAccount()" style="background-color:#ff4400; color: white;">Apagar
+						Conta</a>
+				</div>
 			</div>
 		</div>
 		<div class="row-flex" id="teamCard">
@@ -58,7 +61,8 @@
 							<td class="teamName" id="teamName"></td>
 						</tr>
 						<tr>
-							<td class="points"><span id="points">Carregando</span><span style="visibility: hidden;">_</span>pontos</td>
+							<td class="points"><span id="points">Carregando</span><span
+									style="visibility: hidden;">_</span>pontos</td>
 						</tr>
 					</table>
 				</div>
@@ -73,8 +77,8 @@
 				<div id="activityList"></div>
 			</div>
 
-			<div id="loadingTeam" class="center">
-				<h1 style="margin: 20px;">Carregando informações...</h1>
+			<div id="loadingTeam">
+				<h1 style="margin: 20px; color: white;">Carregando informações...</h1>
 			</div>
 			<div id="unknownTeam" class="hide center" style="color: white">
 				<img src="files/teams/unknown.webp" class="unkTeamImg center" alt="Time desconhecido">

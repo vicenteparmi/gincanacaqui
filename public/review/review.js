@@ -194,30 +194,38 @@ function approve(reference) {
 
     teamRef.once('value', function (snapshot) {
       let points = snapshot.val().points;
+      let pointsNew;
 
       // Check if multiple category is active
       if (activityList[activity].categories.includes("2")) {
 
         // Points
-        let pointsNew = Number(activityList[activity].points)
+        pointsNew = Number(activityList[activity].points)
 
         // Get input from user
         pointsNew = prompt("Como a pontuação dessa atividade varia de acordo com o envio, escolha a pontuação para dar.\n\nEsta atividade vale " + activityList[activity].points + " " + activityList[activity].pointsDesc, "");
+        if (pointsNew == null) {
+          return;
+        }
 
-        teamRef.update({
-          points: Number(points) + Number(pointsNew)
-        });
-
-        // Mark task as done on team
-
-        const teamActivity = firebase.database().ref('teams/' + (team - 1) + '/tasks/' + activity);
-
-        teamActivity.update({
-          done: true,
-          time: Date.now()
-        });
-
+      } else {
+        pointsNew = Number(activityList[activity].points);
       }
+
+      // Add points
+
+      teamRef.update({
+        points: Number(points) + Number(pointsNew)
+      });
+
+      // Mark task as done on team
+
+      const teamActivity = firebase.database().ref('teams/' + (team - 1) + '/tasks/' + activity);
+
+      teamActivity.update({
+        done: true,
+        time: Date.now()
+      });
     });
   });
 
