@@ -1,15 +1,15 @@
 #profilePicture {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	filter: opacity(0);
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  filter: opacity(0);
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
-#profilePicture + label {
-    cursor: pointer;
+#profilePicture+label {
+  cursor: pointer;
 }
 
 body {
@@ -19,8 +19,20 @@ body {
 }
 
 #body {
-  margin-top: 80px;
-  margin-left: 5vw;
+  margin-top: 50px;
+  background-color: #444;
+}
+
+#teamCard {
+  padding: 0px 5vw 48 5vw;
+}
+
+.teamheader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
 }
 
 .unkTeamImg {
@@ -70,17 +82,15 @@ td p {
 }
 
 #profileImage {
-  width: 8vw;
-  height: 8vw;
-  border-radius: 8px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
   background-image: url(../files/image/unknownUser.webp);
   background-color: lightgray;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  position: relative;
-  float: left;
-  margin-right: 3%;
+  margin-right: 24px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -89,76 +99,164 @@ tr {
 }
 
 #userName {
-  font-size: 2.5vw;
+  font-size: xx-large;
   font-weight: bold;
   display: block;
   margin: 0px;
+  color: white;
+  max-width: 30vw;
 }
 
 #userEmail {
-  font-size:  1vw;
-  color: dimgray;
+  font-size: medium;
+  color: #ddd;
 }
 
 #verified {
-  font-size: 1vw;
-  color: hsla(122, 79%, 29%, 0.69);
+  font-size: small;
+  color: hsla(122, 100%, 50%, 0.69);
 }
 
 #toVerify {
-  font-size: 1.2vw;
-  color: #d81313;
+  font-size: small;
+  color: #ff0000;
   cursor: pointer;
   text-decoration: underline;
 }
 
-#teamCard {
-  text-shadow: 0 0 14px rgba(0,0,0,0.5);
+#hasTeam {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+
+#hasTeam p {
+  max-width: 35vw;
+  margin: 0px;
 }
 
 #profileInfo {
-  box-shadow: 0px 0px 0px white;
+  padding: 42px 5vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  color: white;
+}
+
+.row-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-around;
 }
 
 .teamName {
-  font-size: 3vw;
+  font-size: x-large;
   font-weight: bold;
   color: white;
 }
 
 .points {
-  font-size: 1.8vw;
-  color: #eeeeee;
+  font-size: medium;
+  color: #ccc;
+  width: auto;
+  display: flex;
+  justify-content: center;
 }
 
 table.teamTable {
   display: inline-block;
   vertical-align: top;
-  margin-top: 3vw;
+  margin-top: 12px;
 }
 
 #teamImage {
-  width: 15vw;
-  height: 15vw;
+  width: 150px;
+  height: 150px;
   background-size: cover;
   background-position: center;
   background-image: url('../files/teams/unknown.webp');
   display: inline-block;
 }
 
+.userImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 16px;
+}
+
+.userName {
+  font-weight: bold;
+}
+
+.userCard {
+  text-transform: capitalize;
+  background-color: white;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 20vw;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgb(0 0 0 / 30%);
+  color: black;
+  text-shadow: none;
+  margin-bottom: 8px;
+}
+
+.veteran {
+  border: 3px solid #ffd000;
+  animation-name: shine;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes shine {
+  0% {
+    border: 2px solid #ffd000;
+  }
+10% {
+    border: 2px solid #fde787;
+  }
+  50% {
+    border: 2px solid #ffa600;
+  }
+  70% {
+    border: 2px solid #ffe345;
+  }
+  100% {
+    border: 2px solid #ffd000;
+  }
+  
+}
+
+#actLC {
+  color: black;
+  background-color: white;
+  border-radius: 8px;
+}
+
+#actLC h3 {
+  margin-left: 16px;
+}
+
 #activityList {
-  color: white;
-  padding: 1vw;
+  padding: 0px 16px 8px 16px;
 }
 
 .activity {
   padding: 8px 12px;
   background-color: white;
   margin-bottom: 8px;
-  border-radius: 8px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
   color: black;
   text-shadow: none;
+  border: 1px solid #ccc;
 }
 
 h2 {
@@ -181,22 +279,21 @@ h2 {
 }
 
 .card {
-  width: 40vw;
+  width: auto;
   background-color: white;
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
-  border-radius: 4px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 28px 28px 0 0;
   padding: 16px;
-  margin-right: 1vw;
-  margin-bottom: 2vw;
-  display: inline-block;
+  display: flex;
   transition-duration: 0.2s;
   vertical-align: top;
+  color: black;
 }
 
 #header {
   width: 100%;
   height: 60px;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.28);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.28);
   padding-left: 5%;
   line-height: 60px;
   position: fixed;
@@ -204,11 +301,17 @@ h2 {
   left: 0%;
   background-color: white;
   z-index: 99;
+  transition-duration: 0.2s;
 }
 
 #header.headerNoShadow {
-  box-shadow: 0px 0px 0px rgba(0,0,0,0.0);
-  background-color: white;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.0);
+  background-color: rgba(0, 0, 0, 0.0);
+  color: white;
+}
+
+#header.headerNoShadow a {
+  color: lightgray;
 }
 
 .headerImage {
@@ -250,51 +353,67 @@ h2 {
   background: linear-gradient(to bottom right, #616161, #424242);
   color: white;
 }
+
 .team1 {
   background: linear-gradient(to bottom right, #007ec2, #005c8d);
 }
+
 .team2 {
   background: linear-gradient(to bottom right, #c53030, #9c2626);
 }
+
 .team3 {
   background: linear-gradient(to bottom right, #FFC107, #FFB300);
 }
+
 .team4 {
   background: linear-gradient(to bottom right, #00b862, #008547);
 }
+
 .team5 {
   background: linear-gradient(to bottom right, #8b14b3, #610d7b);
 }
+
 .team6 {
   background: linear-gradient(to bottom right, #666666, #4d4d4d);
 }
+
 .team7 {
   background: linear-gradient(to bottom right, #F57C00, #E65100);
 }
+
 .team8 {
   background: linear-gradient(to bottom right, #00b87e, #009969);
 }
+
 .team9 {
   background: linear-gradient(to bottom right, #e91e63, #C2185B);
 }
+
 .team10 {
   background: linear-gradient(to bottom right, #009ae8, #21649f);
 }
+
 .team11 {
   background: linear-gradient(to bottom right, #9b9900, #797c02);
 }
+
 .team12 {
   background: linear-gradient(to bottom right, #00a89b, #01796f);
 }
+
 .team13 {
   background: linear-gradient(to bottom right, #aaaaaa, #8a8a8a);
 }
+
 .team14 {
   background: linear-gradient(to bottom right, #1f3bb7, #122273);
 }
+
 .team15 {
   background: linear-gradient(to bottom right, #7a493e, #4d2c24);
 }
+
 .team16 {
   background: linear-gradient(to bottom right, #00c68c, #018862);
 }
@@ -303,24 +422,34 @@ h2 {
 
 /* The Modal (background) */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0);
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */
 }
 
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 10% auto; /* 15% from the top and centered */
+  margin: 10% auto;
+  /* 15% from the top and centered */
   padding: 30px;
-  width: 50vw; /* Could be more or less, depending on screen size */
+  width: 50vw;
+  /* Could be more or less, depending on screen size */
   border-radius: 4px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
@@ -348,7 +477,7 @@ h2 {
   /* (height of inner div) / 2 + padding */
   padding: 2px;
   margin-top: 12px;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.18);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.18);
 }
 
 #progressbar>div {
@@ -372,33 +501,36 @@ h2 {
 
 /* Buttons */
 
-a.button3, label.button3{
-  display:inline-block;
-  padding:0.3em 1.0em;
-  margin:0.5em 0.25em 0.25em 0;
-  border-radius:2em;
+a.button3, label.button3 {
+  display: inline-block;
+  padding: 0.3em 1.0em;
+  margin: 0.5em 0.25em 0.25em 0;
+  border-radius: 2em;
   box-sizing: border-box;
-  text-decoration:none;
-  font-weight:300;
-  color:#FFFFFF;
-  background-color:orange;
-  text-align:center;
+  text-decoration: none;
+  font-weight: 300;
+  color: #FFFFFF;
+  background-color: orange;
+  text-align: center;
   transition: all 0.2s;
   cursor: pointer;
   font-size: 80%;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18);
 }
-a.button3:hover, label.button3:hover{
-  background-color:darkorange;
+
+a.button3:hover, label.button3:hover {
+  background-color: darkorange;
 }
-a.button3:active, label.active{
+
+a.button3:active, label.active {
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.25);
 }
-@media all and (max-width:30em){
-  a.button3, label.button3{
-    display:block;
+
+@media all and (max-width:30em) {
+  a.button3, label.button3 {
+    display: block;
     margin: 0.2em auto
- }
+  }
 }
 
 /* Mobile configuration */
@@ -408,24 +540,24 @@ a.button3:active, label.active{
     min-width: 5em;
     min-height: 5em;
   }
+
   .unkTeamTxt {
     min-width: 15em;
   }
+
   #profileInfo {
-    margin-top: 2vw;
+    flex-direction: column;
+    align-items: center;
   }
+
   #userName {
     font-size: 5vw;
   }
+
   #userEmail {
     font-size: 2.6vw;
   }
-  #verified {
-    font-size: 2.6vw;
-  }
-  #toVerify {
-    font-size: 3vw;
-  }
+
   .modal-content {
     margin: 0;
     padding: 30px;
@@ -436,39 +568,65 @@ a.button3:active, label.active{
     margin-top: 60px;
     min-height: -webkit-fill-available;
   }
+
   .teamSelector {
     width: 30vw;
     min-width: 5em;
   }
+
   .selImg {
     width: 20vw;
     height: 20vw;
   }
-  .card {
-    width: 80vw;
-    min-height: 33vh;
-    display: block;
-    margin-bottom: 5vw;
-    position: absolute;
-  }
+
   #teamImage {
     width: 30vw;
     height: 30vw;
   }
+
   .teamName {
     font-size: 8vw;
   }
+
   .points {
     font-size: 5.5vw;
   }
+
   #teamTable {
     margin-top: 4vw;
   }
-  #teamCard {
-    margin-top: 21em;
-  }
+
   h2 {
     font-size: 8vw;
+  }
+
+  .row-flex {
+    flex-direction: column;
+  }
+
+  #hasTeam {
+    flex-direction: column;
+  }
+
+  #hasTeam p {
+    max-width: inherit;
+  }
+
+  #teamCard {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .userCard {
+    width: auto;
+  }
+
+  #actLC {
+    margin-top: 24px;
+  }
+
+  .mobileSpace {
+    margin-top: 24px;
   }
 }
 
@@ -478,18 +636,21 @@ a.button3:active, label.active{
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: url(https://example.com/MaterialIcons-Regular.eot);
+  /* For IE6-8 */
   src: local('Material Icons'),
     local('MaterialIcons-Regular'),
     url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
     url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
     url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
 }
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;  /* Preferred icon size */
+  font-size: 24px;
+  /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -535,12 +696,15 @@ i.menuIcons {
     top: 0%;
     transition-duration: 0.3s;
   }
+
   #menu.show {
     left: 0%;
   }
+
   .menu {
     display: block;
   }
+
   #menuHolder {
     width: 100vw;
     height: 100vh;
@@ -552,11 +716,13 @@ i.menuIcons {
     transition-duration: 0.3s;
     visibility: hidden;
   }
+
   #menuHolder.shadow {
     background-color: rgba(0, 0, 0, 0.4);
     z-index: 101;
     visibility: visible;
   }
+
   i.menuIcons {
     display: inline-block;
   }

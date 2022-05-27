@@ -52,6 +52,7 @@ var name;
 var email;
 var photoUrl;
 var uid;
+let globalTeam;
 
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
@@ -74,7 +75,11 @@ firebase.auth().onAuthStateChanged(function (user) {
       var dbRef = firebase.database().ref('users/' + currentUser1.uid + "/team");
       dbRef.on('value', function (snapshot) {
         team = snapshot.val();
+        globalTeam = team;
         setTeam(team);
+
+        // Load team members
+        loadTeamMembers();
 
         // Display all activities
         firebase.database().ref('activities').once('value').then(function (snap) {
@@ -141,28 +146,76 @@ function setTeam(teamNumber) {
   });
 
   if (teamNumber != null) {
-    const teamNames = ["Hidrogênio", "Hélio", "Lítio", "Berílio", "Boro", "Carbono", "Nitrogênio", "Oxigênio", "Flúor", "Neônio", "Sódio", "Magnésio", "Alumínio", "Silício", "Fósforo", "Enxofre"];
-    var teamName = teamNames[teamNumber - 1];
+    let teamPropreties;
 
-    document.getElementById("hasTeam").className = "center";
-    document.getElementById("unknownTeam").className = "hide center";
-    document.getElementById("loadingTeam").className = "hide";
+    firebase.database().ref('teams/' + (teamNumber - 1)).once('value').then(function (snapshot) {
+      teamPropreties = {
+        name: snapshot.val().name,
+        color: snapshot.val().color,
+        points: snapshot.val().points
+      }
+    }).then(function () {
 
-    document.getElementById('teamName').innerHTML = teamName;
+      document.getElementById("hasTeam").className = "";
+      document.getElementById("unknownTeam").className = "hide";
+      document.getElementById("loadingTeam").className = "hide";
+      document.getElementById("actLC").className = "";
 
-    document.getElementById("teamImage").style.backgroundImage = "url('./files/teams/" + teamNumber + ".webp')"
-    document.getElementById("teamCard").className = "card team" + teamNumber;
+      document.getElementById('teamName').innerHTML = teamPropreties.name;
+      document.getElementById('body').style.backgroundColor = teamPropreties.color;
 
-    firebase.database().ref('teams/' + (teamNumber - 1)).once('value').then(function (snap) {
-      document.getElementById('points').innerHTML = snap.val().points;
-    })
-    firebase.analytics().setUserProperties({
-      team: teamName
+      document.getElementById("teamImage").style.backgroundImage = "url('./files/teams/" + teamNumber + ".webp')"
+      //document.getElementById("teamCard").className = "card";
+
+      document.getElementById('points').innerHTML = teamPropreties.points;
+
+      firebase.analytics().setUserProperties({
+        team: teamName
+      });
+
     });
   } else {
-    document.getElementById("unknownTeam").className = "center";
+    document.getElementById("unknownTeam").className = "";
     document.getElementById("loadingTeam").className = "hide";
   }
+}
+
+// Load team
+
+function loadTeamMembers() {
+  firebase.database().ref("users").once('value', function (snapshot) {
+
+    snapshot.forEach(function (childSnapshot) {
+
+      // Check if is from the current team
+      if (childSnapshot.val().team == globalTeam) {
+
+          // Get user team placeholder
+          let teamPlaceholder = document.getElementById("teamHolder");
+
+          // Create user card
+          let userCard = document.createElement('div');
+          userCard.className = 'userCard';
+
+          // Create user image
+          let userImage = document.createElement('img');
+          userImage.className = 'userImage';
+          userImage.src = childSnapshot.val().photo;
+
+          // Create user name
+          let userName = document.createElement('span');
+          userName.className = 'userName';
+          userName.innerHTML = childSnapshot.val().name;
+
+          // Append user info to user card
+          userCard.appendChild(userImage);
+          userCard.appendChild(userName);
+
+          // Append user card to team placeholder
+          teamPlaceholder.appendChild(userCard);
+        }
+    });
+  });
 }
 
 // Verify account
@@ -444,11 +497,7 @@ function buildLists() {
   const listHolder = document.getElementById('activityList');
 
   const list = document.createElement('ul');
-  const title = document.createElement('h3');
-
-  title.innerHTML = 'Atividades';
-  title.style.margin = '0px 0px 0px 1vw';
-  listHolder.appendChild(title);
+  list.style.margin = "16px";
 
   for (var i2 = 0; i2 < activityList.length; i2++) {
     if (activityList[i2] != null) {

@@ -4,14 +4,13 @@
 }
 
 .card {
-  width: 40vw;
+  width: 42vw;
   min-height: 30vw;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   padding: 8px;
   text-shadow: 0 0 14px rgba(0, 0, 0, 0.5);
-  margin-right: 2vw;
-  margin-bottom: 2vw;
+  margin-bottom: 1.25vw;
   display: inline-block;
   transition-duration: 0.2s;
   vertical-align: top;
@@ -74,6 +73,33 @@
   margin-bottom: 8px;
 }
 
+.veteran {
+  border: 3px solid #ffd000;
+  animation-name: shine;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes shine {
+  0% {
+    border: 2px solid #ffd000;
+  }
+10% {
+    border: 2px solid #fde787;
+  }
+  50% {
+    border: 2px solid #ffa600;
+  }
+  70% {
+    border: 2px solid #ffe345;
+  }
+  100% {
+    border: 2px solid #ffd000;
+  }
+  
+}
+
 .userImage {
   width: 50px;
   height: 50px;
@@ -94,6 +120,8 @@ ul {
   flex-direction: column;
   flex-flow: wrap;
   padding-top: 12px;
+  width: 100%;
+  justify-content: space-around;
 }
 
 table {
@@ -111,7 +139,9 @@ body {
 
 #body {
   padding-left: 5%;
+  padding-right: 5%;
   padding-top: 60px;
+  padding-bottom: 60px;
 }
 
 #header {

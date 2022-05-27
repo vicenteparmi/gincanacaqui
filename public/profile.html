@@ -1,63 +1,46 @@
 <!doctype= html>
-<html lang="pt">
+	<html lang="pt">
+
 	<head>
 		<title>Perfil | Gincana CAQuí</title>
 		<link rel="icon" type="image/webp" href="files/image/CAQUI.webp" />
 		<link rel="stylesheet" type="text/css" href="profile/profile.css">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css?family=Muli:400,700&display=swap&subset=latin-ext" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Muli:400,700&display=swap&subset=latin-ext"
+			rel="stylesheet">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
+
 	<body id="body" onscroll="headerShadow()">
-		<div class="card team0" id="teamCard">
-			<div id="loadingTeam" class="center">
-				<h1 style="margin: 20px;">Carregando informações...</h1>
-			</div>
-			<div id="hasTeam" class="center hide">
-				<div id="teamImage"></div>
-				<table class="teamTable">
+		<div id="profileInfo">
+			<div style="display: flex; flex-direction:row; align-items: center;">
+				<div id="profileImage">
+				</div>
+				<table>
 					<tr>
-						<td class="teamName" id="teamName"></td>
+						<td id='userName'></td>
 					</tr>
 					<tr>
-						<td class="points"><span id="points">Carregando</span> pontos</td>
+						<td id="userEmail"></td>
+					</tr>
+					<tr>
+						<td class="verify">
+							<span id="verified" class="hide">Conta verificada &#10003;</span>
+							<a id="toVerify" class="hide" onclick="verifyAccount()">Verificar conta</a>
+						</td>
+					<tr>
+						<td>
+							<div id="progressbar" class="hide">
+								<text id="progressInd">Uploading...</text>
+								<div id="progressPercentage"></div>
+							</div>
+						</td>
 					</tr>
 				</table>
-				<div id="activityList"></div>
 			</div>
-			<div id="unknownTeam" class="hide center">
-				<img src="files/teams/unknown.webp" class="unkTeamImg center" alt="Time desconhecido">
-				<p class="unkTeamTxt center">Você ainda não entrou em nenhuma equipe</p>
-					<a class="button3 center" onclick="selectTeam(0)">Selecionar Equipe</a>
-			</div>
-		</div>
-		<div id="profileInfo" class="card">
-			<div id="profileImage">
-			</div>
-			<table>
-				<tr>
-					<td id='userName'></td>
-				</tr>
-				<tr>
-					<td id="userEmail"></td>
-				</tr>
-				<tr>
-					<td class="verify">
-						<span id="verified" class="hide">Conta verificada &#10003;</span>
-						<a id="toVerify" class="hide" onclick="verifyAccount()">Verificar conta</a>
-					</td>
-				<tr>
-					<td>
-						<div id="progressbar" class="hide">
-							<text id="progressInd">Uploading...</text>
-						  <div id="progressPercentage"></div>
-						</div>
-					</td>
-				</tr>
-			</table>
-			<div>
-				<h3 style="margin-bottom:10px; margin-top: 20px;">Configurações de usuário</h3>
+			<div class="mobileSpace">
+				<h3 style="margin-bottom:12px; margin-top: 0;">Configurações de usuário</h3>
 				<a class="button3" onclick="updateUserName()">Alterar Nome</a>
 				<input type="file" name="file" id='profilePicture' accept="image/*">
 				<label for="profilePicture" class="button3">Alterar Imagem</label>
@@ -66,9 +49,42 @@
 				<a class="button3" onclick="deleteAccount()" style="background-color:#ff4400">Apagar Conta</a>
 			</div>
 		</div>
+		<div class="row-flex" id="teamCard">
+			<div id="hasTeam" class="hide">
+				<div class="teamHeader">
+					<div id="teamImage"></div>
+					<table class="teamTable">
+						<tr>
+							<td class="teamName" id="teamName"></td>
+						</tr>
+						<tr>
+							<td class="points"><span id="points">Carregando</span><span style="visibility: hidden;">_</span>pontos</td>
+						</tr>
+					</table>
+				</div>
+				<div>
+					<h3>Sua equipe</h3>
+					<div id="teamHolder"></div>
+				</div>
+			</div>
+			<div id="actLC" class="hide">
+				<h3>Atividades</h3>
+				<hr>
+				<div id="activityList"></div>
+			</div>
+
+			<div id="loadingTeam" class="center">
+				<h1 style="margin: 20px;">Carregando informações...</h1>
+			</div>
+			<div id="unknownTeam" class="hide center" style="color: white">
+				<img src="files/teams/unknown.webp" class="unkTeamImg center" alt="Time desconhecido">
+				<p class="unkTeamTxt center">Você ainda não entrou em nenhuma equipe</p>
+				<a class="button3 center" onclick="selectTeam(0)">Selecionar Equipe</a>
+			</div>
+		</div>
 		<div id="myModal" class="modal">
 			<div class="modal-content">
-    		<span class="close">&times;</span>
+				<span class="close">&times;</span>
 				<h2>Selecione sua equipe</h2>
 				<p>Escolha a equipe que foi definida para você no primeiro dia.</p>
 				<p>Ela poderá ser selecionada <b>apenas uma vez</b> pelo site e
@@ -77,7 +93,9 @@
 					problema, entre em contato pela página <a href="./about.html">sobre</a>.</p>
 				<table class="teamSelectorTable center">
 					<tr>
-						<td><h3 style="margin-left:13px;">Diurno</h3></td>
+						<td>
+							<h3 style="margin-left:13px;">Diurno</h3>
+						</td>
 					</tr>
 					<tr>
 						<td>
@@ -160,7 +178,9 @@
 						</td>
 					</tr>
 					<tr>
-						<td><h3 style="margin-left:13px;">Noturno</h3></td>
+						<td>
+							<h3 style="margin-left:13px;">Noturno</h3>
+						</td>
 					</tr>
 					<tr>
 						<td>
@@ -195,16 +215,22 @@
 		</div>
 
 		<div id="header" class="headerNoShadow">
-			<i id="sandwich" class="menuIcons material-icons" onclick="openMenu()" md-24 md-light style="vertical-align: middle;padding: 10px; cursor:pointer;">menu</i>
+			<i id="sandwich" class="menuIcons material-icons" onclick="openMenu()" md-24 md-light
+				style="vertical-align: middle;padding: 10px; cursor:pointer;">menu</i>
 			<img src="files/image/CAQUI.webp" class="headerImage">
 			<text id="logo">Gincana CAQuí</text>
 			<div id="menuHolder">
 				<div id="menu">
-					<a class="menu" href="./index.html"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">home</i>Início</a>
-					<a class="menu" href="./updates.html"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
-					<a class="menu" href="./send.html"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
-					<a class="menu" href="./schedule.html"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
-					<a class="menu" href="./about.html"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
+					<a class="menu" href="./index.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">home</i>Início</a>
+					<a class="menu" href="./updates.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
+					<a class="menu" href="./send.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
+					<a class="menu" href="./schedule.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
+					<a class="menu" href="./about.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
 				</div>
 			</div>
 		</div>
@@ -222,4 +248,5 @@
 		<script type="text/javascript" src="profile/profile.js"></script>
 		<script type="text/javascript" src="files/modules/cloud-messaging.js"></script>
 	</body>
-</html>
+
+	</html>
