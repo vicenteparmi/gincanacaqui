@@ -141,9 +141,9 @@ function loadTeamMembers() {
         userCard.className = 'userCard';
 
         // Create user image
-        let userImage = document.createElement('img');
+        let userImage = document.createElement('div');
         userImage.className = 'userImage';
-        userImage.src = user.photo;
+        userImage.style.backgroundImage = "url('" + user.photo + "')";
 
         // Create user name
         let userName = document.createElement('span');
