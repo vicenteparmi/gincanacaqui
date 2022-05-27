@@ -65,16 +65,27 @@ firebase.auth().onAuthStateChanged(function (user) {
       console.log(profile.photoURL);
 
       const currentUser1 = firebase.auth().currentUser;
+      let userNameH;
+
       firebase.database().ref('users/' + currentUser1.uid).once('value').then(function (snapshot) {
-        document.getElementById('userName').innerHTML = snapshot.val().name;
+        userNameH = snapshot.val().name;
+      }).then(function () {
+
+        if (userNameH == undefined) {
+          userNameH = user.displayName;
+        }
+
+        document.getElementById('userName').innerHTML = userNameH;
       });
+
+
 
       document.getElementById('userEmail').innerHTML = email;
       document.getElementById("profileImage").style.backgroundImage = "url('" + photoURL + "')";
 
       // Get team
       var team;
-      
+
       var dbRef = firebase.database().ref('users/' + currentUser1.uid + "/team");
       dbRef.on('value', function (snapshot) {
         team = snapshot.val();
@@ -187,6 +198,9 @@ function setTeam(teamNumber) {
 
 function loadTeamMembers() {
   firebase.database().ref("users").once('value', function (snapshot) {
+
+    // Clear team members
+    document.getElementById("teamHolder").innerHTML = "";
 
     snapshot.forEach(function (childSnapshot) {
 
