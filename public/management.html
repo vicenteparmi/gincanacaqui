@@ -36,7 +36,11 @@
                     </div>
                     <div class="card" onclick="openPopup('popup5')">
                         <h2>Postagens</h2>
-                        <p>Criar, modificar e remover postagens</p>
+                        <p>Criar, modificar e remover postagens.</p>
+                    </div>
+                    <div class="card" onclick="openPopup('popup6')">
+                        <h2>Cronograma</h2>
+                        <p>Alterar eventos e organizar grade.</p>
                     </div>
                 </div>
             </div>
@@ -277,6 +281,142 @@
                     <div>
                         <h2>Posts ativos</h2>
                         <div id="postsAtivos"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schedule -->
+
+            <div id="popup6" class="sidePannel">
+                <div class="sidePannelInner" style="display: block;">
+                    <span class="close" onclick="closePopup('popup6')">&times; Fechar tela</span>
+                    <div style="display: flex; flex-direction:row; align-items:center">
+                        <h2>Alterar grade com as disciplinas</h2>
+                        <input type="button" value="Adicionar evento" onclick="addEvent()" class="saveButton"
+                            style="width: fit-content; margin-left: 12px;">
+                    </div>
+                    <br>
+                    <table id="table" cellspacing="5" cellpadding="5" style="display:none" class="card2">
+                        <tr>
+                            <th style="width:5vw;">Horário</th>
+                            <th>Segunda</th>
+                            <th>Terça</th>
+                            <th>Quarta</th>
+                            <th>Quinta</th>
+                            <th>Sexta</th>
+                        </tr>
+                    </table>
+                </div>
+                <div id="modal" class="modalS">
+                    <div class="modal-contentS">
+                        <span class="closeS" id="closeModal"><i class="material-icons" md-24 md-light
+                                style="vertical-align: middle;padding: 10px;">arrow_back</i></span>
+                        <div id="modalImage"></div>
+                        <div class="blockDiv">
+                            <div class="titleDiv">
+                                <div id="cubes">
+                                    <div onclick="selectModeEdit(0)" id="cube0" class="cube mode0" title="Integração">
+                                    </div>
+                                    <div onclick="selectModeEdit(1)" id="cube1" class="cube mode1"
+                                        title="Palestras de Instâncias da Faculdade">
+                                    </div>
+                                    <div onclick="selectModeEdit(2)" id="cube2" class="cube mode2"
+                                        title="Atividades recreativas"></div>
+                                    <div onclick="selectModeEdit(3)" id="cube3" class="cube mode3"
+                                        title="Áreas da Química"></div>
+                                    <div onclick="selectModeEdit(4)" id="cube4" class="cube mode4"
+                                        title="Almoço e Jantar"></div>
+                                    <div onclick="selectModeEdit(5)" id="cube5" class="cube mode5" title="Palestras">
+                                    </div>
+                                    <div onclick="selectModeEdit(6)" id="cube6" class="cube mode6" title="Vazio"></div>
+                                </div>
+                                <input id="eventTitle" placeholder="Título do evento"></input>
+                            </div>
+                            <div class="modal2Desc">
+                                <div class="eventInfo">
+                                    <select id="eventDate" name="eventDate">
+                                        <option value="0">Segunda</option>
+                                        <option value="1">Terça</option>
+                                        <option value="2">Quarta</option>
+                                        <option value="3">Quinta</option>
+                                        <option value="4">Sexta</option>
+                                    </select>
+                                    <span>, </span>
+                                    <select name="startTime" id="startTime">
+                                        <option value="0">8h30</option>
+                                        <option value="1">9h00</option>
+                                        <option value="2">9h30</option>
+                                        <option value="3">10h00</option>
+                                        <option value="4">10h30</option>
+                                        <option value="5">11h00</option>
+                                        <option value="6">11h30</option>
+                                        <option value="7">12h00</option>
+                                        <option value="8">12h30</option>
+                                        <option value="9">13h00</option>
+                                        <option value="10">13h30</option>
+                                        <option value="11">14h00</option>
+                                        <option value="12">14h30</option>
+                                        <option value="13">15h00</option>
+                                        <option value="14">15h30</option>
+                                        <option value="15">16h00</option>
+                                        <option value="16">16h30</option>
+                                        <option value="17">17h00</option>
+                                        <option value="18">17h30</option>
+                                        <option value="19">18h00</option>
+                                        <option value="20">18h30</option>
+                                        <option value="21">19h00</option>
+                                        <option value="22">19h30</option>
+                                        <option value="23">20h00</option>
+                                        <option value="24">20h30</option>
+                                        <option value="25">21h00</option>
+                                        <option value="26">21h30</option>
+                                        <option value="27">22h00</option>
+                                    </select>
+                                    <span> - </span>
+                                    <select name="endTime" id="endTime">
+                                        <option value="0">8h30</option>
+                                        <option value="1">9h00</option>
+                                        <option value="2">9h30</option>
+                                        <option value="3">10h00</option>
+                                        <option value="4">10h30</option>
+                                        <option value="5">11h00</option>
+                                        <option value="6">11h30</option>
+                                        <option value="7">12h00</option>
+                                        <option value="8">12h30</option>
+                                        <option value="9">13h00</option>
+                                        <option value="10">13h30</option>
+                                        <option value="11">14h00</option>
+                                        <option value="12">14h30</option>
+                                        <option value="13">15h00</option>
+                                        <option value="14">15h30</option>
+                                        <option value="15">16h00</option>
+                                        <option value="16">16h30</option>
+                                        <option value="17">17h00</option>
+                                        <option value="18">17h30</option>
+                                        <option value="19">18h00</option>
+                                        <option value="20">18h30</option>
+                                        <option value="21">19h00</option>
+                                        <option value="22">19h30</option>
+                                        <option value="23">20h00</option>
+                                        <option value="24">20h30</option>
+                                        <option value="25">21h00</option>
+                                        <option value="26">21h30</option>
+                                        <option value="27">22h00</option>
+                                    </select>
+                                    <span> • </span>
+                                    <input id="eventLocation" placeholder="Local"></input>
+                                </div>
+                                <textarea id="eventDescription" placeholder="Descrição do envento"></textarea>
+                                <br>
+                                <div>
+                                    <input type="button" id="saveEvent" value="Salvar" class="saveButton"
+                                        onclick="saveEventEdit()"></input>
+                                    <input type="button" id="deleteEvent" value="Excluir" class="saveButton"
+                                        onclick="deleteEvent()"></input>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

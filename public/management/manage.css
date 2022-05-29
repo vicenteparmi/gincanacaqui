@@ -308,7 +308,7 @@ input[type=checkbox] {
     outline: none;
 }
 
-input[type=checkbox] > label {
+input[type=checkbox]>label {
     margin-top: 0px;
 }
 
@@ -500,6 +500,172 @@ body {
     top: -1000%;
 }
 
+/* Schedule */
+
+.hasContent {
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    border: 1px solid #565656;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    text-align: center;
+}
+
+.hasContent:hover {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.28);
+}
+
+/* Modes */
+
+/* Integração */
+.mode0 {
+    background-color: #5BB974;
+}
+
+/* Palestras de Instâncias da Faculdade */
+.mode1 {
+    background-color: #F1F3F4;
+    color: #434343;
+}
+
+/* Atividades recreativas */
+.mode2 {
+    background-color: #FBBC04;
+}
+
+/* Áreas da Química */
+.mode3 {
+    background-color: #F27405;
+}
+
+/* Almoço e Jantar */
+.mode4 {
+    background-color: #FAD2CF;
+    color: #434343;
+}
+
+/* Palestras */
+.mode5 {
+    background-color: #174EA6;
+}
+
+/* Empty */
+.mode6 {
+    background-color: #ff4646;
+    color: #e0e0e0;
+}
+
+.eventInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.eventInfo select {
+    width: auto;
+    padding: 0px 8px;
+}
+
+#modalImage {
+    width: 100%;
+    height: 210px;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 8px;
+    transition-duration: 0.5s;
+}
+
+.cube {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    margin-right: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.28);
+}
+
+#cubes {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+.mode-selected {
+    border: 2px solid #565656;
+}
+
+.blockDiv {
+    position: absolute;
+    top: 200px;
+    left: 0;
+    padding: 60px 5% 5% 5%;
+    width: 90%;
+    border-radius: 8px;
+    background: white;
+    padding-top: 50px;
+}
+
+/* Modal for schedule */
+
+/* The Modal (background) */
+.modalS {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 100;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-contentS {
+    background-color: #fefefe;
+    margin: 100px auto;
+    padding: 30px;
+    width: 50vw;
+    min-height: 30vh;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+/* The Close Button */
+.closeS {
+    color: #aaa;
+    float: left;
+    font-size: 28px;
+    font-weight: bold;
+    z-index: 100000;
+    position: absolute;
+    top: 2%;
+    left: 2%;
+}
+
+.closeS:hover,
+.closeS:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Material icons */
+
 @font-face {
     font-family: 'Material Icons';
     font-style: normal;
@@ -612,4 +778,3 @@ i.menuIcons {
         max-width: 90vw;
     }
 }
-

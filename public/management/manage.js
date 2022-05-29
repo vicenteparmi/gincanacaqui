@@ -131,10 +131,12 @@ function saveActivityDone() {
             let index = 0;
 
             snapshot.forEach(function (activity) {
-                
+
                 // Save activity done if checkbox is checked
                 if (activities[index].checked) {
-                    firebase.database().ref('teams/' + teamID + '/tasks/' + activity.key).set({done: true});
+                    firebase.database().ref('teams/' + teamID + '/tasks/' + activity.key).set({
+                        done: true
+                    });
                 }
 
                 // Verify unchecked checkboxes
@@ -526,6 +528,7 @@ document.getElementById("ajustes3").addEventListener("click", function () {
 
 // Open and close popups
 let breakI = false;
+
 function openPopup(popup) {
     document.getElementById(popup).style.width = "100%";
     document.getElementById("logo").style.color = "white";
@@ -676,6 +679,226 @@ firebase.database().ref("posts").on("value", function (snapshot) {
         postList.appendChild(card);
     }
 });
+
+// Schedule
+
+const weekDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
+
+function buildTable() {
+    const table = document.getElementById('table');
+    table.style.display = "table";
+
+    var hour = 8;
+    var min = "30";
+
+    for (var i = 0; i < 28; i++) {
+        const tr = document.createElement('tr');
+        const date = document.createElement('td');
+
+        date.innerHTML = hour + "h" + min;
+        if (min == "30") {
+            min = "00";
+            hour++;
+        } else {
+            min = "30";
+        }
+
+        date.style.width = "5vw";
+
+        tr.appendChild(date);
+
+        for (var i2 = 0; i2 < 5; i2++) {
+            const collum = document.createElement('td');
+            collum.id = i + "/" + i2;
+            tr.appendChild(collum);
+        }
+
+        table.appendChild(tr);
+    }
+
+    firebase.database().ref('schedule').on('child_added', function (snap) {
+        const cellCollum = snap.val().week_day;
+        const cellRow = snap.val().start_time;
+        const cellLenght = (snap.val().end_time - cellRow);
+
+        const currentCell = document.getElementById(cellRow + "/" + cellCollum);
+        currentCell.innerHTML = snap.val().title;
+        currentCell.rowSpan = cellLenght + 1;
+        currentCell.className = "hasContent mode" + snap.val().type;
+        currentCell.onclick = function () {
+            inflateInfo(snap.key)
+        };
+    });
+
+    // Remove unused cells
+    firebase.database().ref('schedule').once('value').then(function () {
+        for (var i = 0; i < 28; i++) {
+            for (var i2 = 0; i2 < 5; i2++) {
+                const analysedCell = document.getElementById(i + "/" + i2);
+                if (analysedCell.innerHTML == "") {
+                    analysedCell.parentNode.removeChild(analysedCell);
+                }
+            }
+        }
+    })
+}
+
+buildTable();
+
+// inflateInfo
+const colors = ["#a5d6a7", "#c4c4c4", "#fff49d", "#fdc391", "#FAD2CF", "#c5d8f7"];
+let currentEvent;
+let modeEditEvent;
+
+function inflateInfo(eventNumber) {
+    firebase.database().ref('schedule/' + eventNumber).once('value').then(function (snap) {
+        document.getElementById('eventTitle').value = snap.val().title;
+        document.getElementById('eventDescription').value = (snap.val().desc) ? snap.val().desc : "Descrição não informada.";
+        document.getElementById('eventDate').value = snap.val().week_day;
+        document.getElementById('startTime').value = snap.val().start_time;
+        document.getElementById('endTime').value = snap.val().end_time;
+        document.getElementById('eventLocation').value = (snap.val().location) ? snap.val().location : "Local não definido.";
+        document.getElementById('cube' + snap.val().type).className += " mode-selected";
+        document.getElementById('modalImage').style.backgroundImage = "url('./files/image/bg" + snap.val().type + ".svg')";
+        document.getElementById('modalImage').style.backgroundColor = colors[snap.val().type];
+        openModal(eventNumber);
+        currentEvent = eventNumber;
+        modeEditEvent = snap.val().type;
+    })
+}
+
+function selectModeEdit(mode) {
+    modeEditEvent = mode;
+
+    for (var i = 0; i < 7; i++) {
+        const cube = document.getElementById("cube" + i);
+        cube.className = "cube mode" + i;
+    }
+
+    const cube = document.getElementById("cube" + mode);
+    cube.className += " mode-selected";
+}
+
+function addEvent() {
+
+    // Clear modal
+    document.getElementById('eventTitle').value = "";
+    document.getElementById('eventDescription').innerHTML = "";
+    document.getElementById('eventDate').value = "";
+    document.getElementById('startTime').value = "0";
+    document.getElementById('endTime').value = "0";
+    document.getElementById('eventLocation').value = "";
+    document.getElementById('cube0').className = "cube mode0";
+    document.getElementById('cube1').className = "cube mode1";
+    document.getElementById('cube2').className = "cube mode2";
+    document.getElementById('cube3').className = "cube mode3";
+    document.getElementById('cube4').className = "cube mode4";
+    document.getElementById('cube5').className = "cube mode5";
+
+    openModal(-1);
+    currentEvent = -1;
+}
+
+function saveEventEdit() {
+    const ref = firebase.database().ref("schedule/" + currentEvent);
+
+    const event = {
+        title: document.getElementById('eventTitle').value,
+        desc: document.getElementById('eventDescription').value,
+        week_day: document.getElementById('eventDate').value,
+        start_time: document.getElementById('startTime').value,
+        end_time: document.getElementById('endTime').value,
+        location: document.getElementById('eventLocation').value,
+        type: modeEditEvent
+    };
+
+    if (currentEvent == -1) {
+        firebase.database().ref('schedule').push(event).then(function () {
+            const pop = toast("Evento adicionado com sucesso!");
+            setTimeout(function () {
+                pop.remove();
+            }, 3000);
+
+            // Reload table
+            const table = document.getElementById('table');
+            table.innerHTML = "";
+            buildTable();
+        });
+    } else {
+        ref.update(event).then(function () {
+            const pop = toast("Evento editado com sucesso!");
+            setTimeout(function () {
+                pop.remove();
+            }, 3000);
+
+            // Reload table
+            const table = document.getElementById('table');
+            table.innerHTML = "";
+            buildTable();
+        });
+    }
+
+    modal.style.display = "none";
+    history.pushState('', document.title, window.location.pathname);
+    document.getElementById('modalImage').style.backgroundImage = "";
+}
+
+function deleteEvent() {
+    const ref = firebase.database().ref("schedule/" + currentEvent);
+
+    if (confirm("Deseja realmente excluir este evento?")) {
+        ref.remove();
+        const pop = toast("Evento excluído!");
+
+        // Reload table
+        const table = document.getElementById('table');
+        table.innerHTML = "";
+        buildTable();
+
+        setTimeout(function () {
+            pop.remove();
+        }, 3000);
+    }
+}
+
+// Modal popup
+const modal = document.getElementById("modal");
+
+function openModal(v) {
+
+    if (v == -1) {
+        document.getElementsByClassName('blockDiv')[0].style.top = "0px";
+    } else {
+        document.getElementsByClassName('blockDiv')[0].style.top = "200px";
+    }
+
+    // https://gist.github.com/thedamon/9276193
+    var hash = v;
+    window.location.hash = hash;
+    window.onhashchange = function () {
+        if (!location.hash) {
+            modal.style.display = "none";
+        }
+    }
+
+    var span = document.getElementById("closeModal");
+
+    modal.style.display = "block";
+
+    span.onclick = function () {
+        modal.style.display = "none";
+        history.pushState('', document.title, window.location.pathname);
+        document.getElementById('modalImage').style.backgroundImage = "";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            history.pushState('', document.title, window.location.pathname);
+            document.getElementById('modalImage').style.backgroundImage = "";
+        }
+    }
+}
 
 // Toast
 
