@@ -41,7 +41,8 @@
 			</div>
 			<div class="mobileSpace">
 				<h3 style="margin-bottom:12px; margin-top: 0;">Configurações de usuário</h3>
-				<div style="display: flex; flex-direction:row; align-items:center; flex-wrap: wrap; justify-content: center;">
+				<div
+					style="display: flex; flex-direction:row; align-items:center; flex-wrap: wrap; justify-content: center;">
 					<a class="button3" onclick="updateUserName()">Alterar Nome</a>
 					<input type="file" name="file" id='profilePicture' accept="image/*">
 					<label for="profilePicture" class="button3">Alterar Imagem</label>
@@ -73,6 +74,9 @@
 			</div>
 			<div id="actLC" class="hide">
 				<h3>Atividades</h3>
+				<p style="text-align: center; width: auto; max-width: 480px; margin: auto;">Você pode ver se suas atividades estão em revisão ou se já
+					foram aprovadas. Atividades rejeitadas após a revisão serão marcadas como não enviadas. Você pode
+					ver o motivo no <a href="log.html">histórico</a>.</p>
 				<hr>
 				<div id="activityList"></div>
 			</div>

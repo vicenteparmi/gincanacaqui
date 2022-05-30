@@ -14,7 +14,7 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
 function getInfo() {
-  firebase.database().ref('approved').limitToLast(50).once('value', function (sa) {
+  firebase.database().ref('approved').limitToLast(100).once('value', function (sa) {
     sa.forEach(function (s) {
       var by = s.val().userId;
       var team = (s.val().team) ? s.val().team : s.key;
@@ -25,7 +25,7 @@ function getInfo() {
       inflate(0, by, team, activity, time, reasons);
     });
   })
-  firebase.database().ref('rejected').limitToLast(50).once('value', function (sa) {
+  firebase.database().ref('rejected').limitToLast(100).once('value', function (sa) {
     sa.forEach(function (s) {
       var by = s.val().userId;
       var team = (s.val().team) ? s.val().team : s.key;
