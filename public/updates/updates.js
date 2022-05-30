@@ -155,6 +155,11 @@ function loadTeamMembers() {
         userCard.appendChild(userImage);
         userCard.appendChild(userName);
 
+        // Set veteran class
+        if (user.veteran) {
+          userCard.classList.add('veteran');
+        }
+
         // Append user card to team placeholder
         teamPlaceholder.appendChild(userCard);
       }

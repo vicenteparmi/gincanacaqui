@@ -9,9 +9,12 @@ firebase.auth().onAuthStateChanged(function (user) {
             console.log('Notification permission granted.');
             return messaging.getToken();
         }).then(function (token) {
-            firebase.database().ref('users/' + user.uid).update({
-                token: token
-            });
+            // If user exists, update
+            if (user.uid) {
+                firebase.database().ref('users/' + user.uid).update({
+                    token: token
+                });
+            }
         }).catch(function (err) {
             console.log('Unable to get permission to notify.', err);
             popupMessageError();

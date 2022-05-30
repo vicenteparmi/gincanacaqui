@@ -680,7 +680,9 @@ firebase.database().ref("posts").on("value", function (snapshot) {
     }
 });
 
-// Schedule
+//////////////
+// Schedule //
+//////////////
 
 const weekDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
 
@@ -913,6 +915,148 @@ function toast(message) {
 
     return toastBox;
 }
+
+// ******************
+// Users
+// ******************
+
+const userList = document.getElementById('userList');
+
+firebase.database().ref('users').on('value', function (snap) {
+    userList.innerHTML = "";
+
+    snap.forEach(function (child) {
+        const user = child.val();
+        const userId = child.key;
+
+        // Create elements
+        const userBox = document.createElement("div");
+        userBox.className = "userBox";
+
+        const userName = document.createElement("div");
+        userName.className = "userName";
+        userName.innerHTML = user.name;
+
+        const userEmail = document.createElement("div");
+        userEmail.className = "userEmail";
+        userEmail.innerHTML = user.email;
+
+        const userTeam = document.createElement("div");
+        userTeam.className = "userTeam";
+        userTeam.innerHTML = "Equipe #" + user.team;
+
+        const userPhoto = document.createElement("div");
+        userPhoto.className = "userPhoto";
+        userPhoto.style.backgroundImage = "url('" + user.photo + "')";
+
+        const userUID = document.createElement("div");
+        userUID.className = "userUID";
+        userUID.innerHTML = userId;
+
+        const userModify = document.createElement("input");
+        userModify.type = "button";
+        userModify.value = "Modificar";
+        userModify.className = "userModify";
+        userModify.onclick = function () {
+            openUserModal(userId);
+        };
+
+        const userDelete = document.createElement("input");
+        userDelete.type = "button";
+        userDelete.value = "Excluir";
+        userDelete.className = "userDelete";
+        userDelete.onclick = function () {
+            if (confirm("Deseja realmente excluir este usuário?")) {
+                firebase.database().ref('users/' + userId).remove();
+                const pop = toast("Usuário excluído!");
+
+                setTimeout(function () {
+                    pop.remove();
+                }, 3000);
+            }
+        }
+
+        // Append elements
+        userBox.appendChild(userPhoto);
+        userBox.appendChild(userName);
+        userBox.appendChild(userEmail);
+        userBox.appendChild(userUID);
+        userBox.appendChild(userTeam);
+        userBox.appendChild(userModify);
+        userBox.appendChild(userDelete);
+
+        userList.appendChild(userBox);
+    });
+});
+
+function openUserModal(userId) {
+    const ref = firebase.database().ref("users/" + userId);
+
+    ref.once('value').then(function (snap) {
+        const user = snap.val();
+
+        document.getElementById('editUserName').value = user.name;
+        document.getElementById('editUserEmail').value = user.email;
+        document.getElementById('editUserTeam').value = user.team;
+        document.getElementById('editUserPhoto').src = user.photo;
+
+        if (user.veteran) {
+            document.getElementById('editUserVeteran').checked = user.veteran;
+        }
+        
+        document.getElementById('modalEditUser').style.display = "block";
+    });
+
+    // Close when click outside
+    window.onclick = function (event) {
+        if (event.target == document.getElementById('modalEditUser')) {
+            document.getElementById('modalEditUser').style.display = "none";
+        }
+    }
+
+    // Delete image on click
+    document.getElementById('editUserPhoto').onclick = function () {
+        if (confirm("Ao confirmar a imagem será removida.")) {
+            document.getElementById('editUserPhoto').src = null;
+        }
+    }
+
+    // Save user
+    document.getElementById('editUserSave').onclick = function () {
+        saveUserInfo(userId);
+    }
+
+}
+
+function saveUserInfo(userId) {
+    const ref = firebase.database().ref("users/" + userId);
+
+    const name = document.getElementById('editUserName').value;
+    const email = document.getElementById('editUserEmail').value;
+    const teamEdit = document.getElementById('editUserTeam').value;
+    const photo = document.getElementById('editUserPhoto').src;
+    const veteran = document.getElementById('editUserVeteran').checked;
+
+    // Confirm save
+    if (confirm("Deseja realmente salvar as alterações?")) {
+        ref.update({
+            name: name,
+            email: email,
+            team: teamEdit,
+            photo: photo,
+            veteran: veteran
+        });
+
+        const pop = toast("Usuário atualizado!");
+
+        setTimeout(function () {
+            pop.remove();
+        }, 3000);
+
+        document.getElementById('modalEditUser').style.display = "none";
+    }
+}
+
 
 // ******************
 // Default code

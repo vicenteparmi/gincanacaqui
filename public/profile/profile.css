@@ -281,6 +281,11 @@ h2 {
   text-shadow: 0px 0px;
 }
 
+.done::before {
+  content: "Aprovado";
+  font-size: 12px;
+}
+
 .review {
   color: #003ff0
 }

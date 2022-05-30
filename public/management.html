@@ -214,9 +214,46 @@
             <div id="popup3" class="sidePannel">
                 <div class="sidePannelInner" style="display: block;">
                     <span class="close" onclick="closePopup('popup3')">&times; Fechar tela</span>
-                    <h2>Modificar pontuação e atividades concluídas</h2>
-                    <div style="display: flex; flex-direction: row; align-items: center;">
+                    <h2>Gerenciar usuários</h2>
+                    <div id="userList">
+                        Não há usuários cadastrados.
+                    </div>
+                </div>
+                <!-- User edit modal -->
 
+                <div id="modalEditUser" class="modal">
+                    <div class="modal-content">
+                        <h2>Editar usuário</h2>
+                        <div style="display: flex; flex-direction:column; align-items:center; width: 100%">
+                            <img src="" alt="Imagem do usuário" id="editUserPhoto">
+                            <br>
+                            <label for="editUserName">Nome</label>
+                            <input type="text" name="editUserName" id="editUserName">
+                            <label for="editUserEmail">E-mail</label>
+                            <input type="text" name="editUserEmail" id="editUserEmail">
+                            <label for="editUserTeam">Equipe</label>
+                            <select name="editUserTeam" id="editUserTeam">
+                                <option value="1">Hidrogênio</option>
+                                <option value="2">Hélio</option>
+                                <option value="3">Lítio</option>
+                                <option value="4">Berílio</option>
+                                <option value="5">Boro</option>
+                                <option value="6">Carbono</option>
+                                <option value="7">Nitrogênio</option>
+                                <option value="8">Oxigênio</option>
+                                <option value="9">Flúor</option>
+                                <option value="10">Neônio</option>
+                                <option value="11">Sódio</option>
+                                <option value="12">Magnésio</option>
+                                <option value="13">Alumínio</option>
+                                <option value="14">Silício</option>
+                                <option value="15">Fósforo</option>
+                                <option value="16">Enxofre</option>
+                            </select>
+                            <label for="editUserVeteran">Padrinho</label>
+                            <input type="checkbox" name="editUserVeteran" id="editUserVeteran">
+                            <button class="saveButton" id="editUserSave">Salvar mudanças</button>
+                        </div>
                     </div>
                 </div>
             </div>
