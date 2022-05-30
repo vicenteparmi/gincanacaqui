@@ -116,7 +116,7 @@ function buildCard(actTitle, actDescription, answerInput, teamName, color, userN
   ativityTitle.innerHTML = actTitle;
   ativityDescription.innerHTML = actDescription;
   answerText.innerHTML = "Resposta:";
-  answer.innerHTML = answerInput;
+  answer.innerHTML = urlify(answerInput);
 
   // Create image elements
   const imageHolder = document.createElement('div');
@@ -382,4 +382,13 @@ function openMenu() {
 
 function openModal() {
   document.getElementById('myModal').style.display = "block";
+}
+
+function urlify(text) {
+  var urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g;
+  //var urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, function(url,b,c) {
+      var url2 = (c == 'www.') ?  'http://' +url : url;
+      return '<a href="' +url2+ '" target="_blank">Link</a>';
+  }) 
 }

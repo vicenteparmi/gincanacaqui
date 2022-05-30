@@ -16,8 +16,8 @@ body {
 
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  max-width: 300px;
-  margin: 12px;
+  max-width: 28vw;
+  margin: 0.5vw;
   border-radius: 8px;
   padding: 0px;
   background-color: white;
@@ -340,6 +340,11 @@ i.menuIcons {
   #reviewImage {
     width: 84vw;
   }
+
+  .card {
+    max-width: 100%;
+    width: 40vw;
+  }
 }
 
 @media all and (max-width: 30em) {
@@ -361,5 +366,10 @@ i.menuIcons {
   }
   .markAsDone {
     max-width: 90vw;
+  }
+
+  .card {
+    max-width: 100%;
+    width: 90vw;
   }
 }
