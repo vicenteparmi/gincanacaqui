@@ -1,0 +1,260 @@
+<!doctype= html>
+	<html lang="pt">
+
+	<head>
+		<title>Perfil | Gincana CAQuí</title>
+		<link rel="icon" type="image/webp" href="files/image/CAQUI.webp" />
+		<link rel="stylesheet" type="text/css" href="profile/profile.css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Muli:400,700&display=swap&subset=latin-ext"
+			rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+
+	<body id="body" onscroll="headerShadow()">
+		<div id="profileInfo">
+			<div style="display: flex; flex-direction:row; align-items: center;">
+				<div id="profileImage">
+				</div>
+				<table>
+					<tr>
+						<td id='userName'></td>
+					</tr>
+					<tr>
+						<td id="userEmail"></td>
+					</tr>
+					<tr>
+						<td class="verify">
+							<span id="verified" class="hide">Conta verificada &#10003;</span>
+							<a id="toVerify" class="hide" onclick="verifyAccount()">Verificar conta</a>
+						</td>
+					<tr>
+						<td>
+							<div id="progressbar" class="hide">
+								<text id="progressInd">Uploading...</text>
+								<div id="progressPercentage"></div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="mobileSpace">
+				<h3 style="margin-bottom:12px; margin-top: 0;">Configurações de usuário</h3>
+				<div
+					style="display: flex; flex-direction:row; align-items:center; flex-wrap: wrap; justify-content: center;">
+					<a class="button3" onclick="updateUserName()">Alterar Nome</a>
+					<input type="file" name="file" id='profilePicture' accept="image/*">
+					<label for="profilePicture" class="button3">Alterar Imagem</label>
+					<a class="button3" onclick="changePassword()">Alterar Senha</a>
+					<a class="button3" onclick="signOut()">Sair</a>
+					<a class="button3" onclick="deleteAccount()" style="background-color:#ff4400; color: white;">Apagar
+						Conta</a>
+				</div>
+			</div>
+		</div>
+		<div class="row-flex" id="teamCard">
+			<div id="hasTeam" class="hide">
+				<div class="teamHeader">
+					<div id="teamImage"></div>
+					<table class="teamTable">
+						<tr>
+							<td class="teamName" id="teamName"></td>
+						</tr>
+						<tr>
+							<td class="points"><span id="points">Carregando</span><span
+									style="visibility: hidden;">_</span>pontos</td>
+						</tr>
+					</table>
+				</div>
+				<div>
+					<h3>Sua equipe</h3>
+					<div id="teamHolder"></div>
+				</div>
+			</div>
+			<div id="actLC" class="hide">
+				<h3>Atividades</h3>
+				<p style="text-align: center; width: auto; max-width: 480px; margin: auto;">Você pode ver se suas atividades estão em revisão ou se já
+					foram aprovadas. Atividades rejeitadas após a revisão serão marcadas como não enviadas. Você pode
+					ver o motivo no <a href="log.html">histórico</a>.</p>
+				<hr>
+				<div id="activityList"></div>
+			</div>
+
+			<div id="loadingTeam">
+				<h1 style="margin: 20px; color: white;">Carregando informações...</h1>
+			</div>
+			<div id="unknownTeam" class="hide center" style="color: white">
+				<img src="files/teams/unknown.webp" class="unkTeamImg center" alt="Time desconhecido">
+				<p class="unkTeamTxt center">Você ainda não entrou em nenhuma equipe</p>
+				<a class="button3 center" onclick="selectTeam(0)">Selecionar Equipe</a>
+			</div>
+		</div>
+		<div id="myModal" class="modal">
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<h2>Selecione sua equipe</h2>
+				<p>Escolha a equipe que foi definida para você no primeiro dia.</p>
+				<p>Ela poderá ser selecionada <b>apenas uma vez</b> pelo site e
+					poderá ser alterada por um dos organizadores se algo não estiver
+					de acordo com a distribuição realizada. Caso haja alguma dúvida ou
+					problema, entre em contato pela página <a href="./about.html">sobre</a>.</p>
+				<table class="teamSelectorTable center">
+					<tr>
+						<td>
+							<h3 style="margin-left:13px;">Diurno</h3>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(1)">
+								<img class="selImg" src="files/teams/1.webp" alt="Time 1">
+								<p>Hidrogênio</p>
+							</div>
+						</td>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(2)">
+								<img class="selImg" src="files/teams/2.webp" alt="Time 2">
+								<p>Hélio</p>
+							</div>
+						</td>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(3)">
+								<img class="selImg" src="files/teams/3.webp" alt="Time 3">
+								<p>Lítio</p>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(4)">
+								<img class="selImg" src="files/teams/4.webp" alt="Time 4">
+								<p>Berílio</p>
+							</div>
+						</td>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(5)">
+								<img class="selImg" src="files/teams/5.webp" alt="Time 5">
+								<p>Boro</p>
+							</div>
+						</td>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(6)">
+								<img class="selImg" src="files/teams/6.webp" alt="Time 6">
+								<p>Carbono</p>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(7)">
+								<img class="selImg" src="files/teams/7.webp" alt="Time 7">
+								<p>Nitrogênio</p>
+							</div>
+						</td>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(8)">
+								<img class="selImg" src="files/teams/8.webp" alt="Time 8">
+								<p>Oxigênio</p>
+							</div>
+						</td>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(9)">
+								<img class="selImg" src="files/teams/9.webp" alt="Time 9">
+								<p>Flúor</p>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(10)">
+								<img class="selImg" src="files/teams/10.webp" alt="Time 10">
+								<p>Neônio</p>
+							</div>
+						</td>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(11)">
+								<img class="selImg" src="files/teams/11.webp" alt="Time 11">
+								<p>Sódio</p>
+							</div>
+						</td>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(12)">
+								<img class="selImg" src="files/teams/12.webp" alt="Time 12">
+								<p>Magnésio</p>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h3 style="margin-left:13px;">Noturno</h3>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(13)">
+								<img class="selImg" src="files/teams/13.webp" alt="Time 13">
+								<p>Alumínio</p>
+							</div>
+						</td>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(14)">
+								<img class="selImg" src="files/teams/14.webp" alt="Time 14">
+								<p>Silício</p>
+							</div>
+						</td>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(15)">
+								<img class="selImg" src="files/teams/15.webp" alt="Time 15">
+								<p>Fósforo</p>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="teamSelector" onclick="selectTeam(16)">
+								<img class="selImg" src="files/teams/16.webp" alt="Time 16">
+								<p>Enxofre</p>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+		<div id="header" class="headerNoShadow">
+			<i id="sandwich" class="menuIcons material-icons" onclick="openMenu()" md-24 md-light
+				style="vertical-align: middle;padding: 10px; cursor:pointer;">menu</i>
+			<img src="files/image/CAQUI.webp" class="headerImage">
+			<text id="logo">Gincana CAQuí</text>
+			<div id="menuHolder">
+				<div id="menu">
+					<a class="menu" href="./index.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">home</i>Início</a>
+					<a class="menu" href="./updates.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
+					<a class="menu" href="./send.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
+					<a class="menu" href="./schedule.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
+					<a class="menu" href="./about.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
+				</div>
+			</div>
+		</div>
+		<!-- The core Firebase JS SDK is always required and must be listed first -->
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+
+		<!-- TODO: Add SDKs for Firebase products that you want to use
+		     https://firebase.google.com/docs/web/setup#available-libraries -->
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-storage.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-messaging.js"></script>
+
+		<script type="text/javascript" src="profile/profile.js"></script>
+		<script type="text/javascript" src="files/modules/cloud-messaging.js"></script>
+	</body>
+
+	</html>

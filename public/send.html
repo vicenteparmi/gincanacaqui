@@ -1,0 +1,175 @@
+<!doctype= html>
+	<html lang="pt">
+
+	<head>
+		<title>Enviar Atividade | Gincana CAQuí</title>
+		<link rel="icon" type="image/webp" href="files/image/CAQUI.webp" />
+		<link rel="stylesheet" type="text/css" href="send/send.css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Muli:400,700&display=swap&subset=latin-ext"
+			rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<div id="loading" class="">
+			<h1>Obtendo informações...</h1>
+		</div>
+		<div id="noUser" class="hidden">
+			<h1>Nenhum usuário conectado</h1>
+			<p>Para fazer o envio de atividades é necessário entrar com uma conta,
+				verificá-la e selecionar um time. Clique <a href="./login.html">aqui</a>
+				para entrar ou se inscrever.</p>
+		</div>
+		<div id="noTeam" class="hidden">
+			<h1>Você ainda não possui uma equipe</h1>
+			<p>Para fazer o envio de atividades é necessário selecionar uma equipe em
+				seu perfil. Clique <a href="./profile.html">aqui</a> para ser redirecionado.</p>
+		</div>
+		<div id="noVer" class="hidden">
+			<h1>Verifique sua conta</h1>
+			<p>Para evitar spam, apenas contas verificadas podem realizar o envio de atividades.
+				Clique <a href="#" onclick="verifyAccount()">aqui</a> para receber um email de verificação.</p>
+		</div>
+		<div id="body" class="hidden">
+			<div class="bodyItem activity-list" id="bodyActList">
+				<h1>Selecione a atividade</h1>
+				<div id="activityContainer">
+				</div>
+				<span class="selected"></span>
+			</div>
+			<div class="bodyItem" id="nothingSelected">
+				<div class="waitingToChoose">
+					<i class="material-icons" style="font-size: 60px">
+						done_outline
+					</i>
+					<h3>Escolha uma das<br>atividades para enviar</h3>
+				</div>
+			</div>
+			<div class="bodyItem hide" id="somethingSelected">
+				<h1 style="margin-bottom: -8px">
+					<span id="activityName"></span>
+				</h1>
+				<p id="description">The description will be here.</p>
+				<p id="points"></p>
+				<div id="infobox" class="infobox"></div>
+				<div id="sendOnePhoto" class="hidden">
+					<input type="file" name="file" id="inputFile" accept="image/*">
+					<!-- <div id="insertPicture" onclick="uploadImage()"> -->
+					<label for="inputFile" id="insertPicture">
+						<div id="cameraDiv" class="">
+							<i id="camera" class="material-icons" md-48 md-light>photo_camera</i><br />
+							<text id="addText">Adicionar Imagem</text>
+						</div>
+					</label>
+				</div>
+				<div id="sendMorePhotos" class="hidden">
+					<span id="toUpload"></span>
+					<input type="file" name="file2" id="inputFile2" accept="image/*">
+					<label for="inputFile2" id="insertSmallPicture" onclick="uploadOneMoreImage()">
+						<div id="cameraDiv2" class="">
+							<i id="camera2" class="material-icons" md-48 md-light>photo_camera</i><br />
+							<text id="addText2">Adicionar Imagem</text>
+						</div>
+					</label>
+				</div>
+				<div id="sendVideo" class="hidden">
+					<h3>Link do vídeo:</h4>
+						<input type="text" id="mode2input" style="width:40vw;" />
+						<p class="infoTXT">Para não ocupar muito espaço em nossos servidores
+							os vídeos para análise devem ser enviados através de links.
+							<i class="material-icons infoTXT" md-24 md-light
+								style="vertical-align: middle; cursor:pointer;" onclick="helpVideo()">help</i>
+						</p>
+				</div>
+				<div id="sendLink" class="hidden">
+					<h3>Link do post:</h4>
+						<input type="text" id="mode1input" style="width:40vw;" />
+				</div>
+				<p id="taskAnswer">Resposta da atividade: <input type="text" id='taskAnswerValue' min='1'
+						placeholder="Insira aqui a resposta"></p>
+				<div id="sendContainer">
+					<span>Antes de enviar, <b>certifique-se de que a atividade contém os ítens necessários</b> para sua
+						aprovação, como presença dos membros, crachá visível etc.
+						Todos podem ser encontrados na página "Sobre".</span>
+					<a id="sendButton" class="button3" onclick="send()">Enviar para revisão</a>
+					<span id="errorMessage" class="hide"></span>
+				</div>
+
+			</div>
+		</div>
+
+		<div id="myModal" class="modal">
+			<div class="modal-content">
+				<h1 id="sendingStatus">Enviando atividade...</h1>
+				<p>Após o envio, você pode acompanhar o status na aba do seu perfil.</p>
+				<div id="progressbar" class="hide">
+					<text id="progressInd">Uploading...</text>
+					<div id="progressPercentage"></div>
+				</div>
+				<br />
+				<a id="doneButton" class="button3 hidden">Concluir</a>
+			</div>
+		</div>
+
+		<div id="mySecondModal" class="modal">
+			<div class="modal-content">
+				<h1 id="sendingStatus">Envio de atividades desativado</h1>
+				<p>O envio das atividades da gincana ainda não teve início ou já foi
+					finalizado. Se isso parece um erro, entre em contato com os organizadores
+					através das informações encontradas na página 'Sobre'.</p>
+			</div>
+		</div>
+
+		<div id="header">
+			<i id="sandwich" class="menuIcons material-icons" onclick="openMenu()" md-24 md-light
+				style="vertical-align: middle;padding: 10px; cursor:pointer;">menu</i>
+			<img src="files/image/CAQUI.webp" class="headerImage">
+			<text id="logo">Gincana CAQuí</text>
+			<div id="menuHolder">
+				<div id="menu">
+					<a class="menu" href="./index.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">home</i>Início</a>
+					<a class="menu" href="./updates.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
+					<a class="menu menuSelected" href="./send.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
+					<a class="menu" href="./schedule.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
+					<a class="menu" href="./about.html"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
+				</div>
+			</div>
+			<div id="userPhoto" onclick="popup()"></div>
+		</div>
+
+		<div id="popupMenu" class="popupMenu hide">
+			<a class="popupItem" href="./login.html"><i class="material-icons" md-24 md-light
+					style="vertical-align: middle;padding: 10px;">person</i>Entrar</a>
+		</div>
+
+		<div id="popupMenuLogged" class="popupMenu hide">
+			<text class="popupTitle" id="userName">Nome do Usuário</text><br>
+			<text class="popupSubitle" id="userEmail">email@email.com</text><br><bR>
+			<a class="popupItem" href="./profile.html"><i class="material-icons" md-24 md-light
+					style="vertical-align: middle;padding: 10px;">person</i>Perfil</a><br>
+			<text class="popupItem" onclick="signOut()"><i class="material-icons" md-24 md-light
+					style="vertical-align: middle;padding: 10px;">input</i>Sair</text>
+		</div>
+
+		<!-- The core Firebase JS SDK is always required and must be listed first -->
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+
+		<!-- TODO: Add SDKs for Firebase products that you want to use
+		     https://firebase.google.com/docs/web/setup#available-libraries -->
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-storage.js"></script>
+
+		<script type="text/javascript" src="tasks/activity_list.js"></script>
+		<script type="text/javascript" src="send/send.js" onload="loadPage()"></script>
+	</body>
+
+	</html>

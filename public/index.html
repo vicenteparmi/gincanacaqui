@@ -1,0 +1,147 @@
+<!doctype html> <!-- Página criada por Vicente Parmigiani em 26/12/2019 às 11h-->
+<html lang="pt">
+
+<head>
+	<title>Gincana CAQuí</title>
+	<link rel="icon" type="image/webp" href="files/image/CAQUI.webp" />
+	<link rel="stylesheet" type="text/css" href="home/home.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Muli:400,700&display=swap&subset=latin-ext" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description"
+		content="Website para o envio de atividades realizadas durante a Semana de Boas-Vindas do curso de Química da UFPR.">
+	<script src="home/confetti.js"></script>
+	<!-- Confetti animation by: https://www.cssscript.com/confetti-falling-animation/ -->
+</head>
+
+<body onscroll="headerShadow()">
+	<div id="body">
+		<div class="prebody">
+			<canvas id="canvas" style="background-color:white"></canvas>
+			<!-- Particle animation by djmot (https://codepen.io/djmot/pen/XNQEBy),
+				modified. -->
+			<div id='splashHolder'>
+				<div id="splash">
+					<img src="files/image/CAQUI.webp" alt="Logo do CAQuí" class="splashImage">
+					<h1>Gincana CAQuí</h1>
+					<p style="font-size: 12pt">Carregando...</p>
+				</div>
+			</div>
+			<div class="podium p1" id='p1'>
+				<div class="p1stNumber podiumMainNumber">1º</div>
+				<div class="podiumImage" id="podiumImage1"></div>
+				<span class="teamName" id='teamName1'></span>
+				<span class="teamPoints" id='teamPoints1'></span>
+				<img src="files/image/crown.webp" alt="Coroa de Vencedor" id="crown" class="hidden">
+			</div>
+			<div class="podium p2" id='p2'>
+				<div class="p2ndNumber podiumMainNumber">2º</div>
+				<div class="podiumImage" id="podiumImage2"></div>
+				<span class="teamName" id="teamName2"></span>
+				<span class="teamPoints" id="teamPoints2"></span>
+			</div>
+			<div class="podium p3" id='p3'>
+				<div class="p3rdNumber podiumMainNumber">3º</div>
+				<div class="podiumImage" id="podiumImage3"></div>
+				<span class="teamName" id='teamName3'></span>
+				<span class="teamPoints" id='teamPoints3'></span>
+			</div>
+		</div>
+		<div id="bluebody">
+			<div class="outter">
+				<div class="roundTop"></div>
+			</div>
+			<div id="podiumHolder">
+			</div>
+			<p class="lastUpdatedClass center hide" id="lastUpdatedHolder">Última atualização realizada no dia <span
+					id='lastUpdated'>12/01 às 19h21</span>.<br /><a href='./log.html' style="color: white">Ver
+					atualizações</a></p>
+			<div class="afterLeaderboard">
+				<div id="posts">
+					<h1 id="pubTitle" class="bodySectionTitle" style="display:none">Mural de Avisos</h1>
+				</div>
+				<div id="activities" style="display:none">
+					<h1 class="bodySectionTitle">Todas as Atividades</h1>
+				</div>
+				<p style="color: #ffffff82; cursor: pointer; text-align: center;" id="credits">
+					Criado por Vicente K. Parmigiani • <u>Direitos autorais de terceiros<u>
+				</p>
+				<p style="color: #ffffff82; text-align: center; text-decoration: none;">
+					<a style="color: #ffffff82;" target="_blank" href="https://instagram.com/vicenteparmi">Instagram</a> • <a style="color: #ffffff82;" href="mailto:vicenteparmigiani@gmail.com">E-mail</a>
+				</p>
+				<div id="iconSrcs" class="postCard" style="display:none;width:fit-content;margin:auto">
+					Icons made by <a href="https://www.flaticon.com/authors/smashicons"
+						title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">
+						www.flaticon.com</a><br />
+					Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a
+						href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Menu for management -->
+	<div id="superUserMenu" style="display: none;">
+		<h3>Painel de administrador</h3>
+		<p>Acesse as páginas de administrador a partir do menu.</p>
+		<a href="management.html"><i class="material-icons">tune</i> Gerenciamento geral</a>
+		<a href="review.html"><i class="material-icons">task_alt</i> Revisar</a>
+	</div>
+
+	<div id="header" class="headerNoShadow">
+		<i id="sandwich" class="menuIcons material-icons" onclick="openMenu()" md-24 md-light
+			style="vertical-align: middle;padding: 10px; cursor:pointer;">menu</i>
+		<img src="files/image/CAQUI.webp" class="headerImage" alt="Logo do CAQuí">
+		<text id="logo">Gincana CAQuí</text>
+		<div id="menuHolder">
+			<div id="menu">
+				<a class="menu menuSelected" href="./index.html"><i class="menuIcons material-icons" md-24 md-light
+						style="vertical-align: middle;padding: 10px;">home</i>Início</a>
+				<a class="menu" href="./updates.html"><i class="menuIcons material-icons" md-24 md-light
+						style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
+				<a class="menu" href="./send.html"><i class="menuIcons material-icons" md-24 md-light
+						style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
+				<a class="menu" href="./schedule.html"><i class="menuIcons material-icons" md-24 md-light
+						style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
+				<a class="menu" href="./about.html"><i class="menuIcons material-icons" md-24 md-light
+						style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
+			</div>
+		</div>
+		<div id="userPhoto" onclick="popup()"></div>
+	</div>
+
+	<div id="popupMenu" class="popupMenu hide">
+		<a class="popupItem" href="./login.html"><i class="material-icons" md-24 md-light
+				style="vertical-align: middle;padding: 10px;">person</i>Entrar</a>
+	</div>
+
+	<div id="popupMenuLogged" class="popupMenu hide">
+		<text class="popupTitle" id="userName">Nome do Usuário</text><br>
+		<text class="popupSubitle" id="userEmail">email@email.com</text><br><bR>
+		<a class="popupItem" href="./profile.html"><i class="material-icons" md-24 md-light
+				style="vertical-align: middle;padding: 10px;">person</i>Perfil</a><br>
+		<text class="popupItem" onclick="signOut()"><i class="material-icons" md-24 md-light
+				style="vertical-align: middle;padding: 10px;">input</i>Sair</text>
+	</div>
+
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+
+	<!-- TODO: Add SDKs for Firebase products that you want to use
+		     https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-messaging.js"></script>
+
+	<script type="text/javascript" src="home/header_animation.js"></script>
+	<script type="text/javascript" src="tasks/activity_list.js"></script>
+	
+	<script type="text/javascript" src="home/home.js" onload="loadPage()"></script>
+	<script type="text/javascript">
+		loadLeaderborad();
+	</script>
+	<script type="text/javascript" src="files/modules/cloud-messaging.js"></script>
+</body>
+
+</html>

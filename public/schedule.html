@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt">
+	<head>
+		<title>Programação | Gincana CAQuí</title>
+		<link rel="icon" type="image/webp" href="files/image/CAQUI.webp" />
+		<link rel="stylesheet" type="text/css" href="schedule/schedule.css">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Muli:400,700&display=swap&subset=latin-ext" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body onscroll="headerShadow()">
+		<div id="body">
+			<h1>Programação</h1>
+			<p class="start">A programação poderá ser modificada durante a semana. Confira aqui a mais recente.</p>
+			<p class="start">Os eventos antes do jantar são destinados ao diurno e os logo após o jantar aos calouros do noturno,
+				com excessão do Sarau, em que ambos os períodos estão convidados. Não há problema em participar de atividades
+				do período oposto.</p>
+			<h2 id="loading">Carregando informações...</h2>
+			<div id="hiddenBody" style="display:none">
+				<table id="table" cellspacing="5" cellpadding="5" style="display:none">
+					<tr>
+						<th style="width:5vw;">Horário</th>
+						<th>Segunda</th>
+						<th>Terça</th>
+						<th>Quarta</th>
+						<th>Quinta</th>
+						<th>Sexta</th>
+					</tr>
+				</table>
+				<span id="schedule"></span>
+			</div>
+		</div>
+
+		<div id="header" class="headerNoShadow">
+			<i id="sandwich" class="menuIcons material-icons" onclick="openMenu()" md-24 md-light style="vertical-align: middle;padding: 10px; cursor:pointer;">menu</i>
+			<img src="files/image/CAQUI.webp" class="headerImage">
+			<text id="logo">Gincana CAQuí</text>
+			<div id="menuHolder">
+				<div id="menu">
+					<a class="menu" href="./index.html"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">home</i>Início</a>
+					<a class="menu" href="./updates.html"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
+					<a class="menu" href="./send.html"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
+					<a class="menu menuSelected" href="./schedule.html"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
+					<a class="menu" href="./about.html"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
+				</div>
+			</div>
+			<div id="userPhoto" onclick="popup()"></div>
+		</div>
+
+		<div id="modal" class="modal">
+			<div class="modal-content">
+				<span class="close"><i class="material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">arrow_back</i></span>
+				<div id="modalImage"></div>
+				<div class="blockDiv">
+					<div class="titleDiv">
+						<div id="cube"></div>
+						<h1 id="eventTitle"></h1>
+					</div>
+					<div class="modal2Desc">
+						<div class="eventInfo">
+							<span id="eventDate"></span>
+							<span> • </span>
+							<span id="eventLocation"></span>
+						</div>
+						<p id="eventDescription"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="popupMenu" class="popupMenu hide">
+			<a class="popupItem" href="./login.html"><i class="material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">person</i>Entrar</a>
+		</div>
+
+		<div id="popupMenuLogged" class="popupMenu hide">
+			<text class="popupTitle" id="userName">Nome do Usuário</text><br>
+			<text class="popupSubitle" id="userEmail" >email@email.com</text><br><br>
+			<a class="popupItem" href="./profile.html"><i class="material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">person</i>Perfil</a><br>
+			<text class="popupItem" onclick="signOut()"><i class="material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">input</i>Sair</text>
+		</div>
+
+		<!-- The core Firebase JS SDK is always required and must be listed first -->
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+
+		<!-- TODO: Add SDKs for Firebase products that you want to use
+		     https://firebase.google.com/docs/web/setup#available-libraries -->
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+
+		<script type="text/javascript" src="schedule/schedule.js" onload="loadPage()"></script>
+	</body>
+</html>

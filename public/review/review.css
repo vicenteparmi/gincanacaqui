@@ -1,0 +1,375 @@
+body {
+  margin: 0;
+  font-family: 'Muli', sans-serif;
+}
+
+/* Review card */
+
+#activitiesHolder {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 28vw;
+  margin: 0.5vw;
+  border-radius: 8px;
+  padding: 0px;
+  background-color: white;
+}
+
+.card-body {
+  padding: 24px;
+}
+
+.card-header {
+  padding: 24px;
+  border-radius: 8px 8px 0px 0px;
+  background-color: #3b3b3b;
+  color: white;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.answer-text {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.image-holder {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  border-radius: 28px;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.btn {
+  border-radius: 28px;
+  background-color: white;
+  border: 1px solid #3b3b3b;
+  color: #3b3b3b;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 100ms;
+}
+
+.btn:hover {
+  background-color: #ccc;
+}
+
+.btn:active {
+  background-color: #3b3b3b;
+  color: white;
+}
+
+/* ****************************** */
+
+#header {
+  width: 100%;
+  height: 60px;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.28);
+  padding-left: 3%;
+  line-height: 60px;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  background-color: white;
+}
+
+#body {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 100px;
+}
+
+a {
+  cursor: pointer;
+}
+
+.headerImage {
+  height: 40px;
+  vertical-align: middle;
+}
+
+#logo {
+  font-weight: bold;
+  margin-left: 0.5%
+}
+
+.menu {
+  color: dimgray;
+  margin-left: 2%;
+  transition-duration: 0.3s;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.menu:hover {
+  color: black;
+}
+
+.menuSelected {
+  color: black;
+  font-weight: 600;
+}
+
+#userPhoto {
+  border-radius: 100%;
+  background-color: gray;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.20);
+  position: fixed;
+  right: 4.5vw;
+  top: 7.5px;
+  padding-top: 42px;
+  width: 42px;
+  cursor: pointer;
+  background-image: url('../files/image/unknownUser.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  transition-duration: 0.5s;
+}
+
+.popupMenu {
+  position: fixed;
+  top:70px;
+  right: 1%;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.28);
+  padding: 20px;
+  padding-right: 25px;
+  min-width: 20vw;
+  border-radius: 4px;
+  transition-duration: 0.3s;
+  z-index: 100;
+  background-color: white;
+}
+
+.popupTitle {
+  font-weight: bold;
+  font-size: 18px;
+  width: 100%;
+}
+
+.popupSubitle {
+  color: dimgray;
+  font-size: 14px;
+}
+
+.popupItem {
+  transition-duration: 0.2s;
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
+}
+
+.popupItem:hover {
+  padding-left: 10px;
+  text-decoration: underline;
+}
+
+.hide {
+  display: none;
+  position: fixed;
+  top: -1000%;
+}
+
+/* Modal */
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto; /* 15% from the top and centered */
+  padding: 30px;
+  width: 50vw; /* Could be more or less, depending on screen size */
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/*************************************/
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+    local('MaterialIcons-Regular'),
+    url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+    url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+    url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+}
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+i.menuIcons {
+  display: none;
+}
+
+#menu, #menuHolder {
+  display: inline;
+}
+
+/* Mobile adjustments */
+
+@media all and (max-width: 50em) {
+  #menu {
+    background-color: white;
+    width: 60vw;
+    height: 100vh;
+    max-width: 16em;
+    box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.28);
+    display: block;
+    padding-left: 3vw;
+    padding-top: 30px;
+    position: absolute;
+    left: -65vw;
+    top: 0%;
+    transition-duration: 0.3s;
+  }
+  #menu.show {
+    left: 0%;
+  }
+  .menu {
+    display: block;
+  }
+  #menuHolder {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    z-index: -101;
+    transition-duration: 0.3s;
+    visibility: hidden;
+  }
+  #menuHolder.shadow {
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 101;
+    visibility: visible;
+  }
+  i.menuIcons {
+    display: inline-block;
+  }
+  .imageToReview {
+    width: 30vw;
+    height: 30vw;
+  }
+  .modal-content {
+    margin: 0;
+    padding: 30px;
+    width: 84vw;
+    min-width: 15em;
+    border-radius: 0px;
+    z-index: 100;
+    min-height: -webkit-fill-available;
+  }
+  #reviewImage {
+    width: 84vw;
+  }
+
+  .card {
+    max-width: 100%;
+    width: 40vw;
+  }
+}
+
+@media all and (max-width: 30em) {
+  .imageToReview {
+    width: 90vw;
+    height: 90vw;
+  }
+  .acceptButton, .rejectButton {
+    width: 10vw;
+    height: 10vw;
+    border-radius: 8vw;
+  }
+  .validate {
+    margin-right: auto;
+    margin-left: 2vw;
+  }
+  .listItemDescription {
+    font-size: x-large;
+  }
+  .markAsDone {
+    max-width: 90vw;
+  }
+
+  .card {
+    max-width: 100%;
+    width: 90vw;
+  }
+}

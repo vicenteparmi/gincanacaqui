@@ -1,0 +1,414 @@
+.teamImage {
+  width: 15vw;
+  height: 15vw;
+}
+
+.card {
+  width: 42vw;
+  min-height: 30vw;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 8px;
+  text-shadow: 0 0 14px rgba(0, 0, 0, 0.5);
+  margin-bottom: 1.25vw;
+  display: inline-block;
+  transition-duration: 0.2s;
+  vertical-align: top;
+  color: white;
+}
+
+.card:hover {
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.cardSubheader {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardBody {
+  padding: 0px 24px;
+}
+
+.teamName {
+  font-size: 3vw;
+  font-weight: bold;
+  color: white;
+}
+
+.points {
+  font-size: 1.8vw;
+  color: #eeeeee;
+}
+
+.listHolder {
+  color: white;
+  padding: 1vw;
+}
+
+.teamPlaceholder {
+  display: flex;
+  flex-direction: column;
+}
+
+.userCard {
+  text-transform: capitalize;
+  background-color: white;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgb(0 0 0 / 30%);
+  color: black;
+  text-shadow: none;
+  margin-bottom: 8px;
+}
+
+.veteran {
+  border: 3px solid #ffd000;
+  animation-name: shine;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes shine {
+  0% {
+    border: 2px solid #ffd000;
+  }
+10% {
+    border: 2px solid #fde787;
+  }
+  50% {
+    border: 2px solid #ffa600;
+  }
+  70% {
+    border: 2px solid #ffe345;
+  }
+  100% {
+    border: 2px solid #ffd000;
+  }
+  
+}
+
+.userImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 16px;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid #ccc;
+}
+
+.userName {
+  font-weight: bold;
+}
+
+ul {
+  list-style-type: circle;
+}
+
+.teamList {
+  display: flex;
+  flex-direction: column;
+  flex-flow: wrap;
+  padding-top: 12px;
+  width: 100%;
+  justify-content: space-around;
+}
+
+table {
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 3vw;
+}
+
+/* default code */
+
+body {
+  margin: 0;
+  font-family: 'Muli', sans-serif;
+}
+
+#body {
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+#header {
+  width: 100%;
+  height: 60px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.28);
+  background-color: white;
+  padding-left: 3%;
+  line-height: 60px;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  transition-duration: 0.2s;
+}
+
+#header.headerNoShadow {
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.0);
+  background-color: white;
+}
+
+.headerImage {
+  height: 40px;
+  vertical-align: middle;
+}
+
+#logo {
+  font-weight: bold;
+  margin-left: 0.5%
+}
+
+.menu {
+  color: dimgray;
+  margin-left: 2%;
+  transition-duration: 0.3s;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.menu:hover {
+  color: black;
+}
+
+.menuSelected {
+  color: black;
+  font-weight: 600;
+}
+
+#userPhoto {
+  border-radius: 100%;
+  background-color: gray;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.20);
+  position: fixed;
+  right: 2.5%;
+  top: 7.5px;
+  padding-top: 42px;
+  width: 42px;
+  cursor: pointer;
+  background-image: url('../files/image/unknownUser.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  transition-duration: 0.5s;
+}
+
+.popupMenu {
+  position: fixed;
+  top: 70px;
+  right: 1%;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.28);
+  padding: 20px;
+  padding-right: 25px;
+  min-width: 20vw;
+  border-radius: 4px;
+  transition-duration: 0.3s;
+  z-index: 100;
+  background-color: white;
+}
+
+.popupTitle {
+  font-weight: bold;
+  font-size: 18px;
+  width: 100%;
+}
+
+.popupSubitle {
+  color: dimgray;
+  font-size: 14px;
+}
+
+.popupItem {
+  transition-duration: 0.2s;
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
+}
+
+.popupItem:hover {
+  padding-left: 10px;
+  text-decoration: underline;
+}
+
+.hide {
+  display: none;
+  position: fixed;
+  top: -1000%;
+}
+
+/* Buttons */
+
+a.button3 {
+  display: inline-block;
+  padding: 0.3em 1.0em;
+  margin: 0.5em 0.5em 0.25em 0;
+  border-radius: 2em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-weight: 300;
+  color: #FFFFFF;
+  background-color: orange;
+  text-align: center;
+  transition: all 0.2s;
+  cursor: pointer;
+  font-size: 80%;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18);
+}
+
+a.button3:hover {
+  background-color: darkorange;
+}
+
+a.button3:active {
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.25);
+}
+
+@media all and (max-width:30em) {
+  a.button3 {
+    display: block;
+    margin: 0.2em auto
+  }
+}
+
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://example.com/MaterialIcons-Regular.eot);
+  /* For IE6-8 */
+  src: local('Material Icons'),
+    local('MaterialIcons-Regular'),
+    url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+    url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+    url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+i.menuIcons {
+  display: none;
+}
+
+#menu, #menuHolder {
+  display: inline;
+}
+
+/* Mobile adjustments */
+
+@media all and (max-width: 50em) {
+  #menu {
+    background-color: white;
+    width: 60vw;
+    height: 100vh;
+    max-width: 16em;
+    box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.28);
+    display: block;
+    padding-left: 3vw;
+    padding-top: 30px;
+    position: absolute;
+    left: -65vw;
+    top: 0%;
+    transition-duration: 0.3s;
+  }
+
+  #menu.show {
+    left: 0%;
+  }
+
+  .menu {
+    display: block;
+  }
+
+  #menuHolder {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    z-index: -101;
+    transition-duration: 0.3s;
+    visibility: hidden;
+  }
+
+  #menuHolder.shadow {
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 101;
+    visibility: visible;
+  }
+
+  i.menuIcons {
+    display: inline-block;
+  }
+}
+
+@media all and (max-width:30em) {
+  .card {
+    width: 85vw;
+    min-height: 33vh;
+    display: block;
+    margin-bottom: 5vw;
+    margin-right: 0px;
+  }
+
+  .teamImage {
+    width: 30vw;
+    height: 30vw;
+  }
+
+  .teamName {
+    font-size: 8vw;
+  }
+
+  .points {
+    font-size: 5.5vw;
+  }
+
+  table {
+    margin-top: 4vw;
+  }
+
+  .card:hover {
+    transform: scale(1.0);
+  }
+}
