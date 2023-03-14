@@ -691,9 +691,9 @@ function buildTable() {
     table.style.display = "table";
 
     var hour = 8;
-    var min = "30";
+    var min = "00";
 
-    for (var i = 0; i < 28; i++) {
+    for (var i = 0; i < 30; i++) {
         const tr = document.createElement('tr');
         const date = document.createElement('td');
 
@@ -802,7 +802,22 @@ function addEvent() {
 }
 
 function saveEventEdit() {
-    const ref = firebase.database().ref("schedule/" + currentEvent);
+
+    // // Check if the event overlaps with another
+    // const start = document.getElementById('startTime').value;
+    // const end = document.getElementById('endTime').value;
+    // const day = document.getElementById('eventDate').value;
+
+    // for (var i = start; i < end; i++) {
+    //     const cell = document.getElementById(i + "/" + day);
+    //     if (cell.className == "hasContent") {
+    //         const pop = toast("Este evento se sobrepõe a outro!");
+    //         setTimeout(function () {
+    //             pop.remove();
+    //         }, 3000);
+    //         return;
+    //     }
+    // }
 
     const event = {
         title: document.getElementById('eventTitle').value,
@@ -827,6 +842,7 @@ function saveEventEdit() {
             buildTable();
         });
     } else {
+        const ref = firebase.database().ref("schedule/" + currentEvent);
         ref.update(event).then(function () {
             const pop = toast("Evento editado com sucesso!");
             setTimeout(function () {

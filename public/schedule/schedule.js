@@ -20,9 +20,9 @@ function buildTable() {
   table.style.display = "table";
 
   var hour = 8;
-  var min = "30";
+  var min = "00";
 
-  for (var i = 0; i < 28; i++) {
+  for (var i = 0; i < 30; i++) {
     const tr = document.createElement('tr');
     const date = document.createElement('td');
 
@@ -174,11 +174,11 @@ function getDate(snap) {
   var output = weekDays[weekDay] +", ";
   var time = startTime + (startTime - endTime);
 
-  startTime = startTime * .5 + 8.5;
+  startTime = startTime * .5 + 8.0;
   var hour = (Number.isInteger(startTime)) ? startTime : parseInt(startTime);
   var min = (Number.isInteger(startTime)) ? "00" : "30";
   output += hour + "h" + min + " - ";
-  endTime = endTime * .5 + 9;
+  endTime = endTime * .5 + 8.5;
   hour = (Number.isInteger(endTime)) ? endTime : parseInt(endTime);
   var min = (Number.isInteger(endTime)) ? "00" : "30";
   output += hour + "h" + min;
