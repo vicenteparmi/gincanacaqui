@@ -61,7 +61,7 @@ function buildTable() {
 
   // Remove unused cells
   firebase.database().ref('schedule').once('value').then(function() {
-    for (var i = 0; i < 28; i++) {
+    for (var i = 0; i < 30; i++) {
       for (var i2 = 0; i2 < 5; i2++) {
         const analysedCell = document.getElementById(i+"/"+i2);
         if (analysedCell.innerHTML == "") {
