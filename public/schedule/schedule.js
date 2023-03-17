@@ -78,14 +78,14 @@ function buildSchedule() {
 
   for (var i = 0; i < 5; i++) {
     var hour = 8;
-    var min = "30";
+    var min = "00";
 
     const table = document.createElement('table');
     const title = document.createElement('h2');
     title.innerHTML = weekDays[i]+"-Feira";
     globalHolder.appendChild(title);
 
-    for (var i2 = 0; i2 < 28; i2++) {
+    for (var i2 = 0; i2 < 30; i2++) {
       const tr = document.createElement('tr');
       const date = document.createElement('td');
 
@@ -128,7 +128,7 @@ function buildSchedule() {
   });
 
   firebase.database().ref('schedule').once('value').then(function() {
-    for (var i = 0; i < 28; i++) {
+    for (var i = 0; i < 30; i++) {
       for (var i2 = 0; i2 < 5; i2++) {
         const analysedCell = document.getElementById(i+"/"+i2);
         if (analysedCell.innerHTML == "") {
