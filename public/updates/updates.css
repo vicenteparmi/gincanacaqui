@@ -1,6 +1,8 @@
 .teamImage {
   width: 15vw;
   height: 15vw;
+  -webkit-filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.42));
+  filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.42));
 }
 
 .card {
@@ -394,6 +396,8 @@ i.menuIcons {
   .teamImage {
     width: 30vw;
     height: 30vw;
+    -webkit-filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.42));
+    filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.42));
   }
 
   .teamName {

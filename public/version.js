@@ -1,2 +1,2 @@
-var version = '2.3.0';
-var lastUpdated = '19 de Janeiro de 2026';
+var version = '3.0 - <i>Edição DAEP</i>';
+var lastUpdated = '23 de Fevereiro de 2024';

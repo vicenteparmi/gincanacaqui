@@ -2,15 +2,15 @@ importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js');
 
 // Your web app's Firebase configuration
-var firebaseConfig = {
-    apiKey: "AIzaSyA07lUMH1HyCjBi_eKe-4gaz1b9FhdSZiE",
-    authDomain: "havarena-f3d87.firebaseapp.com",
-    databaseURL: "https://havarena-f3d87.firebaseio.com",
-    projectId: "havarena-f3d87",
-    storageBucket: "havarena-f3d87.appspot.com",
-    messagingSenderId: "259369291947",
-    appId: "1:259369291947:web:6233862e160cc6bfce67ee",
-    measurementId: "G-STKZ9T8L1C"
+const firebaseConfig = {
+  apiKey: "AIzaSyCgDMH71uLX2wc-PcwKRFE-LRrW3OU-V4s",
+  authDomain: "gincanadaep.firebaseapp.com",
+  databaseURL: "https://gincanadaep-default-rtdb.firebaseio.com",
+  projectId: "gincanadaep",
+  storageBucket: "gincanadaep.appspot.com",
+  messagingSenderId: "596615659329",
+  appId: "1:596615659329:web:3e560ff9fb5f3060c02bc0",
+  measurementId: "G-L0VVV71RJB"
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
