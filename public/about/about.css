@@ -15,7 +15,7 @@
   animation-iteration-count: infinite;
   animation-timing-function: ease-out;
   transition-duration: 0.5s;
-  background-image: url('../files/image/CAQUI.webp');
+  background-image: url('../files/image/LogoFull.webp');
 }
 
 @keyframes animation {

@@ -1,7 +1,6 @@
 {
   "hosting": {
     "public": "public",
-    "site": "gincanacaqui",
     "ignore": [
       "firebase.json",
       "**/.*",

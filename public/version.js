@@ -1,2 +1,2 @@
-var version = '2.1.0';
-var lastUpdated = '31 de Maio de 2022';
+var version = '2.1.0 - <i>Edição DAEP</i>';
+var lastUpdated = '05 de Julho de 2023';
