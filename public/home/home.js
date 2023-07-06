@@ -479,7 +479,7 @@ function openMenu() {
     }
     menuOpen = true;
   } else {
-    menu.className = "";
+menu.className = "";
     menuHolder.className = ""
     menuOpen = false;
   }

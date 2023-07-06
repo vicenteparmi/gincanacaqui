@@ -789,13 +789,15 @@ firebase
     }
   });
 
-window.onload = () => {
-  var db = firebase.database();
-  var ref = db.ref("settings");
-  ref.on("value", function (snapshot) {
-    var data = snapshot.val();
-    if (data.showSchedule == false) {
-      document.getElementById("scheduleNav").style.display = "none";
-    }
-  });
-}
+  // Schedule turned off
+
+  window.onload = () => {
+    var db = firebase.database();
+    var ref = db.ref("settings");
+    ref.on("value", function (snapshot) {
+      var data = snapshot.val();
+      if (data.showSchedule == false) {
+        document.getElementById("scheduleNav").style.display = "none";
+      }
+    });
+  }

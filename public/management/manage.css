@@ -1,4 +1,390 @@
-/* Global */
+.cardHolder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.card {
+    width: 275px;
+    height: 150px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    display: block;
+    padding: 24px;
+    background-image: radial-gradient(circle farthest-corner at 10% 20%, rgba(37, 145, 251, 0.98) 0.1%, rgba(0, 7, 128, 1) 99.8%);
+    color: #fff;
+    transition-duration: 200ms;
+    cursor: pointer;
+}
+
+.card:hover {
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.28);
+    transform: scale(1.05);
+}
+
+.card2 {
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    display: block;
+    padding: 24px;
+    background-color: #fff;
+    color: black;
+    transition-duration: 200ms;
+    min-height: 130px;
+    width: auto;
+}
+
+.card2.disabled {
+    background-color: #f5f5f5;
+    color: #ccc;
+    cursor: default;
+}
+
+#addDescricao, #editDescricao {
+    width: 100%;
+    display: block;
+    padding: 12px;
+    color: black;
+    outline: none;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-family: 'Muli', sans-serif;
+}
+
+.sidePannel {
+    width: 100%;
+    height: 100vh;
+    background-image: radial-gradient(circle farthest-corner at 10% 20%, rgba(37, 145, 251, 1) 0.1%, rgba(0, 7, 128, 1) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    transition-duration: 1s;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: fixed;
+    right: -110%;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0px 0px 8px rgba(0, 0, 8px, 0.3);
+}
+
+.sidePannelInner {
+    color: white;
+    margin: 20vh 5vw 12vh 5vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.close {
+    background-color: white;
+    border-radius: 8px;
+    padding: 4px 8px 4px 8px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+li {
+    list-style: none;
+}
+
+ul {
+    padding: 0;
+}
+
+select {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 0px 24px;
+    font-size: 16px;
+    transition-duration: 200ms;
+    outline: none;
+    margin-bottom: 4px;
+}
+
+select:active {
+    border: 1px solid #ccc;
+}
+
+input {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 0px 24px;
+    font-size: 16px;
+    transition-duration: 200ms;
+    outline: none;
+}
+
+.saveButton {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 0px 24px;
+    font-size: 16px;
+    transition-duration: 200ms;
+    outline: none;
+    margin-top: 4px;
+    cursor: pointer;
+    background-color: #fff;
+    transition-duration: 0.2s;
+}
+
+.saveButton:active {
+    border: 1px solid #ccc;
+}
+
+.saveButton:hover {
+    background-color: #ccc;
+}
+
+#addFoto {
+    display: none;
+}
+
+#addFotoLabel {
+    width: 90%;
+    height: 100px;
+    border-radius: 8px;
+    border: none;
+    padding: 0px 24px;
+    outline: none;
+    margin-top: 4px;
+    cursor: pointer;
+    background-image: radial-gradient(circle farthest-corner at 10% 20%, rgba(37, 145, 251, 1) 0.1%, rgba(0, 7, 128, 1) 100%);
+    transition-duration: 0.2s;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: large;
+    margin-top: 12px;
+    transition-duration: 1s;
+}
+
+#activities {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-width: 50vw;
+}
+
+.editButton {
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition-duration: 200ms;
+}
+
+.editButton:active {
+    background-color: #ccc;
+}
+
+.activity {
+    width: 100%;
+    min-height: 40px;
+    border-radius: 8px;
+    background-color: white;
+    padding: 12px 24px;
+    color: black;
+    margin-bottom: 8px;
+    transition-duration: 200ms;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.activity>h3 {
+    margin: 0 24px;
+}
+
+.activity>img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    margin-right: 12px;
+}
+
+.pointsDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.28);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    transition-duration: 1s;
+    margin: 10vh auto;
+}
+
+#editFotoLabel {
+    width: 90%;
+    height: 100px;
+    border-radius: 8px;
+    border: none;
+    padding: 0px 24px;
+    outline: none;
+    margin-top: 4px;
+    cursor: pointer;
+    background-image: radial-gradient(circle farthest-corner at 10% 20%, rgba(37, 145, 251, 1) 0.1%, rgba(0, 7, 128, 1) 100%);
+    transition-duration: 0.2s;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: large;
+    margin-top: 12px;
+    transition-duration: 1s;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.checkboxholder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 0px 24px;
+    font-size: 16px;
+    transition-duration: 200ms;
+    outline: none;
+}
+
+input[type=checkbox]>label {
+    margin-top: 0px;
+}
+
+.toastBox {
+    position: fixed;
+    bottom: 5vw;
+    right: 5vw;
+    min-width: 100px;
+    max-width: 250px;
+    animation-name: toast;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+    z-index: 100;
+    background-color: rgb(255, 255, 255);
+    color: rgb(34, 34, 34);
+    border-radius: 8px;
+    padding: 8px 16px 8px 16px;
+    font-size: large;
+    font-weight: bold;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Toast animation */
+
+@keyframes toast {
+    0% {
+        transform: translateY(100px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Useful code */
+p {
+    max-width: 40vw;
+    width: fit-content;
+    top: 75%;
+}
+
+h1 {
+    text-align: center;
+    top: 65%;
+    width: fit-content;
+    max-width: 90vw;
+}
+
+#body {
+    margin-left: 5vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.center {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: 16px;
+    outline: none;
+    font-family: 'Muli', sans-serif;
+}
+
+/* Default Style */
+
 body {
     margin: 0;
     font-family: 'Muli', sans-serif;
