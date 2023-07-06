@@ -261,13 +261,13 @@
             <!-- Popup to ajust general settings -->
 
             <div id="popup4" class="sidePannel">
-                <div class="sidePannelInner" style="display: block;">
+                <div class="sidePannelInner" style="display: block; width: 90%;">
                     <span class="close" onclick="closePopup('popup4')">&times; Fechar tela</span>
                     <h2>Ajuste de configurações gerais</h2>
                     <div style="display: block">
                         <!-- Add toggler to every setting -->
-                        <div style="display: flex; flex-direction: row; align-items: flex-start;">
-                            <div id="ajustescard1" style="display: flex; flex-direction: column; max-width: 250px;"
+                        <div style="display: grid; grid-template-columns: repeat( auto-fit, minmax(250px, 0fr) );gap:12px">
+                            <div id="ajustescard1" style="display: flex; flex-direction: column;"
                                 class="card2 disabled">
                                 <h3 style="margin: 0;">Envio de atividades</h3>
                                 <p>Permite o envio de atividades através do site. É necessário ter o login ativado.</p>
@@ -276,7 +276,7 @@
                                     <label for="ajustes1">Ativar</label>
                                 </div>
                             </div>
-                            <div id="ajustescard2" style="display: flex; flex-direction: column; max-width: 250px;"
+                            <div id="ajustescard2" style="display: flex; flex-direction: column;"
                                 class="card2 disabled">
                                 <h3 style="margin: 0;">Login</h3>
                                 <p>Autorizar login de usuários e criação de novas contas.</p>
@@ -285,13 +285,22 @@
                                     <label for="ajustes2">Ativar</label>
                                 </div>
                             </div>
-                            <div id="ajustescard3" style="display: flex; flex-direction: column; max-width: 250px;"
+                            <div id="ajustescard3" style="display: flex; flex-direction: column;"
                                 class="card2 disabled">
                                 <h3 style="margin: 0;">Temos um vencedor</h3>
                                 <p>Ativar coroa e confetti na tela inicial.</p>
                                 <div style="display: flex; flex-direction: row; align-items: center;">
                                     <input type="checkbox" name="ajustes3" id="ajustes3">
                                     <label for="ajustes3">Ativar</label>
+                                </div>
+                            </div>
+                            <div id="ajustescard4" style="display: flex; flex-direction: column;"
+                                class="card2 disabled">
+                                <h3 style="margin: 0;">Exibir programação</h3>
+                                <p>Altera a exibição da aba <i>programção</i> na barra de navegação.</p>
+                                <div style="display: flex; flex-direction: row; align-items: center;">
+                                    <input type="checkbox" name="ajustes4" id="ajustes4">
+                                    <label for="ajustes4">Exibir</label>
                                 </div>
                             </div>
                         </div>
@@ -331,7 +340,12 @@
                         <h2>Alterar grade com as disciplinas</h2>
                         <input type="button" value="Adicionar evento" onclick="addEvent()" class="saveButton"
                             style="width: fit-content; margin-left: 12px;">
+                        <input type="button" value="Apagar tudo" onclick="clearSchedule()" class="saveButton"
+                            style="width: fit-content; margin-left: 12px; border-color: #790e0e; background-color: #cf1212; color: white;">
                     </div>
+                    <br>
+                    <p>Recomenda-se que a programação seja preenchida de acordo com a ordem das atividades, de segunda a
+                        sexta, marcando também os espaços vazios. Isso evita que erros ocorram na exibição da grade.</p>
                     <br>
                     <table id="table" cellspacing="5" cellpadding="5" style="display:none" class="card2">
                         <tr>
@@ -477,7 +491,7 @@
                                 style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
                         <a class="menu" href="./send.html"><i class="menuIcons material-icons" md-24 md-light
                                 style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
-                        <a class="menu" href="./schedule.html"><i class="menuIcons material-icons" md-24 md-light
+                        <a class="menu" href="./schedule.html" id="scheduleNav"><i class="menuIcons material-icons" md-24 md-light
                                 style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
                         <a class="menu" href="./about.html"><i class="menuIcons material-icons" md-24 md-light
                                 style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>

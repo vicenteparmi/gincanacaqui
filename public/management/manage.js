@@ -471,6 +471,10 @@ firebase.database().ref("settings").once("value").then(function (snapshot) {
         document.getElementById("ajustes3").checked = true;
         document.getElementById("ajustescard3").className = "card2";
     }
+    if (settings.showSchedule) {
+        document.getElementById("ajustes4").checked = true;
+        document.getElementById("ajustescard4").className = "card2";
+    }
 });
 
 // Add listener to general settings checkboxes
@@ -526,11 +530,27 @@ document.getElementById("ajustes3").addEventListener("click", function () {
     }
 });
 
+document.getElementById("ajustes4").addEventListener("click", function () {
+    const ref = firebase.database().ref("settings");
+
+    if (this.checked) {
+        ref.update({
+            showSchedule: true
+        });
+        document.getElementById("ajustescard4").className = "card2";
+    } else {
+        ref.update({
+            showSchedule: false
+        });
+        document.getElementById("ajustescard4").className = "card2 disabled";
+    }
+});
+
 // Open and close popups
 let breakI = false;
 
 function openPopup(popup) {
-    document.getElementById(popup).style.width = "100%";
+    document.getElementById(popup).style.right = "0%";
     document.getElementById("logo").style.color = "white";
     document.getElementById("menu").style.filter = "brightness(2.5)";
 
@@ -541,7 +561,7 @@ function openPopup(popup) {
 }
 
 function closePopup(popup) {
-    document.getElementById(popup).style.width = "0%";
+    document.getElementById(popup).style.right = "-110%";
     document.getElementById("logo").style.color = "black";
     document.getElementById("menu").style.filter = "brightness(1)";
 }
@@ -804,20 +824,7 @@ function addEvent() {
 function saveEventEdit() {
 
     // // Check if the event overlaps with another
-    // const start = document.getElementById('startTime').value;
-    // const end = document.getElementById('endTime').value;
-    // const day = document.getElementById('eventDate').value;
-
-    // for (var i = start; i < end; i++) {
-    //     const cell = document.getElementById(i + "/" + day);
-    //     if (cell.className == "hasContent") {
-    //         const pop = toast("Este evento se sobrepõe a outro!");
-    //         setTimeout(function () {
-    //             pop.remove();
-    //         }, 3000);
-    //         return;
-    //     }
-    // }
+    // TODO: Check if the event overlaps with another
 
     const event = {
         title: document.getElementById('eventTitle').value,
@@ -873,6 +880,33 @@ function deleteEvent() {
         table.innerHTML = "";
         buildTable();
 
+        setTimeout(function () {
+            pop.remove();
+        }, 3000);
+    }
+}
+
+// Clear all schedule
+
+function clearSchedule() {
+    // Ask for confirmation by text
+    let confirmation = prompt("ATENÇÃO\n\nAo confirmar esta ação, todos os eventos serão excluídos e não poderão ser recuperados. Digite 'confirmar' para continuar.");
+
+    if (confirmation == "confirmar") {
+        firebase.database().ref('schedule').remove().then(function () {
+            const pop = toast("Agenda limpa com sucesso! Recarregando...");
+            setTimeout(function () {
+                pop.remove();
+            }, 5000);
+
+            // Reload page
+            setTimeout(function () {
+                location.reload();
+            }, 5500);
+            
+        });
+    } else {
+        const pop = toast("Ação cancelada.");
         setTimeout(function () {
             pop.remove();
         }, 3000);
