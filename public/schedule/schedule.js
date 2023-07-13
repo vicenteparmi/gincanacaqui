@@ -19,10 +19,10 @@ function buildTable() {
   const table = document.getElementById('table');
   table.style.display = "table";
 
-  var hour = 8;
-  var min = "00";
+  var hour = 7;
+  var min = "30";
 
-  for (var i = 0; i < 30; i++) {
+  for (var i = 0; i < 31; i++) {
     const tr = document.createElement('tr');
     const date = document.createElement('td');
 
@@ -61,7 +61,7 @@ function buildTable() {
 
   // Remove unused cells
   firebase.database().ref('schedule').once('value').then(function() {
-    for (var i = 0; i < 30; i++) {
+    for (var i = 0; i < 31; i++) {
       for (var i2 = 0; i2 < 5; i2++) {
         const analysedCell = document.getElementById(i+"/"+i2);
         if (analysedCell.innerHTML == "") {
@@ -77,15 +77,15 @@ function buildSchedule() {
   const globalHolder = document.getElementById('schedule');
 
   for (var i = 0; i < 5; i++) {
-    var hour = 8;
-    var min = "00";
+    var hour = 7;
+    var min = "30";
 
     const table = document.createElement('table');
     const title = document.createElement('h2');
     title.innerHTML = weekDays[i]+"-Feira";
     globalHolder.appendChild(title);
 
-    for (var i2 = 0; i2 < 30; i2++) {
+    for (var i2 = 0; i2 < 31; i2++) {
       const tr = document.createElement('tr');
       const date = document.createElement('td');
 
@@ -128,7 +128,7 @@ function buildSchedule() {
   });
 
   firebase.database().ref('schedule').once('value').then(function() {
-    for (var i = 0; i < 30; i++) {
+    for (var i = 0; i < 31; i++) {
       for (var i2 = 0; i2 < 5; i2++) {
         const analysedCell = document.getElementById(i+"/"+i2);
         if (analysedCell.innerHTML == "") {
@@ -174,11 +174,11 @@ function getDate(snap) {
   var output = weekDays[weekDay] +", ";
   var time = startTime + (startTime - endTime);
 
-  startTime = startTime * .5 + 8.0;
+  startTime = startTime * .5 + 7.5;
   var hour = (Number.isInteger(startTime)) ? startTime : parseInt(startTime);
   var min = (Number.isInteger(startTime)) ? "00" : "30";
   output += hour + "h" + min + " - ";
-  endTime = endTime * .5 + 8.5;
+  endTime = endTime * .5 + 8.0;
   hour = (Number.isInteger(endTime)) ? endTime : parseInt(endTime);
   var min = (Number.isInteger(endTime)) ? "00" : "30";
   output += hour + "h" + min;

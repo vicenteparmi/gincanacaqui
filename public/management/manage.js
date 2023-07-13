@@ -710,10 +710,10 @@ function buildTable() {
     const table = document.getElementById('table');
     table.style.display = "table";
 
-    var hour = 8;
-    var min = "00";
+    var hour = 7;
+    var min = "30";
 
-    for (var i = 0; i < 30; i++) {
+    for (var i = 0; i < 31; i++) {
         const tr = document.createElement('tr');
         const date = document.createElement('td');
 
@@ -754,7 +754,7 @@ function buildTable() {
 
     // Remove unused cells
     firebase.database().ref('schedule').once('value').then(function () {
-        for (var i = 0; i < 28; i++) {
+        for (var i = 0; i < 29; i++) {
             for (var i2 = 0; i2 < 5; i2++) {
                 const analysedCell = document.getElementById(i + "/" + i2);
                 if (analysedCell.innerHTML == "") {
