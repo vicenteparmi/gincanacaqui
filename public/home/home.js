@@ -283,16 +283,6 @@ function inflateACT() {
 
     });
   });
-
-  const atr = document.getElementById('credits');
-  atr.addEventListener('click', function () {
-    const x = document.getElementById('iconSrcs');
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
-    }
-  });
 }
 
 function handleDate(date) {
@@ -488,4 +478,15 @@ function openMenu() {
     menuHolder.className = ""
     menuOpen = false;
   }
+}
+
+window.onload = () => {
+  var db = firebase.database();
+	var ref = db.ref("settings");
+	ref.on("value", function (snapshot) {
+		var data = snapshot.val();
+		if (data.showSchedule == false) {
+			document.getElementById("scheduleNav").style.display = "none";
+		}
+	});
 }

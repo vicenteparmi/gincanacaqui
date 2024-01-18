@@ -261,13 +261,14 @@
             <!-- Popup to ajust general settings -->
 
             <div id="popup4" class="sidePannel">
-                <div class="sidePannelInner" style="display: block;">
+                <div class="sidePannelInner" style="display: block; width: 90%;">
                     <span class="close" onclick="closePopup('popup4')">&times; Fechar tela</span>
                     <h2>Ajuste de configurações gerais</h2>
                     <div style="display: block">
                         <!-- Add toggler to every setting -->
-                        <div style="display: flex; flex-direction: row; align-items: flex-start;">
-                            <div id="ajustescard1" style="display: flex; flex-direction: column; max-width: 250px;"
+                        <div
+                            style="display: grid; grid-template-columns: repeat( auto-fit, minmax(250px, 0fr) );gap:12px">
+                            <div id="ajustescard1" style="display: flex; flex-direction: column;"
                                 class="card2 disabled">
                                 <h3 style="margin: 0;">Envio de atividades</h3>
                                 <p>Permite o envio de atividades através do site. É necessário ter o login ativado.</p>
@@ -276,7 +277,7 @@
                                     <label for="ajustes1">Ativar</label>
                                 </div>
                             </div>
-                            <div id="ajustescard2" style="display: flex; flex-direction: column; max-width: 250px;"
+                            <div id="ajustescard2" style="display: flex; flex-direction: column;"
                                 class="card2 disabled">
                                 <h3 style="margin: 0;">Login</h3>
                                 <p>Autorizar login de usuários e criação de novas contas.</p>
@@ -285,13 +286,22 @@
                                     <label for="ajustes2">Ativar</label>
                                 </div>
                             </div>
-                            <div id="ajustescard3" style="display: flex; flex-direction: column; max-width: 250px;"
+                            <div id="ajustescard3" style="display: flex; flex-direction: column;"
                                 class="card2 disabled">
                                 <h3 style="margin: 0;">Temos um vencedor</h3>
                                 <p>Ativar coroa e confetti na tela inicial.</p>
                                 <div style="display: flex; flex-direction: row; align-items: center;">
                                     <input type="checkbox" name="ajustes3" id="ajustes3">
                                     <label for="ajustes3">Ativar</label>
+                                </div>
+                            </div>
+                            <div id="ajustescard4" style="display: flex; flex-direction: column;"
+                                class="card2 disabled">
+                                <h3 style="margin: 0;">Exibir programação</h3>
+                                <p>Altera a exibição da aba <i>programção</i> na barra de navegação.</p>
+                                <div style="display: flex; flex-direction: row; align-items: center;">
+                                    <input type="checkbox" name="ajustes4" id="ajustes4">
+                                    <label for="ajustes4">Exibir</label>
                                 </div>
                             </div>
                         </div>
@@ -331,7 +341,12 @@
                         <h2>Alterar grade com as disciplinas</h2>
                         <input type="button" value="Adicionar evento" onclick="addEvent()" class="saveButton"
                             style="width: fit-content; margin-left: 12px;">
+                        <input type="button" value="Apagar tudo" onclick="clearSchedule()" class="saveButton"
+                            style="width: fit-content; margin-left: 12px; border-color: #790e0e; background-color: #cf1212; color: white;">
                     </div>
+                    <br>
+                    <p>Recomenda-se que a programação seja preenchida de acordo com a ordem das atividades, de segunda a
+                        sexta, marcando também os espaços vazios. Isso evita que erros ocorram na exibição da grade.</p>
                     <br>
                     <table id="table" cellspacing="5" cellpadding="5" style="display:none" class="card2">
                         <tr>
@@ -380,36 +395,37 @@
                                     </select>
                                     <span>, </span>
                                     <select name="startTime" id="startTime">
-                                        <option value="0">8h00</option>
-                                        <option value="1">8h30</option>
-                                        <option value="2">9h00</option>
-                                        <option value="3">9h30</option>
-                                        <option value="4">10h00</option>
-                                        <option value="5">10h30</option>
-                                        <option value="6">11h00</option>
-                                        <option value="7">11h30</option>
-                                        <option value="8">12h00</option>
-                                        <option value="9">12h30</option>
-                                        <option value="10">13h00</option>
-                                        <option value="11">13h30</option>
-                                        <option value="12">14h00</option>
-                                        <option value="13">14h30</option>
-                                        <option value="14">15h00</option>
-                                        <option value="15">15h30</option>
-                                        <option value="16">16h00</option>
-                                        <option value="17">16h30</option>
-                                        <option value="18">17h00</option>
-                                        <option value="19">17h30</option>
-                                        <option value="20">18h00</option>
-                                        <option value="21">18h30</option>
-                                        <option value="22">19h00</option>
-                                        <option value="23">19h30</option>
-                                        <option value="24">20h00</option>
-                                        <option value="25">20h30</option>
-                                        <option value="26">21h00</option>
-                                        <option value="27">21h30</option>
-                                        <option value="28">22h00</option>
-                                        <option value="29">22h30</option>
+                                        <option value="0">7h30</option>
+                                        <option value="1">8h00</option>
+                                        <option value="2">8h30</option>
+                                        <option value="3">9h00</option>
+                                        <option value="4">9h30</option>
+                                        <option value="5">10h00</option>
+                                        <option value="6">10h30</option>
+                                        <option value="7">11h00</option>
+                                        <option value="8">11h30</option>
+                                        <option value="9">12h00</option>
+                                        <option value="10">12h30</option>
+                                        <option value="11">13h00</option>
+                                        <option value="12">13h30</option>
+                                        <option value="13">14h00</option>
+                                        <option value="14">14h30</option>
+                                        <option value="15">15h00</option>
+                                        <option value="16">15h30</option>
+                                        <option value="17">16h00</option>
+                                        <option value="18">16h30</option>
+                                        <option value="19">17h00</option>
+                                        <option value="20">17h30</option>
+                                        <option value="21">18h00</option>
+                                        <option value="22">18h30</option>
+                                        <option value="23">19h00</option>
+                                        <option value="24">19h30</option>
+                                        <option value="25">20h00</option>
+                                        <option value="26">20h30</option>
+                                        <option value="27">21h00</option>
+                                        <option value="28">21h30</option>
+                                        <option value="29">22h00</option>
+                                        <option value="30">22h30</option>
                                     </select>
                                     <span> - </span>
                                     <select name="endTime" id="endTime">
@@ -443,6 +459,7 @@
                                         <option value="27">21h30</option>
                                         <option value="28">22h00</option>
                                         <option value="29">22h30</option>
+                                        <option value="30">23h00</option>
                                     </select>
                                     <span> • </span>
                                     <input id="eventLocation" placeholder="Local"></input>
@@ -477,7 +494,8 @@
                                 style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
                         <a class="menu" href="./send.html"><i class="menuIcons material-icons" md-24 md-light
                                 style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
-                        <a class="menu" href="./schedule.html"><i class="menuIcons material-icons" md-24 md-light
+                        <a class="menu" href="./schedule.html" id="scheduleNav"><i class="menuIcons material-icons"
+                                md-24 md-light
                                 style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
                         <a class="menu" href="./about.html"><i class="menuIcons material-icons" md-24 md-light
                                 style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
