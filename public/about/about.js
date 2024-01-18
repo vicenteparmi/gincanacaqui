@@ -33,6 +33,7 @@ function changeLogo() {
 
 document.getElementById('version').innerHTML = version;
 document.getElementById('lastUpdated').innerHTML = lastUpdated;
+document.getElementById('year').innerHTML = new Date().getFullYear();
 
 // Default code
 

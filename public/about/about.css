@@ -265,3 +265,60 @@ i.menuIcons {
     display: none;
   }
 }
+
+.footer-card {
+  width: calc(100% - 96px);
+  background-color: #dee1ff;
+  color: #001159;
+  padding: 24px;
+  border-radius: 24px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.footer-card p {
+  margin: 0;
+  max-width: none;
+}
+
+.footer-card-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.footer-card-content h3 {
+  margin: 0;
+  margin-right: 24px;
+}
+
+.footer-card-content-2 {
+  display: flex;
+  flex-direction: column;
+  padding-left: 42px;
+}
+
+.contact-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding-top: 12px;
+}
+
+.contact-section a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #4256b8;
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 24px;
+  padding: 8px 12px;
+  text-decoration: none;
+  transition-duration: 0.2s;
+}
+
+.contact-section a:hover {
+  background-color: #a5adff;
+}
