@@ -1,2 +1,2 @@
-var version = '2.2.0';
-var lastUpdated = '18 de Janeiro de 2024';
+var version = '2.2.1';
+var lastUpdated = '06 de Março de 2025';

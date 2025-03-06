@@ -1,5 +1,5 @@
-https://gincanacaqui.web.app/index.html
-https://gincanacaqui.web.app/updates.html
-https://gincanacaqui.web.app/send.html
-https://gincanacaqui.web.app/schedule.html
-https://gincanacaqui.web.app/about.html
+https://gincanacaqui.web.app/
+https://gincanacaqui.web.app/updates
+https://gincanacaqui.web.app/send
+https://gincanacaqui.web.app/schedule
+https://gincanacaqui.web.app/about
