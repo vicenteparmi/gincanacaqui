@@ -252,7 +252,7 @@ function verifyAccount() {
 function signOut() {
   firebase.auth().signOut().then(function () {
     console.log('Signed Out');
-    location.replace('./index.html');
+    location.replace('./');
   }, function (error) {
     console.error('Sign Out Error', error);
   });
@@ -350,7 +350,7 @@ function deleteAccount() {
         console.log('User not removed from database');
       });
 
-      location.replace('./index.html');
+      location.replace('./');
     }).catch(function (error) {
       alert('Não foi possível apagar a conta. Saia e faça login novamente.');
     });
