@@ -208,6 +208,16 @@ canvas {
   transition-duration: 0.3s;
 }
 
+.teamIconList {
+  width: 28px;
+  height: 28px;
+  vertical-align: middle;
+  margin-right: 8px;
+  margin-bottom: 2px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .center {
   position: absolute;
   left: 50%;

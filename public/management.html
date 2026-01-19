@@ -1,354 +1,171 @@
-<!doctype= html>
-    <!-- Página criada por Vicente Parmigiani em 12/01/2020 às 22h-->
-    <html lang="pt">
+<!DOCTYPE html>
+<html lang="pt">
 
-    <head>
-        <title>Configurações Gerais | Gincana CAQuí</title>
-        <link rel="icon" type="image/webp" href="files/image/CAQUI.webp" />
-        <link rel="stylesheet" type="text/css" href="management/manage.css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Muli:400,700&display=swap&subset=latin-ext"
-            rel="stylesheet">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
+<head>
+    <title>Configurações Gerais | Gincana CAQuí</title>
+    <link rel="icon" type="image/webp" href="files/image/CAQUI.webp" />
+    <link rel="stylesheet" type="text/css" href="management/manage.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,700&display=swap&subset=latin-ext" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-    <body onscroll="headerShadow()">
-        <div id="body">
-            <div style="margin-top: 100px">
-                <h1>Gerenciamento Geral</h1>
-                <p>Página para configurações da gincana.</p>
-                <div class="cardHolder">
-                    <div class="card" onclick="openPopup('popup1')">
-                        <h2>Equipes</h2>
-                        <p>Modificar pontuação e atividades concluídas.</p>
-                    </div>
-                    <div class="card" onclick="openPopup('popup2')">
-                        <h2>Atividades</h2>
-                        <p>Adicionar ou remover atividades, definir categoria e pontuação.</p>
-                    </div>
-                    <div class="card" onclick="openPopup('popup3')">
-                        <h2>Usuários</h2>
-                        <p>Alterar equipe, nome, ver informações.</p>
-                    </div>
-                    <div class="card" onclick="openPopup('popup4')">
-                        <h2>Ajustes</h2>
-                        <p>Ativar login, envio, vencedor.</p>
-                    </div>
-                    <div class="card" onclick="openPopup('popup5')">
-                        <h2>Postagens</h2>
-                        <p>Criar, modificar e remover postagens.</p>
-                    </div>
-                    <div class="card" onclick="openPopup('popup6')">
-                        <h2>Cronograma</h2>
-                        <p>Alterar eventos e organizar grade.</p>
-                    </div>
+<body>
+    <div class="dashboard-container">
+        <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="files/image/CAQUI.webp" alt="CAQUI Logo" class="sidebar-logo">
+                <h2>Gerenciamento</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="menu-item active" onclick="switchView('dashboard')">
+                    <i class="material-icons">dashboard</i> Início
+                </li>
+                <li class="menu-item" onclick="switchView('teams')">
+                    <i class="material-icons">people</i> Equipes
+                </li>
+                <li class="menu-item" onclick="switchView('activities')">
+                    <i class="material-icons">assignment</i> Atividades
+                </li>
+                <li class="menu-item" onclick="switchView('users')">
+                    <i class="material-icons">person</i> Usuários
+                </li>
+                <li class="menu-item" onclick="switchView('posts')">
+                    <i class="material-icons">article</i> Postagens
+                </li>
+                <li class="menu-item" onclick="switchView('schedule')">
+                    <i class="material-icons">calendar_today</i> Cronograma
+                </li>
+                <li class="menu-item" onclick="switchView('settings')">
+                    <i class="material-icons">settings</i> Ajustes
+                </li>
+                <li class="menu-spacer"></li>
+                <li class="menu-item back-home">
+                    <a href="./" style="display:flex; align-items:center; color:inherit; text-decoration:none;">
+                        <i class="material-icons">home</i> Voltar ao Site
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="main-header">
+                <div class="header-left">
+                    <button id="mobileMenuBtn" class="menu-toggle-btn" onclick="toggleSidebar()">
+                        <i class="material-icons">menu</i>
+                    </button>
+                    <h1 id="pageTitle">Início</h1>
+                </div>
+                <div class="user-profile">
+                    <span id="headerUserName">Carregando...</span>
+                    <div id="userPhoto" class="header-avatar" onclick="toggleUserMenu()"></div>
+                </div>
+                <!-- Dropdown Menu -->
+                <div id="userDropdown" class="user-dropdown hidden">
+                    <a href="./profile.html">Perfil</a>
+                    <a href="#" onclick="signOut()">Sair</a>
                 </div>
             </div>
 
+            <!-- Views -->
 
-            <!-- Popup to edit team points and activities done. -->
+            <!-- 1. Dashboard Home -->
+            <div id="view-dashboard" class="view-section active">
+                <div class="dashboard-header-actions">
+                    <a href="./review.html" class="btn btn-primary" target="_blank">
+                        <i class="material-icons">rate_review</i> Ir para Revisão
+                    </a>
+                </div>
 
-            <div id="popup1" class="sidePannel">
-                <div class="sidePannelInner" style="display: block;">
-                    <span class="close" onclick="closePopup('popup1')">&times; Fechar tela</span>
-                    <h2>Modificar pontuação e atividades concluídas</h2>
-                    <div class="card2">
-                        <div style="display: flex; flex-direction: row; align-items: center;">
-                            <img id="teamImg" width="150px" height="150px" src="files/teams/unknown.webp"
-                                alt="Símbolo da equipe" style="transition-duration: 0.3s;">
-                            <div>
-                                <select name="team" id="selectTeam">
-                                    <option value="0" disabled>Selecione uma equipe</option>
-                                </select>
-                                <div style="display: flex; flex-direction: row;">
-                                    <input id="pointsTeam" type="number" name="points" placeholder="Pontuação" required>
-                                    <i id="sandwich" class="material-icons" onclick="savePoints()" md-24 md-light
-                                        style="padding: 10px; cursor:pointer;">save_alt</i>
-                                </div>
-                            </div>
-                        </div>
+                <div class="dashboard-grid">
+                    <div class="stat-card" style="background-color: #5BB974;">
+                        <h3>Equipes</h3>
+                        <p id="totalTeams">0</p>
+                    </div>
+                    <div class="stat-card" style="background-color: #FBBC04;">
+                        <h3>Usuários</h3>
+                        <p id="totalUsers">0</p>
+                    </div>
+                    <div class="stat-card" style="background-color: #174EA6;">
                         <h3>Atividades</h3>
-                        <div id="atividadesEquipe"></div>
-                        <br>
-                        <input type="button" value="Salvar alterações" onclick="saveActivityDone()" class="saveButton">
+                        <p id="totalActivities">0</p>
                     </div>
                 </div>
-            </div>
 
-            <!-- Popup to add or remove activities. -->
-
-            <div id="popup2" class="sidePannel">
-                <div class="sidePannelInner">
-                    <div>
-                        <span class="close" onclick="closePopup('popup2')">&times; Fechar tela</span>
-                        <h2>Adicionar ou remover atividades</h2>
-                        <div class="card2" style="background-color: white;">
-                            <h3>Criar nova atividade</h3>
-                            <label for="addTitulo">Título da atividade</label>
-                            <input type="text" name="addTitulo" id="addTitulo">
-                            <label for="addDescricao">Descrição da atividade</label>
-                            <textarea name="addDescricao" id="addDescricao" cols="30" rows="5"></textarea>
-                            <label for="addPontos">Pontuação</label>
-                            <div style="display: flex; flex-direction: row;">
-                                <input type="number" name="addPontos" id="addPontos">
-                                <input type="text" name="addPontosDesc" id="addPontosDesc"
-                                    placeholder="por foto, por pessoa">
-                            </div>
-
-                            <!-- Upload photo -->
-                            <label for="addFoto" id="addFotoLabel">
-                                <i class="material-icons" style="font-size: 42px;">add_a_photo</i>
-                                Foto da atividade
-                            </label>
-                            <input type="file" name="addFoto" id="addFoto" accept="image/*">
-
-                            <h3>Categorias</h3>
-                            <p>Selecione as categorias que essa atividade faz parte.</p>
-                            <div class="checkboxHolder">
-                                <ul>
-                                    <li><input type="checkbox" name="addCategoria" id="addCategoria1" value="1">
-                                        <label for="addCategoria1">Envio pelo site</label>
-                                    </li>
-                                    <li><input type="checkbox" name="addCategoria" id="addCategoria2" value="2">
-                                        <label for="addCategoria2">Várias Imagens</label>
-                                    </li>
-                                    <li><input type="checkbox" name="addCategoria" id="addCategoria3" value="3">
-                                        <label for="addCategoria3">Uma Imagem</label>
-                                    </li>
-                                    <li><input type="checkbox" name="addCategoria" id="addCategoria4" value="4">
-                                        <label for="addCategoria4">Precisa de resposta</label>
-                                    </li>
-                                    <li><input type="checkbox" name="addCategoria" id="addCategoria5" value="5">
-                                        <label for="addCategoria5">Veterano necessário</label>
-                                    </li>
-                                    <li><input type="checkbox" name="addCategoria" id="addCategoria6" value="6">
-                                        <label for="addCategoria6">Vídeo</label>
-                                    </li>
-                                    <li><input type="checkbox" name="addCategoria" id="addCategoria7" value="7">
-                                        <label for="addCategoria7">Entrega presencial</label>
-                                    </li>
-                                    <li><input type="checkbox" name="addCategoria" id="addCategoria8" value="8">
-                                        <label for="addCategoria8">Múltiplos envios</label>
-                                    </li>
-                                </ul>
-                            </div>
-                            <button class="saveButton" id="addAtividade" onclick="addAtividade()">Adicionar
-                                atividade</button>
-                        </div>
-
-                    </div>
-                    <div>
-                        <h2>Atividades</h2>
-                        <div id="activities">
+                <div class="dashboard-panels">
+                    <div class="panel scoreboard-panel">
+                        <h3>Placar Geral</h3>
+                        <div id="scoreboardList" class="scoreboard-list">
+                            <!-- Populated by JS -->
                         </div>
                     </div>
-
-                    <!-- Checklist -->
-                </div>
-                <!-- Modal to edit activities. -->
-
-                <div id="modalEdit" class="modal">
-                    <div class="modal-content">
-                        <h2>Editar atividade</h2>
-                        <div>
-                            <label for="editTitulo">Título da atividade</label>
-                            <input type="text" name="editTitulo" id="editTitulo">
-                            <label for="editDescricao">Descrição da atividade</label>
-                            <textarea name="editDescricao" id="editDescricao" cols="30" rows="5"></textarea>
-                            <label for="editPontos">Pontuação</label>
-                            <div style="display: flex; flex-direction: row;">
-                                <input type="number" name="editPontos" id="editPontos">
-                                <input type="text" name="editPontosDesc" id="editPontosDesc"
-                                    placeholder="por foto, por pessoa">
-                            </div>
-
-                            <!-- Upload photo -->
-                            <label for="editFoto" id="editFotoLabel">
-                                <i class="material-icons" style="font-size: 42px;">flip_camera_ios</i>
-                                Modificar foto
-                            </label>
-                            <input type="file" name="editFoto" id="editFoto" accept="image/*" style="display: none;">
-
-                            <h3>Categorias</h3>
-                            <p>Selecione as categorias que essa atividade faz parte.</p>
-                            <div class="checkboxHolder">
-                                <ul>
-                                    <li><input type="checkbox" name="editCategoria" id="editCategoria1" value="1">
-                                        <label for="editCategoria1">Envio pelo site</label>
-                                    </li>
-                                    <li><input type="checkbox" name="editCategoria" id="editCategoria2" value="2">
-                                        <label for="editCategoria2">Várias Imagens</label>
-                                    </li>
-                                    <li><input type="checkbox" name="editCategoria" id="editCategoria3" value="3">
-                                        <label for="editCategoria3">Uma Imagem</label>
-                                    </li>
-                                    <li><input type="checkbox" name="editCategoria" id="editCategoria4" value="4">
-                                        <label for="editCategoria4">Precisa de resposta</label>
-                                    </li>
-                                    <li><input type="checkbox" name="editCategoria" id="editCategoria5" value="5">
-                                        <label for="editCategoria5">Veterano necessário</label>
-                                    </li>
-                                    <li><input type="checkbox" name="editCategoria" id="editCategoria6" value="6">
-                                        <label for="editCategoria6">Vídeo</label>
-                                    </li>
-                                    <li><input type="checkbox" name="editCategoria" id="editCategoria7" value="7">
-                                        <label for="editCategoria7">Entrega presencial</label>
-                                    </li>
-                                    <li><input type="checkbox" name="editCategoria" id="editCategoria8" value="8">
-                                        <label for="editCategoria8">Múltiplos envios</label>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div style="display: flex; flex-direction: row;">
-                                <button class="saveButton" id="editAtividade">Editar atividade</button>
-                                <button class="saveButton" id="deleteAtividade">Deletar atividade</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Popup to manage users -->
-
-            <div id="popup3" class="sidePannel">
-                <div class="sidePannelInner" style="display: block;">
-                    <span class="close" onclick="closePopup('popup3')">&times; Fechar tela</span>
-                    <h2>Gerenciar usuários</h2>
-                    <div id="userList">
-                        Não há usuários cadastrados.
-                    </div>
-                </div>
-                <!-- User edit modal -->
-
-                <div id="modalEditUser" class="modal">
-                    <div class="modal-content">
-                        <h2>Editar usuário</h2>
-                        <div style="display: flex; flex-direction:column; align-items:center; width: 100%">
-                            <img src="" alt="Imagem do usuário" id="editUserPhoto">
-                            <br>
-                            <label for="editUserName">Nome</label>
-                            <input type="text" name="editUserName" id="editUserName">
-                            <label for="editUserEmail">E-mail</label>
-                            <input type="text" name="editUserEmail" id="editUserEmail">
-                            <label for="editUserTeam">Equipe</label>
-                            <select name="editUserTeam" id="editUserTeam">
-                                <option value="1">Hidrogênio</option>
-                                <option value="2">Hélio</option>
-                                <option value="3">Lítio</option>
-                                <option value="4">Berílio</option>
-                                <option value="5">Boro</option>
-                                <option value="6">Carbono</option>
-                                <option value="7">Nitrogênio</option>
-                                <option value="8">Oxigênio</option>
-                                <option value="9">Flúor</option>
-                                <option value="10">Neônio</option>
-                                <option value="11">Sódio</option>
-                                <option value="12">Magnésio</option>
-                                <option value="13">Alumínio</option>
-                                <option value="14">Silício</option>
-                                <option value="15">Fósforo</option>
-                                <option value="16">Enxofre</option>
-                            </select>
-                            <label for="editUserVeteran">Padrinho</label>
-                            <input type="checkbox" name="editUserVeteran" id="editUserVeteran">
-                            <button class="saveButton" id="editUserSave">Salvar mudanças</button>
+                    <div class="panel updates-panel">
+                        <h3>Últimos Posts</h3>
+                        <div id="updatesList" class="updates-list">
+                            <!-- Populated by JS -->
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Popup to ajust general settings -->
-
-            <div id="popup4" class="sidePannel">
-                <div class="sidePannelInner" style="display: block; width: 90%;">
-                    <span class="close" onclick="closePopup('popup4')">&times; Fechar tela</span>
-                    <h2>Ajuste de configurações gerais</h2>
-                    <div style="display: block">
-                        <!-- Add toggler to every setting -->
-                        <div
-                            style="display: grid; grid-template-columns: repeat( auto-fit, minmax(250px, 0fr) );gap:12px">
-                            <div id="ajustescard1" style="display: flex; flex-direction: column;"
-                                class="card2 disabled">
-                                <h3 style="margin: 0;">Envio de atividades</h3>
-                                <p>Permite o envio de atividades através do site. É necessário ter o login ativado.</p>
-                                <div style="display: flex; flex-direction: row; align-items: center;">
-                                    <input type="checkbox" name="ajustes1" id="ajustes1">
-                                    <label for="ajustes1">Ativar</label>
-                                </div>
-                            </div>
-                            <div id="ajustescard2" style="display: flex; flex-direction: column;"
-                                class="card2 disabled">
-                                <h3 style="margin: 0;">Login</h3>
-                                <p>Autorizar login de usuários e criação de novas contas.</p>
-                                <div style="display: flex; flex-direction: row; align-items: center;">
-                                    <input type="checkbox" name="ajustes2" id="ajustes2">
-                                    <label for="ajustes2">Ativar</label>
-                                </div>
-                            </div>
-                            <div id="ajustescard3" style="display: flex; flex-direction: column;"
-                                class="card2 disabled">
-                                <h3 style="margin: 0;">Temos um vencedor</h3>
-                                <p>Ativar coroa e confetti na tela inicial.</p>
-                                <div style="display: flex; flex-direction: row; align-items: center;">
-                                    <input type="checkbox" name="ajustes3" id="ajustes3">
-                                    <label for="ajustes3">Ativar</label>
-                                </div>
-                            </div>
-                            <div id="ajustescard4" style="display: flex; flex-direction: column;"
-                                class="card2 disabled">
-                                <h3 style="margin: 0;">Exibir programação</h3>
-                                <p>Altera a exibição da aba <i>programção</i> na barra de navegação.</p>
-                                <div style="display: flex; flex-direction: row; align-items: center;">
-                                    <input type="checkbox" name="ajustes4" id="ajustes4">
-                                    <label for="ajustes4">Exibir</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- 2. Teams View -->
+            <div id="view-teams" class="view-section">
+                <div class="toolbar">
+                    <input type="text" placeholder="Buscar equipe..." class="search-bar" id="searchTeams">
                 </div>
+                <!-- Teams Table Injection -->
+                <div id="teamsTableContainer" class="table-container"></div>
             </div>
 
-            <!-- Posts -->
-
-            <div id="popup5" class="sidePannel">
-                <div class="sidePannelInner">
-                    <div>
-                        <span class="close" onclick="closePopup('popup5')">&times; Fechar tela</span>
-                        <div class="card2" style="margin-top: 24px">
-                            <h2 style="margin-top: 0;">Enviar Post</h2>
-                            <p>Preencha os campos abaixo para fazer uma postagem no mural de início.</p>
-                            <span>Título da publicação</span><br>
-                            <input type="text" placeholder="Título" id="postTitle"><br>
-                            <span>Conteúdo</span><br>
-                            <textarea name="name" rows="8" id="postContent"></textarea><br><br>
-                            <button type="button" onclick="sendPost()">Enviar</button>
-                        </div>
-                    </div>
-                    <div>
-                        <h2>Posts ativos</h2>
-                        <div id="postsAtivos"></div>
-                    </div>
+            <!-- 3. Activities View -->
+            <div id="view-activities" class="view-section">
+                <div class="toolbar">
+                    <button class="btn btn-primary" onclick="openAddActivityModal()"><i class="material-icons">add</i>
+                        Nova Atividade</button>
+                    <button class="btn btn-danger" onclick="bulkDeleteActivities()" id="btnBulkDeleteActivities"
+                        disabled><i class="material-icons">delete</i> Apagar Selecionados</button>
+                    <input type="text" placeholder="Buscar atividade..." class="search-bar" id="searchActivities">
                 </div>
+                <div id="activitiesTableContainer" class="table-container"></div>
             </div>
 
-            <!-- Schedule -->
+            <!-- 4. Users View -->
+            <div id="view-users" class="view-section">
+                <div class="toolbar">
+                    <input type="text" placeholder="Buscar usuário..." class="search-bar" id="searchUsers">
+                    <select id="filterUserTeam" class="filter-select">
+                        <option value="all">Todas as Equipes</option>
+                        <!-- Teams will be populated here -->
+                    </select>
+                    <button class="btn btn-danger" onclick="bulkDeleteUsers()" id="btnBulkDeleteUsers" disabled><i
+                            class="material-icons">delete</i> Apagar Selecionados</button>
+                </div>
+                <div id="usersTableContainer" class="table-container"></div>
+            </div>
 
-            <div id="popup6" class="sidePannel">
-                <div class="sidePannelInner" style="display: block;">
-                    <span class="close" onclick="closePopup('popup6')">&times; Fechar tela</span>
-                    <div style="display: flex; flex-direction:row; align-items:center">
-                        <h2>Alterar grade com as disciplinas</h2>
-                        <input type="button" value="Adicionar evento" onclick="addEvent()" class="saveButton"
-                            style="width: fit-content; margin-left: 12px;">
-                        <input type="button" value="Apagar tudo" onclick="clearSchedule()" class="saveButton"
-                            style="width: fit-content; margin-left: 12px; border-color: #790e0e; background-color: #cf1212; color: white;">
-                    </div>
-                    <br>
-                    <p>Recomenda-se que a programação seja preenchida de acordo com a ordem das atividades, de segunda a
-                        sexta, marcando também os espaços vazios. Isso evita que erros ocorram na exibição da grade.</p>
-                    <br>
-                    <table id="table" cellspacing="5" cellpadding="5" style="display:none" class="card2">
+            <!-- 5. Posts View -->
+            <div id="view-posts" class="view-section">
+                <div class="toolbar">
+                    <button class="btn btn-primary" onclick="openAddPostModal()"><i class="material-icons">add</i> Novo
+                        Post</button>
+                </div>
+                <div id="postsContainer" class="cards-container"></div>
+            </div>
+
+            <!-- 6. Schedule View -->
+            <div id="view-schedule" class="view-section">
+                <div class="toolbar">
+                    <button class="btn btn-primary" onclick="openAddEventModal()"><i class="material-icons">add</i> Novo
+                        Evento</button>
+                    <button class="btn btn-danger" onclick="clearSchedule()"><i
+                            class="material-icons">delete_forever</i> Limpar Tudo</button>
+                </div>
+                <div id="scheduleTableContainer" class="schedule-container">
+                    <table id="table" cellspacing="5" cellpadding="5" class="schedule-table">
                         <tr>
                             <th style="width:5vw;">Horário</th>
                             <th>Segunda</th>
@@ -359,176 +176,350 @@
                         </tr>
                     </table>
                 </div>
-                <div id="modal" class="modalS">
-                    <div class="modal-contentS">
-                        <span class="closeS" id="closeModal"><i class="material-icons" md-24 md-light
-                                style="vertical-align: middle;padding: 10px;">arrow_back</i></span>
-                        <div id="modalImage"></div>
-                        <div class="blockDiv">
-                            <div class="titleDiv">
-                                <div id="cubes">
-                                    <div onclick="selectModeEdit(0)" id="cube0" class="cube mode0" title="Integração">
-                                    </div>
-                                    <div onclick="selectModeEdit(1)" id="cube1" class="cube mode1"
-                                        title="Palestras de Instâncias da Faculdade">
-                                    </div>
-                                    <div onclick="selectModeEdit(2)" id="cube2" class="cube mode2"
-                                        title="Atividades recreativas"></div>
-                                    <div onclick="selectModeEdit(3)" id="cube3" class="cube mode3"
-                                        title="Áreas da Química"></div>
-                                    <div onclick="selectModeEdit(4)" id="cube4" class="cube mode4"
-                                        title="Almoço e Jantar"></div>
-                                    <div onclick="selectModeEdit(5)" id="cube5" class="cube mode5" title="Palestras">
-                                    </div>
-                                    <div onclick="selectModeEdit(6)" id="cube6" class="cube mode6" title="Vazio"></div>
-                                </div>
-                                <input id="eventTitle" placeholder="Título do evento"></input>
-                            </div>
-                            <div class="modal2Desc">
-                                <div class="eventInfo">
-                                    <select id="eventDate" name="eventDate">
-                                        <option value="0">Segunda</option>
-                                        <option value="1">Terça</option>
-                                        <option value="2">Quarta</option>
-                                        <option value="3">Quinta</option>
-                                        <option value="4">Sexta</option>
-                                    </select>
-                                    <span>, </span>
-                                    <select name="startTime" id="startTime">
-                                        <option value="0">7h30</option>
-                                        <option value="1">8h00</option>
-                                        <option value="2">8h30</option>
-                                        <option value="3">9h00</option>
-                                        <option value="4">9h30</option>
-                                        <option value="5">10h00</option>
-                                        <option value="6">10h30</option>
-                                        <option value="7">11h00</option>
-                                        <option value="8">11h30</option>
-                                        <option value="9">12h00</option>
-                                        <option value="10">12h30</option>
-                                        <option value="11">13h00</option>
-                                        <option value="12">13h30</option>
-                                        <option value="13">14h00</option>
-                                        <option value="14">14h30</option>
-                                        <option value="15">15h00</option>
-                                        <option value="16">15h30</option>
-                                        <option value="17">16h00</option>
-                                        <option value="18">16h30</option>
-                                        <option value="19">17h00</option>
-                                        <option value="20">17h30</option>
-                                        <option value="21">18h00</option>
-                                        <option value="22">18h30</option>
-                                        <option value="23">19h00</option>
-                                        <option value="24">19h30</option>
-                                        <option value="25">20h00</option>
-                                        <option value="26">20h30</option>
-                                        <option value="27">21h00</option>
-                                        <option value="28">21h30</option>
-                                        <option value="29">22h00</option>
-                                        <option value="30">22h30</option>
-                                    </select>
-                                    <span> - </span>
-                                    <select name="endTime" id="endTime">
-                                        <option value="0">8h00</option>
-                                        <option value="1">8h30</option>
-                                        <option value="2">9h00</option>
-                                        <option value="3">9h30</option>
-                                        <option value="4">10h00</option>
-                                        <option value="5">10h30</option>
-                                        <option value="6">11h00</option>
-                                        <option value="7">11h30</option>
-                                        <option value="8">12h00</option>
-                                        <option value="9">12h30</option>
-                                        <option value="10">13h00</option>
-                                        <option value="11">13h30</option>
-                                        <option value="12">14h00</option>
-                                        <option value="13">14h30</option>
-                                        <option value="14">15h00</option>
-                                        <option value="15">15h30</option>
-                                        <option value="16">16h00</option>
-                                        <option value="17">16h30</option>
-                                        <option value="18">17h00</option>
-                                        <option value="19">17h30</option>
-                                        <option value="20">18h00</option>
-                                        <option value="21">18h30</option>
-                                        <option value="22">19h00</option>
-                                        <option value="23">19h30</option>
-                                        <option value="24">20h00</option>
-                                        <option value="25">20h30</option>
-                                        <option value="26">21h00</option>
-                                        <option value="27">21h30</option>
-                                        <option value="28">22h00</option>
-                                        <option value="29">22h30</option>
-                                        <option value="30">23h00</option>
-                                    </select>
-                                    <span> • </span>
-                                    <input id="eventLocation" placeholder="Local"></input>
-                                </div>
-                                <textarea id="eventDescription" placeholder="Descrição do envento"></textarea>
-                                <br>
-                                <div>
-                                    <input type="button" id="saveEvent" value="Salvar" class="saveButton"
-                                        onclick="saveEventEdit()"></input>
-                                    <input type="button" id="deleteEvent" value="Excluir" class="saveButton"
-                                        onclick="deleteEvent()"></input>
-                                </div>
+            </div>
 
-                            </div>
+            <!-- 7. Settings View -->
+            <div id="view-settings" class="view-section">
+                <div class="settings-grid">
+                    <div class="setting-card">
+                        <h3>Envio de Atividades</h3>
+                        <p>Permite o envio de atividades pelo site.</p>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="ajustes1">
+                            <label for="ajustes1" class="slider"></label>
+                        </div>
+                    </div>
+                    <div class="setting-card">
+                        <h3>Login</h3>
+                        <p>Permite novos logins e cadastros.</p>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="ajustes2">
+                            <label for="ajustes2" class="slider"></label>
+                        </div>
+                    </div>
+                    <div class="setting-card">
+                        <h3>Temos um vencedor</h3>
+                        <p>Exibe animação de vitória na home.</p>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="ajustes3">
+                            <label for="ajustes3" class="slider"></label>
+                        </div>
+                    </div>
+                    <div class="setting-card">
+                        <h3>Exibir Programação</h3>
+                        <p>Mostra a aba de programação no menu.</p>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="ajustes4">
+                            <label for="ajustes4" class="slider"></label>
+                        </div>
+                    </div>
+                    <div class="setting-card">
+                        <h3>Limpar Dados de Equipes</h3>
+                        <p>Zera pontuação e tarefas de todas as equipes.</p>
+                        <div style="margin-top:10px; width:100%">
+                            <button type="button" class="btn btn-danger" style="width:100%"
+                                onclick="clearAllTeamsData(event)">Limpar
+                                Tudo</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Default code -->
+        </div>
+    </div>
 
-            <div id="header" class="headerNoShadow">
-                <i id="sandwich" class="menuIcons material-icons" onclick="openMenu()" md-24 md-light
-                    style="vertical-align: middle;padding: 10px; cursor:pointer;">menu</i>
-                <img src="files/image/CAQUI.webp" class="headerImage">
-                <text id="logo">Gincana CAQuí</text>
-                <div id="menuHolder">
-                    <div id="menu">
-                        <a class="menu" href="./"><i class="menuIcons material-icons" md-24 md-light
-                                style="vertical-align: middle;padding: 10px;">home</i>Início</a>
-                        <a class="menu" href="./updates"><i class="menuIcons material-icons" md-24 md-light
-                                style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
-                        <a class="menu" href="./send"><i class="menuIcons material-icons" md-24 md-light
-                                style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
-                        <a class="menu" href="./schedule" id="scheduleNav"><i class="menuIcons material-icons"
-                                md-24 md-light
-                                style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
-                        <a class="menu" href="./about"><i class="menuIcons material-icons" md-24 md-light
-                                style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
+    <!-- MODALS (Hidden by default) -->
+
+    <!-- Team Modal (Details/Tasks) -->
+    <div id="modalTeam" class="modal">
+        <div class="modal-content" style="width: 700px;">
+            <span class="close-modal" onclick="closeModal('modalTeam')">&times;</span>
+            <div class="modal-header-simple">
+                <img id="modalTeamLogo" src="" class="small-thumb">
+                <h2 id="modalTeamName">Nome da Equipe</h2>
+            </div>
+
+            <div class="form-group">
+                <label>Pontuação Atual</label>
+                <input type="number" id="modalTeamPoints" class="clean-input" style="font-size:24px; font-weight:bold;">
+                <button class="btn btn-primary" onclick="saveTeamPointsFromModal()"
+                    style="margin-top:5px; width:100%">Salvar Pontuação Manual</button>
+            </div>
+
+            <h3>Atividades Concluídas</h3>
+            <div class="form-group">
+                <input type="text" placeholder="Filtrar atividades..." id="searchTeamTasks" class="search-bar"
+                    style="margin-bottom:10px">
+                <div id="teamTasksList" class="tasks-scroll-list">
+                    <!-- Checkboxes populated by JS -->
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="saveTeamTasks()">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODALS (Hidden by default) -->
+
+    <div id="modalEditUser" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('modalEditUser')">&times;</span>
+            <h2 id="modalUserTitle">Editar Usuário</h2>
+            <form id="userForm">
+                <input type="hidden" id="editUserKey">
+
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" id="editUserName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="editUserEmail" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Equipe</label>
+                        <select id="editUserTeam">
+                            <!-- Populated by JS -->
+                        </select>
                     </div>
                 </div>
-                <div id="userPhoto" onclick="popup()"></div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="editUserVeteran"> É Padrinho/Veterano?
+                    </label>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-primary" onclick="saveUserEdit()">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="modalActivity" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('modalActivity')">&times;</span>
+            <h2 id="modalActivityTitle">Nova Atividade</h2>
+            <form id="activityForm">
+                <input type="hidden" id="editActivityKey">
+
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" id="actTitle" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="actDesc" rows="3"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Pontos</label>
+                        <input type="number" id="actPoints" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Sufixo (ex: por foto)</label>
+                        <input type="text" id="actPointsDesc">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Imagem</label>
+                    <div class="image-upload-preview" id="actImagePreview"
+                        onclick="document.getElementById('actFile').click()">
+                        <span>Clique para selecionar imagem</span>
+                        <img src="" id="previewImgElement" style="display:none;">
+                    </div>
+                    <input type="file" id="actFile" accept="image/*" style="display:none">
+                </div>
+
+                <div class="form-group">
+                    <label>Categorias</label>
+                    <div class="checkbox-grid">
+                        <label><input type="checkbox" value="1" name="actCat"> Envio pelo site</label>
+                        <label><input type="checkbox" value="2" name="actCat"> Várias Imagens</label>
+                        <label><input type="checkbox" value="3" name="actCat"> Uma Imagem</label>
+                        <label><input type="checkbox" value="4" name="actCat"> Precisa de resposta</label>
+                        <label><input type="checkbox" value="5" name="actCat"> Veterano necessário</label>
+                        <label><input type="checkbox" value="6" name="actCat"> Vídeo</label>
+                        <label><input type="checkbox" value="7" name="actCat"> Entrega presencial</label>
+                        <label><input type="checkbox" value="8" name="actCat"> Múltiplos envios</label>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="saveActivity()">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Post Modal -->
+    <div id="modalPost" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('modalPost')">&times;</span>
+            <h2>Novo Post</h2>
+            <div class="form-group">
+                <label>Título</label>
+                <input type="text" id="postTitleInput">
             </div>
-
-            <div id="popupMenu" class="popupMenu hide">
-                <a class="popupItem" href="./login.html"><i class="material-icons" md-24 md-light
-                        style="vertical-align: middle;padding: 10px;">person</i>Entrar</a>
+            <div class="form-group">
+                <label>Conteúdo</label>
+                <textarea id="postContentInput" rows="5"></textarea>
             </div>
+            <button class="btn btn-primary" onclick="sendPost()">Enviar</button>
+        </div>
+    </div>
 
-            <div id="popupMenuLogged" class="popupMenu hide">
-                <text class="popupTitle" id="userName">Nome do Usuário</text><br>
-                <text class="popupSubitle" id="userEmail">email@email.com</text><br><bR>
-                <a class="popupItem" href="./profile.html"><i class="material-icons" md-24 md-light
-                        style="vertical-align: middle;padding: 10px;">person</i>Perfil</a><br>
-                <text class="popupItem" onclick="signOut()"><i class="material-icons" md-24 md-light
-                        style="vertical-align: middle;padding: 10px;">input</i>Sair</text>
+    <!-- Event Modal (Schedule) -->
+    <div id="modalEvent" class="modal">
+        <div class="modal-content bg-modal-event" id="modalEventContent">
+            <span class="close-modal" onclick="closeModal('modalEvent')">&times;</span>
+            <div id="modalImage" class="modal-header-image"></div>
+
+            <div class="modal-body">
+                <div class="event-type-selector">
+                    <!-- Cubes for types -->
+                    <div onclick="selectEventType(0)" id="type0" class="cube mode0" title="Integração"></div>
+                    <div onclick="selectEventType(1)" id="type1" class="cube mode1" title="Palestras"></div>
+                    <div onclick="selectEventType(2)" id="type2" class="cube mode2" title="Recreação"></div>
+                    <div onclick="selectEventType(3)" id="type3" class="cube mode3" title="Áreas"></div>
+                    <div onclick="selectEventType(4)" id="type4" class="cube mode4" title="Refeição"></div>
+                    <div onclick="selectEventType(5)" id="type5" class="cube mode5" title="Palestras"></div>
+                    <div onclick="selectEventType(6)" id="type6" class="cube mode6" title="Vazio"></div>
+                </div>
+
+                <input type="text" id="eventTitle" placeholder="Título do Evento" class="clean-input title-input">
+
+                <div class="event-time-row">
+                    <select id="eventDate">
+                        <option value="0">Segunda</option>
+                        <option value="1">Terça</option>
+                        <option value="2">Quarta</option>
+                        <option value="3">Quinta</option>
+                        <option value="4">Sexta</option>
+                    </select>
+
+                    <select id="startTime">
+                        <!-- Options generated by JS ideally, but simplifying for now -->
+                        <option value="0">7h30</option>
+                        <option value="1">8h00</option>
+                        <option value="2">8h30</option>
+                        <option value="3">9h00</option>
+                        <option value="4">9h30</option>
+                        <option value="5">10h00</option>
+                        <option value="6">10h30</option>
+                        <option value="7">11h00</option>
+                        <option value="8">11h30</option>
+                        <option value="9">12h00</option>
+                        <option value="10">12h30</option>
+                        <option value="11">13h00</option>
+                        <option value="12">13h30</option>
+                        <option value="13">14h00</option>
+                        <option value="14">14h30</option>
+                        <option value="15">15h00</option>
+                        <option value="16">15h30</option>
+                        <option value="17">16h00</option>
+                        <option value="18">16h30</option>
+                        <option value="19">17h00</option>
+                        <option value="20">17h30</option>
+                        <option value="21">18h00</option>
+                        <option value="22">18h30</option>
+                        <option value="23">19h00</option>
+                        <option value="24">19h30</option>
+                        <option value="25">20h00</option>
+                        <option value="26">20h30</option>
+                        <option value="27">21h00</option>
+                        <option value="28">21h30</option>
+                        <option value="29">22h00</option>
+                        <option value="30">22h30</option>
+                    </select>
+                    <span>às</span>
+                    <select id="endTime">
+                        <option value="0">8h00</option>
+                        <option value="1">8h30</option>
+                        <option value="2">9h00</option>
+                        <option value="3">9h30</option>
+                        <option value="4">10h00</option>
+                        <option value="5">10h30</option>
+                        <option value="6">11h00</option>
+                        <option value="7">11h30</option>
+                        <option value="8">12h00</option>
+                        <option value="9">12h30</option>
+                        <option value="10">13h00</option>
+                        <option value="11">13h30</option>
+                        <option value="12">14h00</option>
+                        <option value="13">14h30</option>
+                        <option value="14">15h00</option>
+                        <option value="15">15h30</option>
+                        <option value="16">16h00</option>
+                        <option value="17">16h30</option>
+                        <option value="18">17h00</option>
+                        <option value="19">17h30</option>
+                        <option value="20">18h00</option>
+                        <option value="21">18h30</option>
+                        <option value="22">19h00</option>
+                        <option value="23">19h30</option>
+                        <option value="24">20h00</option>
+                        <option value="25">20h30</option>
+                        <option value="26">21h00</option>
+                        <option value="27">21h30</option>
+                        <option value="28">22h00</option>
+                        <option value="29">22h30</option>
+                        <option value="30">23h00</option>
+                    </select>
+                </div>
+
+                <input type="text" id="eventLocation" placeholder="Local" class="clean-input">
+                <textarea id="eventDescription" placeholder="Descrição" rows="3" class="clean-input"></textarea>
+
+                <!-- Custom Confirmation Modal -->
+                <div id="modalConfirmClear" class="modal">
+                    <div class="modal-content" style="max-width: 500px">
+                        <span class="close-modal" onclick="closeModal('modalConfirmClear')">&times;</span>
+                        <h2 style="color: #cf1212;">⚠️ ZONA DE PERIGO</h2>
+                        <p>Você está prestes a <b>ZERAR</b> a pontuação e <b>REMOVER</b> todas as atividades concluídas
+                            de <b>TODAS</b> as equipes.</p>
+                        <p>Essa ação não pode ser desfeita.</p>
+
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label>Para confirmar, digite <b>LIMPAR</b> na caixa abaixo:</label>
+                            <input type="text" id="confirmClearInput" class="clean-input"
+                                style="border: 2px solid #cf1212; color: #cf1212; font-weight: bold;"
+                                placeholder="Digite LIMPAR aqui">
+                        </div>
+
+                        <div class="modal-actions">
+                            <button type="button" class="btn" style="background-color: #ccc;"
+                                onclick="closeModal('modalConfirmClear')">Cancelar</button>
+                            <button type="button" class="btn btn-danger" onclick="executeClearData()">Confirmar
+                                Exclusão</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" onclick="saveEventEdit()">Salvar</button>
+                    <button class="btn btn-danger" onclick="deleteEvent()" id="btnDeleteEvent"
+                        style="display:none;">Excluir</button>
+                </div>
             </div>
+        </div>
+    </div>
 
-            <!-- The core Firebase JS SDK is always required and must be listed first -->
-            <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
 
-            <!-- TODO: Add SDKs for Firebase products that you want to use
-		     https://firebase.google.com/docs/web/setup#available-libraries -->
-            <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
-            <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
-            <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-storage.js"></script>
-            <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+    <!-- Firebase Config -->
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
 
-            <script type="text/javascript" src="management/manage.js" onload="loadPage()"></script>
-    </body>
+    <script type="text/javascript" src="management/manage.js"></script>
+</body>
 
-    </html>
+</html>
