@@ -1,556 +1,404 @@
 /*
-	Set up canvas.
+  Molecular Interaction Animation
+  Simulates molecules that can bond together and break apart on collision
 */
 
+// Canvas setup
 var canvas = document.getElementById('canvas');
+var CANVAS_WIDTH = window.innerWidth;
+var CANVAS_HEIGHT = window.innerWidth > 500 
+  ? window.innerHeight * 0.66 
+  : window.innerHeight * 0.40;
 
-var CANVAS_LENGTH = window.innerWidth;
-
-if (window.innerWidth > 500) {
-  canvas.height = window.innerHeight/100*66;
-} else {
-  canvas.height = window.innerHeight/100*40;
-}
-
+canvas.width = CANVAS_WIDTH;
+canvas.height = CANVAS_HEIGHT;
 var ctx = canvas.getContext('2d');
-canvas.width = CANVAS_LENGTH;
 
-var diff = document.documentElement.clientHeight - CANVAS_LENGTH;
+// Configuration
+var CONFIG = {
+  BOND_ENERGY_THRESHOLD: 300,
+  BOND_PROBABILITY: 0.85,
+  MOLECULE_COLORS: ['#ffc999', '#ffad66', '#ff9f4d', '#ffbe80']
+};
 
-
-/*
-	Minimum Priority Queue (MinPQ) constructor
-*/
-function MinPQ () {
-	this.heap = [null];
-	this.n = 0;
-
-	// MinPQ API
-	this.insert = function (key) {
-		this.heap.push(key);
-		this.swim(++this.n);
-		//console.log('inserted, n=' + this.n);
-		//console.log(this.heap);
-	};
-	this.viewMin = function () {
-		if (this.n < 1) {
-			return null;
-		}
-		return this.heap[1];
-	}
-	this.delMin = function () {
-		if (this.n < 1) {
-			throw new Error('Called delMin() on empty MinPQ');
-		}
-		//console.log('delete min, n=' + this.n)
-		this.exch(1, this.n--);
-		var deleted = this.heap.pop();
-		this.sink(1);
-		return deleted;
-	};
-	this.isEmpty = function () {
-		return (this.n === 0);
-	};
-
-	// Heap helpers
-	this.swim = function (k) {
-		var j = Math.floor(k/2);
-		while (j > 0 && this.less(k, j)) {
-			this.exch(j, k);
-			k = j;
-			j = Math.floor(k/2);
-		}
-	};
-	this.sink = function (k) {
-		var j = 2*k;
-		while (j <= this.n) {
-			if (j < this.n && this.less(j+1, j)) { j++; }
-			if (this.less(k, j)) { break; }
-			this.exch(j, k);
-			k = j;
-			j = 2*k;
-		}
-	};
-
-	// Array compare and exchange
-	this.less = function (i, j) {
-		// Note: this is particular to the SimEvent object.
-		//console.log(this.heap[i]);
-		//console.log(this.heap[j]);
-		return this.heap[i].time < this.heap[j].time;
-	};
-	this.exch = function (i, j) {
-		var swap = this.heap[i];
-		this.heap[i] = this.heap[j];
-		this.heap[j] = swap;
-	};
+// Molecule class
+function Molecule(x, y, vx, vy, radius) {
+  this.x = x;
+  this.y = y;
+  this.vx = vx;
+  this.vy = vy;
+  this.radius = radius;
+  this.mass = radius * radius;
+  this.color = CONFIG.MOLECULE_COLORS[Math.floor(Math.random() * CONFIG.MOLECULE_COLORS.length)];
+  this.bondedTo = null;
 }
 
+Molecule.prototype.draw = function() {
+  ctx.beginPath();
+  ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+  ctx.fillStyle = this.color;
+  ctx.fill();
+};
 
-/*
-	Ball constructor
-*/
-function Ball (posX, posY, velX, velY, r, m) {
-	this.p = {x: posX, y: posY};
-	this.v = {x: velX, y: velY};
-	this.r = r;
-	if (m != undefined) {
-		this.m = m;
-	} else {
-		this.m = Math.ceil(Math.PI*r*r);
-	}
+Molecule.prototype.isBonded = function() {
+  return this.bondedTo !== null;
+};
 
-	// Basic move/draw
-	this.move = function (dt) {
-		this.p.x = this.p.x + this.v.x*dt;
-		this.p.y = this.p.y + this.v.y*dt;
-	};
-	this.draw = function () {
-		ctx.beginPath();
-		ctx.arc(this.p.x, this.p.y, this.r, 0, 2*Math.PI);
+// Bond class - conserves total kinetic energy
+function Bond(mol1, mol2) {
+  this.mol1 = mol1;
+  this.mol2 = mol2;
+  this.angle = Math.atan2(mol2.y - mol1.y, mol2.x - mol1.x);
+  this.distance = mol1.radius + mol2.radius;
+  
+  // Store total kinetic energy before bonding
+  var ke1 = 0.5 * mol1.mass * (mol1.vx * mol1.vx + mol1.vy * mol1.vy);
+  var ke2 = 0.5 * mol2.mass * (mol2.vx * mol2.vx + mol2.vy * mol2.vy);
+  this.totalEnergy = ke1 + ke2;
+  
+  mol1.bondedTo = mol2;
+  mol2.bondedTo = mol1;
+  
+  // Center of mass velocity (momentum conservation)
+  var totalMass = mol1.mass + mol2.mass;
+  this.vx = (mol1.mass * mol1.vx + mol2.mass * mol2.vx) / totalMass;
+  this.vy = (mol1.mass * mol1.vy + mol2.mass * mol2.vy) / totalMass;
+  
+  // Translational kinetic energy of center of mass
+  var translationalKE = 0.5 * totalMass * (this.vx * this.vx + this.vy * this.vy);
+  
+  // Remaining energy goes to rotation
+  var rotationalKE = this.totalEnergy - translationalKE;
+  
+  // Moment of inertia: I = m1*d1² + m2*d2² where d1, d2 are distances from center of mass
+  var d1 = this.distance * mol2.mass / totalMass;
+  var d2 = this.distance * mol1.mass / totalMass;
+  var momentOfInertia = mol1.mass * d1 * d1 + mol2.mass * d2 * d2;
+  
+  // ω = sqrt(2 * rotationalKE / I)
+  if (rotationalKE > 0 && momentOfInertia > 0) {
+    this.angularVelocity = Math.sqrt(2 * rotationalKE / momentOfInertia);
+    // Preserve rotation direction from relative velocity
+    var relVx = mol2.vx - mol1.vx;
+    var relVy = mol2.vy - mol1.vy;
+    var perpVel = -relVx * Math.sin(this.angle) + relVy * Math.cos(this.angle);
+    if (perpVel < 0) this.angularVelocity = -this.angularVelocity;
+  } else {
+    this.angularVelocity = 0;
+  }
+  
+  this.updateCenterOfMass();
+}
 
-    if (Math.random < 0.5) {
-      ctx.fillStyle = '#ffc999';
-    } else {
-      ctx.fillStyle = '#ffad66';
+Bond.prototype.updateCenterOfMass = function() {
+  var totalMass = this.mol1.mass + this.mol2.mass;
+  this.centerX = (this.mol1.mass * this.mol1.x + this.mol2.mass * this.mol2.x) / totalMass;
+  this.centerY = (this.mol1.mass * this.mol1.y + this.mol2.mass * this.mol2.y) / totalMass;
+};
+
+Bond.prototype.update = function(dt) {
+  this.angle += this.angularVelocity;
+  this.centerX += this.vx * dt;
+  this.centerY += this.vy * dt;
+  
+  var totalMass = this.mol1.mass + this.mol2.mass;
+  var dist1 = this.distance * this.mol2.mass / totalMass;
+  var dist2 = this.distance * this.mol1.mass / totalMass;
+  
+  this.mol1.x = this.centerX - Math.cos(this.angle) * dist1;
+  this.mol1.y = this.centerY - Math.sin(this.angle) * dist1;
+  this.mol2.x = this.centerX + Math.cos(this.angle) * dist2;
+  this.mol2.y = this.centerY + Math.sin(this.angle) * dist2;
+  
+  this.mol1.vx = this.vx - this.angularVelocity * dist1 * Math.sin(this.angle);
+  this.mol1.vy = this.vy + this.angularVelocity * dist1 * Math.cos(this.angle);
+  this.mol2.vx = this.vx + this.angularVelocity * dist2 * Math.sin(this.angle);
+  this.mol2.vy = this.vy - this.angularVelocity * dist2 * Math.cos(this.angle);
+  
+  this.handleWallCollisions();
+};
+
+Bond.prototype.handleWallCollisions = function() {
+  var r1 = this.mol1.radius;
+  var r2 = this.mol2.radius;
+  var maxR = Math.max(r1, r2);
+  
+  if (this.mol1.x - r1 < 0 || this.mol2.x - r2 < 0) {
+    this.vx = Math.abs(this.vx);
+    this.centerX = Math.max(maxR + this.distance / 2, this.centerX);
+  }
+  if (this.mol1.x + r1 > CANVAS_WIDTH || this.mol2.x + r2 > CANVAS_WIDTH) {
+    this.vx = -Math.abs(this.vx);
+    this.centerX = Math.min(CANVAS_WIDTH - maxR - this.distance / 2, this.centerX);
+  }
+  if (this.mol1.y - r1 < 0 || this.mol2.y - r2 < 0) {
+    this.vy = Math.abs(this.vy);
+    this.centerY = Math.max(maxR + this.distance / 2, this.centerY);
+  }
+  if (this.mol1.y + r1 > CANVAS_HEIGHT || this.mol2.y + r2 > CANVAS_HEIGHT) {
+    this.vy = -Math.abs(this.vy);
+    this.centerY = Math.min(CANVAS_HEIGHT - maxR - this.distance / 2, this.centerY);
+  }
+};
+
+Bond.prototype.draw = function() {
+  this.mol1.draw();
+  this.mol2.draw();
+};
+
+Bond.prototype.break = function() {
+  // Distribute stored total energy back to molecules
+  // Energy is split proportionally to mass (lighter molecule gets more speed)
+  var totalMass = this.mol1.mass + this.mol2.mass;
+  
+  // Each molecule gets energy proportional to its share
+  var ke1 = this.totalEnergy * this.mol2.mass / totalMass; // Lighter gets more
+  var ke2 = this.totalEnergy * this.mol1.mass / totalMass;
+  
+  // Calculate speeds from kinetic energy: v = sqrt(2*KE/m)
+  var speed1 = Math.sqrt(2 * ke1 / this.mol1.mass);
+  var speed2 = Math.sqrt(2 * ke2 / this.mol2.mass);
+  
+  // Keep current direction but apply calculated speeds
+  var currentSpeed1 = Math.sqrt(this.mol1.vx * this.mol1.vx + this.mol1.vy * this.mol1.vy);
+  var currentSpeed2 = Math.sqrt(this.mol2.vx * this.mol2.vx + this.mol2.vy * this.mol2.vy);
+  
+  if (currentSpeed1 > 0.01) {
+    this.mol1.vx = (this.mol1.vx / currentSpeed1) * speed1;
+    this.mol1.vy = (this.mol1.vy / currentSpeed1) * speed1;
+  } else {
+    // If stationary, move away from each other
+    var nx = Math.cos(this.angle);
+    var ny = Math.sin(this.angle);
+    this.mol1.vx = -nx * speed1;
+    this.mol1.vy = -ny * speed1;
+  }
+  
+  if (currentSpeed2 > 0.01) {
+    this.mol2.vx = (this.mol2.vx / currentSpeed2) * speed2;
+    this.mol2.vy = (this.mol2.vy / currentSpeed2) * speed2;
+  } else {
+    var nx = Math.cos(this.angle);
+    var ny = Math.sin(this.angle);
+    this.mol2.vx = nx * speed2;
+    this.mol2.vy = ny * speed2;
+  }
+  
+  this.mol1.bondedTo = null;
+  this.mol2.bondedTo = null;
+};
+
+Bond.prototype.contains = function(mol) {
+  return mol === this.mol1 || mol === this.mol2;
+};
+
+// Simulation class
+function MolecularSimulation(moleculeCount, moleculeRadius) {
+  this.molecules = [];
+  this.bonds = [];
+  this.generateMolecules(moleculeCount, moleculeRadius);
+}
+
+MolecularSimulation.prototype.generateMolecules = function(count, radius) {
+  var attempts = 0;
+  while (this.molecules.length < count && attempts < 1000) {
+    var x = radius + Math.random() * (CANVAS_WIDTH - 2 * radius);
+    var y = radius + Math.random() * (CANVAS_HEIGHT - 2 * radius);
+    var vx = (Math.random() - 0.5) * 400;
+    var vy = (Math.random() - 0.5) * 400;
+    
+    var mol = new Molecule(x, y, vx, vy, radius);
+    var overlap = false;
+    
+    for (var i = 0; i < this.molecules.length; i++) {
+      var other = this.molecules[i];
+      var dx = mol.x - other.x;
+      var dy = mol.y - other.y;
+      var minDist = mol.radius + other.radius + 5;
+      if (dx * dx + dy * dy < minDist * minDist) {
+        overlap = true;
+        break;
+      }
     }
+    
+    if (!overlap) this.molecules.push(mol);
+    attempts++;
+  }
+};
 
-		ctx.fill();
-	};
+MolecularSimulation.prototype.update = function(dt) {
+  // Update free molecules
+  for (var i = 0; i < this.molecules.length; i++) {
+    var mol = this.molecules[i];
+    if (!mol.isBonded()) {
+      mol.x += mol.vx * dt;
+      mol.y += mol.vy * dt;
+      
+      // Wall collisions (elastic - no energy loss)
+      if (mol.x - mol.radius < 0) {
+        mol.x = mol.radius;
+        mol.vx = Math.abs(mol.vx);
+      }
+      if (mol.x + mol.radius > CANVAS_WIDTH) {
+        mol.x = CANVAS_WIDTH - mol.radius;
+        mol.vx = -Math.abs(mol.vx);
+      }
+      if (mol.y - mol.radius < 0) {
+        mol.y = mol.radius;
+        mol.vy = Math.abs(mol.vy);
+      }
+      if (mol.y + mol.radius > CANVAS_HEIGHT) {
+        mol.y = CANVAS_HEIGHT - mol.radius;
+        mol.vy = -Math.abs(mol.vy);
+      }
+    }
+  }
+  
+  // Update bonds
+  for (var i = 0; i < this.bonds.length; i++) {
+    this.bonds[i].update(dt);
+  }
+  
+  this.handleCollisions();
+};
 
-	// Equality comparator
-	this.equals = function (ball) {
-		return (
-			this.p.x === ball.p.x &&
-			this.p.y === ball.p.y &&
-			this.v.x === ball.v.x &&
-			this.v.y === ball.v.y &&
-			this.r === ball.r
-		);
-	};
+MolecularSimulation.prototype.handleCollisions = function() {
+  for (var i = 0; i < this.molecules.length; i++) {
+    for (var j = i + 1; j < this.molecules.length; j++) {
+      var mol1 = this.molecules[i];
+      var mol2 = this.molecules[j];
+      
+      if (mol1.bondedTo === mol2) continue;
+      
+      var dx = mol2.x - mol1.x;
+      var dy = mol2.y - mol1.y;
+      var distSq = dx * dx + dy * dy;
+      var minDist = mol1.radius + mol2.radius;
+      
+      if (distSq < minDist * minDist) {
+        var dist = Math.sqrt(distSq);
+        this.resolveCollision(mol1, mol2, dx, dy, dist);
+      }
+    }
+  }
+};
 
-	// Collision prediction
-	this.timeToHit = function (ball) {
-		if (this.equals(ball)) { return Number.POSITIVE_INFINITY; }
-		var dpx = ball.p.x - this.p.x;
-		var dpy = ball.p.y - this.p.y;
-		var dvx = ball.v.x - this.v.x;
-		var dvy = ball.v.y - this.v.y;
-		var dpdv = dvx*dpx + dvy*dpy;
-		if (dpdv > 0) { return Number.POSITIVE_INFINITY; }
-		var dvdv = dvx*dvx + dvy*dvy;
-		var dpdp = dpx*dpx + dpy*dpy;
-		var R = ball.r + this.r;
-		var D = dpdv*dpdv - dvdv*(dpdp - R*R);
-		if (D < 0) { return Number.POSITIVE_INFINITY; }
-		//console.log('Predicted: ' + (-(dpdv + Math.sqrt(D))/dvdv) )
-		return ( -(dpdv + Math.sqrt(D))/dvdv );
-	};
-	this.timeToHitVerticalWall = function () {
-		if (this.v.x === 0) { return Number.POSITIVE_INFINITY; }
-		if (this.v.x > 0) {
-			return ((CANVAS_LENGTH - this.r - this.p.x)/this.v.x);
-		}
-		return ((this.r - this.p.x)/this.v.x);
-	};
-	this.timeToHitHorizontalWall = function () {
-		if (this.v.y === 0) { return Number.POSITIVE_INFINITY; }
-		if (this.v.y > 0) {
-			return ((CANVAS_LENGTH - this.r - this.p.y)/this.v.y);
-		}
-		return ((this.r - this.p.y)/this.v.y);
-	};
+MolecularSimulation.prototype.resolveCollision = function(mol1, mol2, dx, dy, dist) {
+  var nx = dx / dist;
+  var ny = dy / dist;
+  
+  var dvx = mol2.vx - mol1.vx;
+  var dvy = mol2.vy - mol1.vy;
+  var dvn = dvx * nx + dvy * ny;
+  
+  if (dvn > 0) return;
+  
+  var impactSpeed = Math.abs(dvn);
+  var impactEnergy = 0.5 * (mol1.mass + mol2.mass) * impactSpeed * impactSpeed;
+  
+  var mol1Bonded = mol1.isBonded();
+  var mol2Bonded = mol2.isBonded();
+  
+  if (mol1Bonded || mol2Bonded) {
+    if (mol1Bonded && impactEnergy > CONFIG.BOND_ENERGY_THRESHOLD) {
+      this.breakBond(mol1);
+    }
+    if (mol2Bonded && impactEnergy > CONFIG.BOND_ENERGY_THRESHOLD) {
+      this.breakBond(mol2);
+    }
+    this.elasticCollision(mol1, mol2, nx, ny, dvn);
+  } else {
+    // Check favorable collision angle
+    var speed1 = Math.sqrt(mol1.vx * mol1.vx + mol1.vy * mol1.vy);
+    var speed2 = Math.sqrt(mol2.vx * mol2.vx + mol2.vy * mol2.vy);
+    
+    var v1nx = speed1 > 0 ? mol1.vx / speed1 : 0;
+    var v1ny = speed1 > 0 ? mol1.vy / speed1 : 0;
+    var v2nx = speed2 > 0 ? mol2.vx / speed2 : 0;
+    var v2ny = speed2 > 0 ? mol2.vy / speed2 : 0;
+    
+    var mol1TowardsMol2 = v1nx * nx + v1ny * ny;
+    var mol2TowardsMol1 = -(v2nx * nx + v2ny * ny);
+    var favorableCollision = mol1TowardsMol2 > 0.3 && mol2TowardsMol1 > 0.3;
+    
+    if (favorableCollision && Math.random() < CONFIG.BOND_PROBABILITY && this.bonds.length < this.molecules.length / 2) {
+      this.bonds.push(new Bond(mol1, mol2));
+    } else {
+      this.elasticCollision(mol1, mol2, nx, ny, dvn);
+    }
+  }
+  
+  // Separate overlapping
+  var overlap = (mol1.radius + mol2.radius) - dist;
+  if (overlap > 0) {
+    mol1.x -= nx * overlap * 0.5;
+    mol1.y -= ny * overlap * 0.5;
+    mol2.x += nx * overlap * 0.5;
+    mol2.y += ny * overlap * 0.5;
+  }
+};
 
-	// Collision resolution
-	this.bounceOff = function (ball) {
-		var dpx = ball.p.x - this.p.x;
-		var dpy = ball.p.y - this.p.y;
-		var dvx = ball.v.x - this.v.x;
-		var dvy = ball.v.y - this.v.y;
-		var dpdv = dpx*dvx + dpy*dvy;
-		var R = this.r + ball.r;
-		var J = 2*this.m*ball.m*dpdv/((this.m + ball.m)*R);
-		var Jx = J*dpx/R;
-		var Jy = J*dpy/R;
-		this.v.x += Jx/this.m;
-		this.v.y += Jy/this.m;
-		ball.v.x -= Jx/ball.m;
-		ball.v.y -= Jy/ball.m;
-	};
-	this.bounceOffVerticalWall = function () {
-		this.v.x = -this.v.x;
-	};
-	this.bounceOffHorizontalWall = function () {
-		this.v.y = -this.v.y;
-	};
+MolecularSimulation.prototype.elasticCollision = function(mol1, mol2, nx, ny, dvn) {
+  var totalMass = mol1.mass + mol2.mass;
+  var p = 2 * dvn / totalMass;
+  mol1.vx += p * mol2.mass * nx;
+  mol1.vy += p * mol2.mass * ny;
+  mol2.vx -= p * mol1.mass * nx;
+  mol2.vy -= p * mol1.mass * ny;
+};
+
+MolecularSimulation.prototype.breakBond = function(mol) {
+  for (var i = this.bonds.length - 1; i >= 0; i--) {
+    if (this.bonds[i].contains(mol)) {
+      this.bonds[i].break();
+      this.bonds.splice(i, 1);
+      return;
+    }
+  }
+};
+
+MolecularSimulation.prototype.draw = function() {
+  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  
+  for (var i = 0; i < this.bonds.length; i++) {
+    this.bonds[i].draw();
+  }
+  
+  for (var i = 0; i < this.molecules.length; i++) {
+    if (!this.molecules[i].isBonded()) {
+      this.molecules[i].draw();
+    }
+  }
+};
+
+// Initialize and run with requestAnimationFrame for better performance
+var simulation;
+var lastTime = 0;
+
+function init() {
+  var count = window.innerWidth > 500 ? 150 : 40;
+  var radius = window.innerWidth > 500 ? 3 : 2;
+  simulation = new MolecularSimulation(count, radius);
+  lastTime = performance.now();
+  requestAnimationFrame(animate);
 }
 
-
-/*
-	SimEvent constructor
-	---
-	Accepts 2 Ball objects a and b.
-	If FIRST one is null, that means vertical wall collision.
-	If SECOND is null, that means horizontal wall collision.
-*/
-function SimEvent (time, a, b) {
-	this.time = time;
-	this.a = a;
-	this.b = b;
-	this.compareTo = function (simEvent) {
-		return this.time - simEvent.time;
-	};
-	this.isValid = function (simTime) {
-		// Note: toFixed(4) is used to avoid potential floating-point
-		// accuracy errors
-		var log = '';
-		// Note: this check forces only one event at a given instant
-		if (this.time < simTime) {
-			log += 'Event precedes simulation time';
-			//console.log(log);
-			return false;
-		}
-		if (a === null) { //vertical wall
-			log += 'Validating vertical wall.\n';
-			log += 'Event time: ' + this.time.toFixed(4) + ', Fresh time: ' + (simTime +  b.timeToHitVerticalWall()).toFixed(4) + '\n'
-			//console.log(log);
-			return this.time.toFixed(4) === (simTime + b.timeToHitVerticalWall()).toFixed(4);
-		} else if (b === null) { //horizontal wall
-			log += 'Validating vertical wall.\n';
-			log += 'Event time: ' + this.time.toFixed(4) + ', Fresh time: ' + (simTime +  a.timeToHitVerticalWall()).toFixed(4) + '\n';
-			//console.log(log);
-			return this.time.toFixed(4) === (simTime + a.timeToHitHorizontalWall()).toFixed(4);
-		} else { //particle-particle
-			log += 'Validating two-particle.\n';
-			log += 'Event time: ' + this.time.toFixed(4) + ', Fresh time: ' + (simTime +  a.timeToHit(b)).toFixed(4) + '\n';
-			//console.log(log);
-			return this.time.toFixed(4) === (simTime + a.timeToHit(b)).toFixed(4);
-		}
-	};
-
-	///
-	/// TEMP FOR DEBUGGING:
-	///
-	this.type = function () {
-		if (a === null) { return 'vertical wall'; }
-		if (b === null) { return 'horizontal wall'; }
-		return 'ball';
-	};
+function animate(currentTime) {
+  var dt = Math.min((currentTime - lastTime) / 1000, 0.05); // Cap dt to avoid jumps
+  lastTime = currentTime;
+  
+  simulation.update(dt);
+  simulation.draw();
+  requestAnimationFrame(animate);
 }
 
+init();
 
-/*
-	Sim constructor
-*/
-function Sim (balls) {
-	if (balls == null) {
-		throw new Error('Sim constructor requires array of balls');
-	}
-	for (var i = 0; i < balls.length; i++) {
-		if (balls[i] == null) {
-			throw new Error('Invalid ball passed to Sim constructor');
-		}
-	}
-
-	this.time = 0;
-	this.balls = balls;
-	this.pq = new MinPQ();
-
-	this.predictAll = function (ball) {
-		if (ball == null) { return; }
-		var dt;
-		for (var i = 0; i < this.balls.length; i++) {
-			//
-			//
-			// Uncomment this once the wall collisions are working,
-			// AND isValid() is complete.
-			//
-			//
-
-			dt = ball.timeToHit(balls[i]);
-			if (!isFinite(dt) || dt <= 0) { continue; }
-			this.pq.insert(new SimEvent(this.time + dt, ball, balls[i]));
-			//console.log('Ball event inserted');
-
-		}
-		dt = ball.timeToHitVerticalWall();
-		if (isFinite(dt) && dt > 0) {
-			//console.log('Vert event inserted');
-			this.pq.insert(new SimEvent(this.time + dt, null, ball));
-		}
-		dt = ball.timeToHitHorizontalWall();
-		if (isFinite(dt) && dt > 0) {
-			//console.log('Horiz event inserted');
-			this.pq.insert(new SimEvent(this.time + dt, ball, null));
-		}
-	};
-	this.predictBalls = function (ball) {
-		if (ball == null) { return; }
-		var dt;
-		for (var i = 0; i < this.balls.length; i++) {
-			//
-			//
-			// Uncomment this once the wall collisions are working,
-			// AND isValid() is complete.
-			//
-			//
-
-			dt = ball.timeToHit(balls[i]);
-			if (!isFinite(dt) || dt <= 0) { continue; }
-			this.pq.insert(new SimEvent(this.time + dt, ball, balls[i]));
-
-		}
-	};
-	this.predictVerticalWall = function (ball) {
-		if (ball == null) { return; }
-		var dt = ball.timeToHitVerticalWall();
-		if (isFinite(dt) && dt > 0) {
-			//console.log('Vert event inserted');
-			this.pq.insert(new SimEvent(this.time + dt, null, ball));
-		}
-	};
-	this.predictHorizontalWall = function (ball) {
-		if (ball == null) { return; }
-		var dt = ball.timeToHitHorizontalWall();
-		if (isFinite(dt) && dt > 0) {
-			//console.log('Horiz event inserted');
-			this.pq.insert(new SimEvent(this.time + dt, ball, null));
-		}
-	};
-
-	for (var i = 0; i < this.balls.length; i++) {
-		this.predictAll(this.balls[i]);
-	}
-
-	this.redraw = function () {
-		ctx.clearRect(0, 0, CANVAS_LENGTH, CANVAS_LENGTH);
-		for (var i = 1; i < this.balls.length; i++) {
-			balls[i].draw();
-		}
-	};
-
-	// 'Increment' the simulation by time dt
-	this.simulate = function (dt) {
-		var simLog = 'Start time: ' + this.time + '\n';
-		var end = this.time + dt;
-		var minEvent;
-		var inc;
-
-		var counter = 0;
-		while (!this.pq.isEmpty()) {
-			// Check min event time. If outside time window, break.
-			// Otherwise, delete it. If not valid, continue.
-			// Otherwise, process the event.
-			minEvent = this.pq.viewMin();
-			if (minEvent.time >= end) {
-				simLog += 'No events in time window (min time: ' + minEvent.time + ')';
-				break;
-			}
-			this.pq.delMin();
-			if (!minEvent.isValid(this.time)) {
-				simLog += 'Invalid event: ' + minEvent.type() + '\n';
-				continue;
-			}
-
-			simLog += 'Valid event: ' + minEvent.type() + '; ';
-			inc = minEvent.time - this.time;
-			for (var i = 0; i < this.balls.length; i++) {
-				this.balls[i].move(inc);
-			}
-			this.time = minEvent.time;
-
-			var a = minEvent.a;
-			var b = minEvent.b;
-			if (a !== null && b !== null) {
-				a.bounceOff(b);
-				simLog += 'Bounced off particle\n';
-				this.predictAll(a);
-				this.predictAll(b);
-			}
-			else if (a === null && b !== null) {
-				b.bounceOffVerticalWall();
-				simLog += 'Bounced off vertical\n';
-				this.predictBalls(b);
-				this.predictVerticalWall(b);
-			}
-			else {
-				a.bounceOffHorizontalWall();
-				simLog += 'Bounced off horizontal\n';
-				this.predictBalls(a);
-				this.predictHorizontalWall(a);
-			}
-
-			/// TEMPORARY COUNTER
-			/// for debugging
-			/*counter++;
-			if (counter > 5) {
-				console.log(simLog);
-				throw new Error('killed event process loop after ' + counter + ' executions');
-			}*/
-		}
-
-		inc = end - this.time;
-		for (var i = 0; i < this.balls.length; i++) {
-			this.balls[i].move(inc);
-		}
-		this.time = end;
-
-		//console.log(simLog);
-	};
-}
-
-
-/*
-	Generating initial states
-*/
-var cl = CANVAS_LENGTH;
-function validateNewBall(balls, ball) {
-	if (	ball.p.x - ball.r <= 0 || ball.p.x + ball.r >= cl
-		 ||	ball.p.y - ball.r <= 0 || ball.p.y + ball.r >= cl)
-		{ return false; }
-	var dx;
-	var dy;
-	var r;
-	for (var i = 0; i < balls.length; i++) {
-		dx = balls[i].p.x - ball.p.x;
-		dy = balls[i].p.y - ball.p.y;
-		r = balls[i].r + ball.r;
-		if (dx*dx + dy*dy <= r*r) { return false; }
-	}
-	return true;
-}
-function posNeg () {
-	return Math.pow(-1, Math.floor(Math.random()*2));
-}
-function generateBalls (params) {
-	if (!params.style) {
-		console.log('Missing params.style');
-		return [];
-	}
-	switch (params.style) {
-		case 'brownian':
-			var balls = [];
-			var newBall;
-			balls.push(new Ball(
-				Math.floor(cl/2), Math.floor(cl/2), 0, 0, 20
-			));
-			var badBallCounter = 0;
-			for (var i = 0; i < params.n; i++) {
-				newBall = new Ball(
-					Math.floor(Math.random()*cl),
-					Math.floor(Math.random()*cl),
-					posNeg()*Math.floor(Math.random()*200),
-					posNeg()*Math.floor(Math.random()*200),
-					params.r
-				);
-				if (validateNewBall(balls, newBall)) {
-					balls.push(newBall);
-					badBallCounter = 0;
-				} else {
-					if (++badBallCounter > 99) {
-						console.log('Too many bad balls in brownian ball generator');
-						return [];
-					}
-					i--;
-				}
-			}
-			return balls;
-			break;
-		default:
-			console.log('Bad style in generateBalls');
-			return [];
-			break;
-	}
-}
-
-
-/*
-	Running the simulation
-*/
-var modeNameMap = [
-	'Brownian',
-	'Expanding squares',
-	'Horizontal waves',
-	'Grid',
-	'Random (random radius)',
-	'Random (constant radius)',
-	'Diffusion'
-];
-var ms = 30;
-var dt = ms/1000;
-var balls = [];
-var sim;
-function makeSim (mode) {
-	// Generate balls based on mode
-	switch (mode) {
-		case 0: // Desktop
-			balls = generateBalls({
-				style: 'brownian',
-				n: 150,
-				r: 3
-			});
-			break;
-		case 1: // Mobile
-      balls = generateBalls({
-        style: 'brownian',
-        n: 40,
-        r: 2
-      });
-      break;
-		default:
-			console.log('Invalid mode');
-			break;
-	}
-	// Create new sim
-	sim = new Sim(balls);
-}
-
-var interval, intervalActive;
-function activateInterval () {
-	if (!intervalActive) {
-		interval = window.setInterval(runSim, ms);
-		intervalActive = true;
-	}
-}
-function deactivateInterval () {
-	window.clearInterval(interval);
-	intervalActive = false;
-}
-
-function runSim () {
-	sim.redraw();
-	try {
-		sim.simulate(dt);
-	} catch (e) {
-		console.log(e);
-		window.clearInterval(interval);
-	}
-}
-
-if (window.innerWidth > 500) {
-  var mode = 0;
-} else {
-  var mode = 1;
-}
-
-makeSim(mode);
-sim.redraw();
-
-// var selectorRow = $('#selector-row');
-// for (var i = 0; i < modeNameMap.length; i++) {
-// 	selectorRow.append(
-// 		'<div class="radio-box"><input type="radio" name="mode" value=' + i + '>' + modeNameMap[i] + '</div>'
-// 	);
-// }
-// selectorRow.children().children()[0].checked = 'true';
-//
-// $('#stop').on('click', deactivateInterval);
-// $('#start').on('click', activateInterval);
-// $('#new').on('click', function () {
-// 	deactivateInterval();
-// 	mode = parseInt($('input[name=mode]:checked').val());
-// 	makeSim(mode);
-// 	sim.redraw();
-// });
-
-activateInterval();
+window.addEventListener('resize', function() {
+  CANVAS_WIDTH = window.innerWidth;
+  CANVAS_HEIGHT = window.innerWidth > 500 
+    ? window.innerHeight * 0.66 
+    : window.innerHeight * 0.40;
+  canvas.width = CANVAS_WIDTH;
+  canvas.height = CANVAS_HEIGHT;
+});
