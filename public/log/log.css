@@ -1,42 +1,347 @@
-/* Useful code */
-
-p {
-  margin: 0;
-}
-
-.card {
-  display: block;
-  width: 45vw;
-  margin-right: 2vw;
-}
-
-.body {
-  display: inline-flex;
-}
-
-.li {
-  width: 40vw;
-  padding: 2vw;
-  box-shadow: 0px 7px 15px rgba(0, 0, 0, 0.3);
-  margin-bottom: 20px;
-  border-radius: 8px;
-  background: #1c3295;
-  color: white;
-  animation-name: display;
-  animation-duration: 0.5s;
-}
-
 #body {
   padding-left: 5vw;
-  padding-top: 100px;
+  padding-right: 5vw;
+  padding-top: 80px; /* Reduced from 100px */
+  max-width: 1000px; /* Widened from 800px */
+  margin: 0 auto;
+  box-sizing: border-box;
+  color: white; 
 }
 
-/* Default Style */
+h1 {
+  margin-bottom: 10px;
+  font-size: 1.8em; /* Slightly smaller title */
+}
 
+p {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 0.95em;
+  opacity: 0.9;
+}
+
+/* Controls & Filters */
+.controls-container {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Vertical align */
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  margin-bottom: 20px; /* Reduced from 30px */
+  gap: 15px; /* Spacing between groups */
+}
+
+.filter-group {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.1); 
+  border-radius: 50px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  padding: 4px; /* Tighter padding */
+  backdrop-filter: blur(10px);
+}
+
+.filter-btn {
+  border: none;
+  background: transparent;
+  padding: 8px 16px; /* Slightly smaller buttons */
+  border-radius: 40px;
+  cursor: pointer;
+  font-family: 'Muli', sans-serif;
+  font-weight: 600;
+  color: #ccc; 
+  transition: all 0.3s ease;
+  outline: none;
+  font-size: 0.9em;
+}
+
+/* Mobile Adjustments for Controls */
+@media (max-width: 600px) {
+  #body {
+      padding-top: 70px;
+      padding-left: 3vw; 
+      padding-right: 3vw;
+  }
+  
+  .controls-container {
+      flex-direction: column; /* Stack filters on very small screens */
+      align-items: stretch; /* Full width */
+      gap: 10px;
+  }
+
+  .filter-group {
+      justify-content: center;
+      width: 100%;
+      box-sizing: border-box;
+  }
+  
+  .filter-select {
+      width: 100%; /* Full width select on mobile */
+      text-align: center;
+      background-position: right 15px top 50%; /* Adjust arrow */
+  }
+
+  /* Compact Cards on Mobile */
+  .card-icon-container {
+      width: 70px; /* Smaller icon area */
+  }
+  
+  .card-activity-icon {
+      width: 40px;
+      height: 40px;
+  }
+  
+  .card-info-container {
+      padding: 15px;
+  }
+  
+  .card-title {
+      font-size: 1.1em;
+  }
+}
+
+.filter-btn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.filter-btn.active {
+  background: white;
+  color: #1c3295; /* Blue text for active */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Feed Container */
+.feed-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 200px;
+}
+
+/* Empty State & Loader */
+.loader, .empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #ccc;
+  font-size: 1.1em;
+}
+
+/* Card Styling */
+/* Card Styling */
+.li.card-content {
+  width: 100%;
+  padding: 0; /* Remove default padding, let children handle it */
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  background: white;
+  color: #333;
+  box-sizing: border-box;
+  animation: display 0.5s ease;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: none;
+  position: relative;
+  overflow: hidden; /* Ensure rounded corners clip content */
+}
+
+.li.card-content:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.card-main-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.card-icon-container {
+  width: 100px; /* Fixed width for icon area */
+  background: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-right: 1px solid #eee;
+}
+
+.card-activity-icon {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.card-info-container {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.card-title {
+  margin: 0 0 8px 0;
+  font-size: 1.2em;
+  color: #1c3295;
+  font-weight: bold;
+}
+
+.card-meta {
+  font-size: 0.9em;
+  color: #555;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.team-info {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.card-team-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
+  vertical-align: middle;
+  border-radius: 50%; /* Optional: make team icon round */
+}
+
+.card-reason {
+  background: #fff0f0;
+  padding: 10px;
+  border-radius: 6px;
+  color: #d32f2f;
+  font-size: 0.9em;
+  margin-top: auto; /* Push to bottom if flex column */
+  font-weight: bold;
+}
+
+/* Badges */
+.badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge.approved {
+  background-color: #2e7d32; /* Stronger green */
+  color: white; /* White text for better contrast */
+}
+
+.badge.rejected {
+  background-color: #c62828; /* Stronger red */
+  color: white;
+}
+
+.card-date {
+  font-size: 0.85em;
+  color: #888;
+}
+
+/* Pagination */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 60px;
+  gap: 8px;
+}
+
+.page-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  min-width: 40px;
+  height: 40px;
+  border-radius: 8px; /* Square with rounded corners */
+  font-family: 'Muli', sans-serif;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  outline: none;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.page-btn.active {
+  background: white;
+  color: #1c3295;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.page-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+  border-color: transparent;
+}
+
+.page-ellipsis {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: bold;
+    padding: 0 5px;
+}
+
+/* Select Styling */
+.filter-select {
+  border: none;
+  background: transparent;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-family: 'Muli', sans-serif;
+  font-weight: 600;
+  color: #ccc; 
+  transition: all 0.3s ease;
+  outline: none;
+  /* Appearance adjustments */
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23CCCCCC%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px top 50%;
+  background-size: 10px auto;
+  padding-right: 30px;
+  font-size: 14px;
+}
+
+.filter-select:hover {
+    color: white;
+}
+
+.filter-select option {
+    background-color: #1c3295;
+    color: white;
+}
+
+@keyframes display {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Default Style (Header, Menu, etc.) - Preserved */
 body {
   margin: 0;
   font-family: 'Muli', sans-serif;
   overflow-x: hidden;
+  background-color: #1c3295; /* Deep Blue from Home */
 }
 
 #header {
@@ -189,18 +494,7 @@ i.menuIcons {
   display: inline;
 }
 
-@media all and (max-width: 70em) {
-  .podiumImage {
-    width: 30vh;
-    height: 30vh;
-  }
-  .podium {
-    margin-top: 5vh;
-  }
-}
-
 /* Mobile adjustments */
-
 @media all and (max-width: 50em) {
   #menu {
     background-color: white;

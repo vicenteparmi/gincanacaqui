@@ -1,56 +1,83 @@
 <!doctype= html> <!-- Página criada por Vicente Parmigiani em 12/01/2020 às 22h-->
-<html lang="pt">
+	<html lang="pt">
+
 	<head>
 		<title>Atualizações | Gincana CAQuí</title>
 		<link rel="icon" type="image/webp" href="files/image/CAQUI.webp" />
 		<link rel="stylesheet" type="text/css" href="log/log.css">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css?family=Muli:400,700&display=swap&subset=latin-ext" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Muli:400,700&display=swap&subset=latin-ext"
+			rel="stylesheet">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
+
 	<body onscroll="headerShadow()">
 		<div id="body">
 			<h1>Atualizações recentes</h1>
-			<p style="margin: 20px 0px 20px 0px; max-width: 750px;">Nessa página são exibidas as últimas atividades aprovadas ou recusadas.
-				Atividades com opção de envio de mais de uma foto não serão corretamente exibida e algumas atividades estarão sem todas as informações.
+			<p>Nessa página são exibidas as últimas atividades aprovadas ou recusadas.
+				Atividades com opção de envio de mais de uma foto não serão corretamente exibida e algumas atividades
+				estarão sem todas as informações.
 				Para problemas de revisão de atividades confira a página 'Sobre'.</p>
-			<div class="body">
-				<div class="card">
-					<h2>Aprovadas</h2>
-					<span id=apList></span>
+			<div class="controls-container">
+				<div class="filter-group">
+					<button class="filter-btn active" onclick="setFilter('all')">Todos</button>
+					<button class="filter-btn" onclick="setFilter('approved')">Aprovados</button>
+					<button class="filter-btn" onclick="setFilter('rejected')">Recusados</button>
 				</div>
-				<div class="card">
-					<h2>Recusadas</h2>
-					<span id="reList"></span>
+
+				<div class="filter-group" style="margin-left: 15px;">
+					<select id="teamFilter" class="filter-select" onchange="filterByTeam(this.value)">
+						<option value="all">Todas as Equipes</option>
+						<!-- Options populated by JS -->
+					</select>
 				</div>
+			</div>
+
+			<div id="logFeed" class="feed-container">
+				<!-- Content will be injected here -->
+				<div class="loader">Carregando atualizações...</div>
+			</div>
+
+			<div class="pagination-container" id="paginationControls">
+				<!-- Prev / Page Numbers / Next will be injected here -->
 			</div>
 		</div>
 
 		<div id="header" class="headerNoShadow">
-			<i id="sandwich" class="menuIcons material-icons" onclick="openMenu()" md-24 md-light style="vertical-align: middle;padding: 10px; cursor:pointer;">menu</i>
-			<img src="files/image/CAQUI.webp"/ class="headerImage">
+			<i id="sandwich" class="menuIcons material-icons" onclick="openMenu()" md-24 md-light
+				style="vertical-align: middle;padding: 10px; cursor:pointer;">menu</i>
+			<img src="files/image/CAQUI.webp" / class="headerImage">
 			<text id="logo">Gincana CAQuí</text>
 			<div id="menuHolder">
 				<div id="menu">
-					<a class="menu" href="./"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">home</i>Início</a>
-					<a class="menu" href="./updates"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
-					<a class="menu" href="./send"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
-					<a class="menu" href="./schedule" id="scheduleNav"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
-					<a class="menu" href="./about"><i class="menuIcons material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
+					<a class="menu" href="./"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">home</i>Início</a>
+					<a class="menu" href="./updates"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">people</i>Equipes</a>
+					<a class="menu" href="./send"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">input</i>Enviar Atividade</a>
+					<a class="menu" href="./schedule" id="scheduleNav"><i class="menuIcons material-icons" md-24
+							md-light style="vertical-align: middle;padding: 10px;">calendar_today</i>Programação</a>
+					<a class="menu" href="./about"><i class="menuIcons material-icons" md-24 md-light
+							style="vertical-align: middle;padding: 10px;">info</i>Sobre</a>
 				</div>
 			</div>
-			<div id="userPhoto" onclick="popup()"/></div>
+			<div id="userPhoto" onclick="popup()" />
+		</div>
 		</div>
 
 		<div id="popupMenu" class="popupMenu hide">
-			<a class="popupItem" href="./login.html"><i class="material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">person</i>Entrar</a>
+			<a class="popupItem" href="./login.html"><i class="material-icons" md-24 md-light
+					style="vertical-align: middle;padding: 10px;">person</i>Entrar</a>
 		</div>
 
 		<div id="popupMenuLogged" class="popupMenu hide">
 			<text class="popupTitle" id="userName">Nome do Usuário</text><br>
-			<text class="popupSubitle" id="userEmail" >email@email.com</text><br><bR>
-			<a class="popupItem" href="./profile.html"><i class="material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">person</i>Perfil</a><br>
-			<text class="popupItem" onclick="signOut()"><i class="material-icons" md-24 md-light style="vertical-align: middle;padding: 10px;">input</i>Sair</text>
+			<text class="popupSubitle" id="userEmail">email@email.com</text><br><bR>
+			<a class="popupItem" href="./profile.html"><i class="material-icons" md-24 md-light
+					style="vertical-align: middle;padding: 10px;">person</i>Perfil</a><br>
+			<text class="popupItem" onclick="signOut()"><i class="material-icons" md-24 md-light
+					style="vertical-align: middle;padding: 10px;">input</i>Sair</text>
 		</div>
 
 		<!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -64,4 +91,5 @@
 
 		<script type="text/javascript" src="log/log.js" onload="loadPage()"></script>
 	</body>
-</html>
+
+	</html>
