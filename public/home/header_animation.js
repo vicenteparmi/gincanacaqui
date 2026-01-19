@@ -384,9 +384,10 @@ function init() {
 }
 
 function animate(currentTime) {
-  var dt = Math.min((currentTime - lastTime) / 1000, 0.05); // Cap dt to avoid jumps
+  var dt = Math.min((currentTime - lastTime) / 1000, 0.05);
   lastTime = currentTime;
   
+  simulation.applyDeviceMotion(dt);
   simulation.update(dt);
   simulation.draw();
   requestAnimationFrame(animate);
@@ -402,3 +403,68 @@ window.addEventListener('resize', function() {
   canvas.width = CANVAS_WIDTH;
   canvas.height = CANVAS_HEIGHT;
 });
+
+// Device Motion Support - responds to shaking, not tilt
+var deviceAcceleration = { x: 0, y: 0 };
+var MOTION_SENSITIVITY = 8; // Subtle response to shaking
+var MOTION_DECAY = 0.9;     // Effect fades quickly
+
+function handleDeviceMotion(event) {
+  // Use acceleration WITHOUT gravity - only responds to shaking/movement
+  var accel = event.acceleration;
+  if (accel && accel.x !== null) {
+    deviceAcceleration.x = accel.x * MOTION_SENSITIVITY;
+    deviceAcceleration.y = accel.y * MOTION_SENSITIVITY;
+  }
+}
+
+// Apply device motion to molecules in simulation
+MolecularSimulation.prototype.applyDeviceMotion = function(dt) {
+  // Only apply if there's significant motion
+  if (Math.abs(deviceAcceleration.x) < 0.5 && Math.abs(deviceAcceleration.y) < 0.5) {
+    return;
+  }
+  
+  for (var i = 0; i < this.molecules.length; i++) {
+    var mol = this.molecules[i];
+    if (!mol.isBonded()) {
+      mol.vx += deviceAcceleration.x * dt;
+      mol.vy += deviceAcceleration.y * dt;
+    }
+  }
+  for (var i = 0; i < this.bonds.length; i++) {
+    this.bonds[i].vx += deviceAcceleration.x * dt;
+    this.bonds[i].vy += deviceAcceleration.y * dt;
+  }
+  
+  // Decay the effect so it doesn't accumulate
+  deviceAcceleration.x *= MOTION_DECAY;
+  deviceAcceleration.y *= MOTION_DECAY;
+};
+
+// Request permission for iOS 13+ (requires user gesture)
+function requestMotionPermission() {
+  if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+    DeviceMotionEvent.requestPermission()
+      .then(function(response) {
+        if (response === 'granted') {
+          window.addEventListener('devicemotion', handleDeviceMotion);
+        }
+      })
+      .catch(console.error);
+  } else if ('DeviceMotionEvent' in window) {
+    // Non-iOS devices
+    window.addEventListener('devicemotion', handleDeviceMotion);
+  }
+}
+
+// Try to enable motion on first touch (required for iOS permission)
+document.addEventListener('touchstart', function enableMotion() {
+  requestMotionPermission();
+  document.removeEventListener('touchstart', enableMotion);
+}, { once: true });
+
+// Also try immediately for non-iOS
+if ('DeviceMotionEvent' in window && typeof DeviceMotionEvent.requestPermission !== 'function') {
+  window.addEventListener('devicemotion', handleDeviceMotion);
+}
