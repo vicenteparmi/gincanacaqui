@@ -96,6 +96,7 @@ function inflateLBChild(lbOrder2, child) { // Arguments: [OrderedArray, Position
   const spanName = document.createElement('span');
   const spanPoints = document.createElement('span');
   const spanPosition = document.createElement('span');
+  const teamIcon = document.createElement('img');
 
   lbDiv.className = 'leaderBoard center pos' + child;
   spanName.innerHTML = lbOrder2[child][1];
@@ -113,8 +114,12 @@ function inflateLBChild(lbOrder2, child) { // Arguments: [OrderedArray, Position
   spanName.className = 'teamNameList';
   spanPoints.className = 'teamPointsList';
   spanPosition.className = 'position';
+  teamIcon.className = 'teamIconList';
+  teamIcon.src = 'files/teams/' + (Number(lbOrder2[child][2]) + 1) + '.webp';
+  teamIcon.alt = lbOrder2[child][1];
 
   lbDiv.appendChild(spanPosition);
+  lbDiv.appendChild(teamIcon);
   lbDiv.appendChild(spanName);
   lbDiv.appendChild(spanPoints);
 
