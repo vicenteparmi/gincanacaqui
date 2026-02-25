@@ -15,7 +15,7 @@ firebase.analytics();
 
 // Constants
 
-const teamNames = ["Hidrogênio", "Hélio", "Lítio", "Berílio", "Boro", "Carbono", "Nitrogênio", "Oxigênio", "Flúor", "Neônio", "Sódio", "Magnésio", "Alumínio", "Silício", "Fósforo", "Enxofre"];
+const teamNames = ["Concreto", "Tijolo", "Areia", "Argamassa", "Betoneira", "Escavadeira", "Telha", "Pilar", "AutoCAD", "Andaime", "Grua", "CASIO", "Parafuso", "Maquete", "Aço", "Cal"];
 
 // Load Teams
 var fbTeamData = [
