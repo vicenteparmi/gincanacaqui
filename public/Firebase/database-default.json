@@ -477,7 +477,8 @@
     "we_have_a_winner" : true
   },
   "teams" : [ {
-    "name" : "Hidrogênio",
+    "name" : "Concreto",
+    "color" : "#0169a5",
     "points" : 13050,
     "tasks" : {
       "5" : {
@@ -538,7 +539,8 @@
       }
     }
   }, {
-    "name" : "Hélio",
+    "name" : "Tijolo",
+    "color" : "#d01514",
     "points" : 5695,
     "tasks" : {
       "5" : {
@@ -587,7 +589,8 @@
       }
     }
   }, {
-    "name" : "Lítio",
+    "name" : "Areia",
+    "color" : "#f2a900",
     "points" : 2050,
     "tasks" : {
       "7" : {
@@ -628,7 +631,8 @@
       }
     }
   }, {
-    "name" : "Berílio",
+    "name" : "Argamassa",
+    "color" : "#00bb55",
     "points" : 8650,
     "tasks" : [ null, null, null, null, null, {
       "done" : "Ok",
@@ -686,7 +690,8 @@
       "time" : 1583554580486
     } ]
   }, {
-    "name" : "Boro",
+    "name" : "Betoneira",
+    "color" : "#6a1087",
     "points" : 6905,
     "tasks" : [ null, null, null, null, null, {
       "done" : "Ok",
@@ -729,7 +734,8 @@
       "time" : 1583554983473
     } ]
   }, {
-    "name" : "Carbono",
+    "name" : "Escavadeira",
+    "color" : "#5f5f5f",
     "points" : 3625,
     "tasks" : {
       "7" : {
@@ -778,7 +784,8 @@
       }
     }
   }, {
-    "name" : "Nitrogênio",
+    "name" : "Telha",
+    "color" : "#ff5c00",
     "points" : 5300,
     "tasks" : [ null, null, null, null, null, {
       "done" : "Ok",
@@ -824,7 +831,8 @@
       "time" : 1583554938438
     } ]
   }, {
-    "name" : "Oxigênio",
+    "name" : "Pilar",
+    "color" : "#00b384",
     "points" : 5225,
     "tasks" : {
       "7" : {
@@ -869,7 +877,8 @@
       }
     }
   }, {
-    "name" : "Flúor",
+    "name" : "AutoCAD",
+    "color" : "#db0061",
     "points" : 9150,
     "tasks" : [ null, null, null, null, null, {
       "done" : "Ok",
@@ -921,7 +930,8 @@
       "time" : 1583554796394
     } ]
   }, {
-    "name" : "Neônio",
+    "name" : "Andaime",
+    "color" : "#009be8",
     "points" : 3520,
     "tasks" : {
       "5" : {
@@ -970,7 +980,8 @@
       }
     }
   }, {
-    "name" : "Sódio",
+    "name" : "Grua",
+    "color" : "#9e9c00",
     "points" : 5600,
     "tasks" : [ null, null, null, null, null, {
       "done" : "Ok",
@@ -1019,7 +1030,8 @@
       "time" : 1583554843168
     } ]
   }, {
-    "name" : "Magnésio",
+    "name" : "CASIO",
+    "color" : "#00a69a",
     "points" : 925,
     "tasks" : {
       "25" : {
@@ -1028,7 +1040,8 @@
       }
     }
   }, {
-    "name" : "Alumínio",
+    "name" : "Parafuso",
+    "color" : "#ababab",
     "points" : 8415,
     "tasks" : [ null, null, null, null, null, {
       "done" : "Ok",
@@ -1071,7 +1084,8 @@
       "time" : 1583554858124
     } ]
   }, {
-    "name" : "Silício",
+    "name" : "Maquete",
+    "color" : "#192c88",
     "points" : 425,
     "tasks" : {
       "10" : {
@@ -1084,7 +1098,8 @@
       }
     }
   }, {
-    "name" : "Fósforo",
+    "name" : "Aço",
+    "color" : "#57342c",
     "points" : 11440,
     "tasks" : [ null, null, null, null, null, {
       "done" : "Ok",
@@ -1115,7 +1130,8 @@
       "time" : 1583417602574
     } ]
   }, {
-    "name" : "Enxofre",
+    "name" : "Cal",
+    "color" : "#00c98e",
     "points" : 7550,
     "tasks" : {
       "5" : {
