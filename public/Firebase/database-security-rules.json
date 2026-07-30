@@ -1,9 +1,8 @@
 {
-  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
   "rules": {
     "users": {
       ".read": true,
-      ".write": false,
+      ".write": "auth.uid === 'fEiVGYL79XMbAzk7VQba3Vvezi42' || auth.uid === 'Ge5TjRvSwFZNYTGCPJdH5mQu1b73' || auth.uid === 'xnQA3IDbzrRZwvPn81NhnSKYkY62'",
       "$user_id": {
         ".write": "$user_id === auth.uid"
       }
@@ -13,36 +12,44 @@
       ".write": false
     },
     "schedule": {
-    ".read": true,
-    ".write": false
+      ".read": true,
+      ".write": "auth.uid === 'fEiVGYL79XMbAzk7VQba3Vvezi42' || auth.uid === 'Ge5TjRvSwFZNYTGCPJdH5mQu1b73' || auth.uid === 'xnQA3IDbzrRZwvPn81NhnSKYkY62'"
     },
     "teams": {
       ".read": true,
-      ".write": "auth.uid === '{ID do usuário}'"
+      ".write": "auth.uid === 'fEiVGYL79XMbAzk7VQba3Vvezi42' || auth.uid === 'Ge5TjRvSwFZNYTGCPJdH5mQu1b73' || auth.uid === 'xnQA3IDbzrRZwvPn81NhnSKYkY62'"
     },
     "review": {
-      ".read": "auth.uid === '{ID do usuário}'",
+      ".read": true,
       ".write": true
     },
     "approved": {
       ".read": true,
-      ".write": "auth.uid === '{ID do usuário}'"
+      ".write": "auth.uid === 'fEiVGYL79XMbAzk7VQba3Vvezi42' || auth.uid === 'Ge5TjRvSwFZNYTGCPJdH5mQu1b73' || auth.uid === 'xnQA3IDbzrRZwvPn81NhnSKYkY62'"
     },
     "rejected": {
       ".read": true,
-      ".write": "auth.uid === '{ID do usuário}'"
+      ".write": "auth.uid === 'fEiVGYL79XMbAzk7VQba3Vvezi42' || auth.uid === 'Ge5TjRvSwFZNYTGCPJdH5mQu1b73' || auth.uid === 'xnQA3IDbzrRZwvPn81NhnSKYkY62'"
     },
     "last_updated": {
       ".read": true,
-      ".write": "auth.uid === '{ID do usuário}'"
+      ".write": "auth.uid === 'fEiVGYL79XMbAzk7VQba3Vvezi42' || auth.uid === 'Ge5TjRvSwFZNYTGCPJdH5mQu1b73' || auth.uid === 'xnQA3IDbzrRZwvPn81NhnSKYkY62'"
     },
     "settings": {
-    	".read": true,
-      ".write": false
+      ".read": true,
+      ".write": "auth.uid === 'fEiVGYL79XMbAzk7VQba3Vvezi42' || auth.uid === 'Ge5TjRvSwFZNYTGCPJdH5mQu1b73' || auth.uid === 'xnQA3IDbzrRZwvPn81NhnSKYkY62'"
     },
     "posts": {
       ".read": true,
-      ".write": "auth.uid === '{ID do usuário}'"
+      ".write": "auth.uid === 'fEiVGYL79XMbAzk7VQba3Vvezi42' || auth.uid === 'Ge5TjRvSwFZNYTGCPJdH5mQu1b73' || auth.uid === 'xnQA3IDbzrRZwvPn81NhnSKYkY62'"
+    },
+    "activities": {
+      ".read": true,
+      ".write": "auth.uid === 'fEiVGYL79XMbAzk7VQba3Vvezi42' || auth.uid === 'Ge5TjRvSwFZNYTGCPJdH5mQu1b73' || auth.uid === 'xnQA3IDbzrRZwvPn81NhnSKYkY62'"
+    },
+    "management": {
+      ".read": "auth.uid === 'fEiVGYL79XMbAzk7VQba3Vvezi42' || auth.uid === 'Ge5TjRvSwFZNYTGCPJdH5mQu1b73' || auth.uid === 'xnQA3IDbzrRZwvPn81NhnSKYkY62'",
+      ".write": false
     }
   }
 }

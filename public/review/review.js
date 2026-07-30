@@ -28,59 +28,69 @@ let teamList = [];
 function inflateInterface() {
   const listHolder = document.getElementById('activitiesHolder');
 
-  // Get all activities to review
-  firebase.database().ref('activities').on('value', function (snapshot) {
-    snapshot.forEach(function (childSnapshot) {
+  listHolder.innerHTML = "Carregando atividades...";
+
+  Promise.all([
+    firebase.database().ref('activities').once('value'),
+    firebase.database().ref('teams').once('value'),
+    firebase.database().ref('review').once('value')
+  ]).then(function (snapshots) {
+    const activitiesSnapshot = snapshots[0];
+    const teamsSnapshot = snapshots[1];
+    const reviewSnapshot = snapshots[2];
+
+    activitiesSnapshot.forEach(function (childSnapshot) {
       activityList[childSnapshot.key] = childSnapshot.val();
     });
-  });
 
-  // Get all teams
-  firebase.database().ref('teams').on('value', function (snapshot) {
-    snapshot.forEach(function (childSnapshot) {
+    teamsSnapshot.forEach(function (childSnapshot) {
       teamList[childSnapshot.key] = childSnapshot.val();
     });
-  });
-
-  // Get all activities to review
-
-  firebase.database().ref('review').once('value', function (snapshot) {
 
     // Clear list
     listHolder.innerHTML = "";
 
-    snapshot.forEach(function (childSnapshot) {
-      // Show all tasks to approve
-      const title = activityList[childSnapshot.val().activity].title;
-      const description = activityList[childSnapshot.val().activity].description;
-      const answer = childSnapshot.val().answer;
-      const team = teamList[childSnapshot.val().team - 1].name;
+    reviewSnapshot.forEach(function (childSnapshot) {
+      const review = childSnapshot.val();
+      const activity = activityList[review.activity];
+      const team = teamList[review.team - 1];
 
-      const color = teamList[childSnapshot.val().team - 1].color;
-
-      let imageURLs = [];
-
-      if (childSnapshot.val().imageURLs != null) {
-        imageURLs = childSnapshot.val().imageURLs;
+      if (!activity || !team) {
+        console.error('Não foi possível carregar a revisão', childSnapshot.key);
+        return;
       }
 
-      const user = firebase.database().ref('users/' + childSnapshot.val().userId);
+      // Show all tasks to approve
+      const title = activity.title;
+      const description = activity.description;
+      const answer = review.answer;
+      const teamName = team.name;
+      const color = team.color;
+      const imageURLs = review.imageURLs || [];
+
+      const user = firebase.database().ref('users/' + review.userId);
       let userName = "";
       let userEmail = "";
 
       user.once('value', function (snap) {
-        userName = snap.val().name;
-        userEmail = snap.val().email;
+        const userData = snap.val() || {};
+        userName = userData.name || "Usuário desconhecido";
+        userEmail = userData.email || "E-mail indisponível";
       }).then(function () {
-        const card = buildCard(title, description, answer, team, color, userName, userEmail, imageURLs, childSnapshot.key, childSnapshot.val().date);
+        const card = buildCard(title, description, answer, teamName, color, userName, userEmail, imageURLs, childSnapshot.key, review.date);
         listHolder.appendChild(card);
+      }).catch(function (error) {
+        console.error('Não foi possível carregar o usuário da revisão', childSnapshot.key, error);
       });
     });
 
     // If empty
-    if (snapshot.numChildren() == 0) {
+    if (reviewSnapshot.numChildren() == 0) {
       listHolder.innerHTML = "<h3>Não há nada para avaliar!</h3>";
     }
+  }).catch(function (error) {
+    console.error('Não foi possível carregar as atividades para revisão', error);
+    listHolder.innerHTML = "<h3>Não foi possível carregar as atividades. Atualize a página e tente novamente.</h3>";
   });
 }
 
@@ -324,6 +334,13 @@ function loadPage() {
   var name, email, photoUrl, uid, emailVerified;
 
   var inflateState = true;
+  const accessDeniedMessage = document.getElementById('accessDeniedMessage');
+  const listHolder = document.getElementById('activitiesHolder');
+
+  function denyAccess() {
+    accessDeniedMessage.style.display = 'block';
+    listHolder.innerHTML = '';
+  }
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
@@ -337,11 +354,14 @@ function loadPage() {
       document.getElementById('userEmail').innerHTML = email;
       document.getElementById("userPhoto").style.backgroundImage = "url('" + photoUrl + "')";
 
-      if (inflateState) {
-        inflateInterface();
-        inflateState = false;
-      }
-
+      firebase.database().ref('management').once('value').then(function () {
+        if (inflateState) {
+          inflateInterface();
+          inflateState = false;
+        }
+      }).catch(denyAccess);
+    } else {
+      denyAccess();
     }
   });
 }

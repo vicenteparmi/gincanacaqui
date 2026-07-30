@@ -1,10 +1,31 @@
 {
+  "database": {
+    "rules": "public/Firebase/database-security-rules.json"
+  },
+  "firestore": {
+    "rules": "public/Firebase/firestore.rules"
+  },
   "hosting": {
     "public": "public",
+    "redirects": [
+      {
+        "source": "/review",
+        "destination": "/review.html",
+        "type": 302
+      },
+      {
+        "source": "/review/",
+        "destination": "/review.html",
+        "type": 302
+      }
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ]
+  },
+  "storage": {
+    "rules": "public/Firebase/storage-rules.json"
   }
 }

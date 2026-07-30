@@ -301,37 +301,32 @@ function proceed() {
   // Upload images if it is required by the activity
   if (currentMode == 0) {
     // One pic mode
-    var image = document.getElementById("insertPicture");
-    var style = image.currentStyle || window.getComputedStyle(image, false);
-    var bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
-    var file = dataURLtoFile(bi, "filename");
-    storeImage(
-      "review/" + team + "/" + itemSelected + "/" + itemSelected + makeid(6),
-      file[0],
-      true
-    );
+    uploadReviewImages([
+      {
+        path:
+          "review/" +
+          team +
+          "/" +
+          itemSelected +
+          "/" +
+          itemSelected +
+          makeid(6),
+        file: imageToUpload,
+      },
+    ]);
   } else if (currentMode == 1) {
     // More pics mode
-    for (var i = 0; i < imagesUploaded; i++) {
-      var image = document.getElementById("dpic/" + i);
-      if (image) {
-        var style = image.currentStyle || window.getComputedStyle(image, false);
-        var bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
-        var file = dataURLtoFile(bi, "filename");
-
-        // Check if it's the last image
-        let lastImage = false;
-        if (i == imagesUploaded - 1) {
-          lastImage = true;
-        }
-
-        storeImage(
-          "review/" + team + "/" + itemSelected + "/" + makeid(12),
-          file[0],
-          lastImage
-        );
-      }
-    }
+    const uploads = imagesToUpload
+      .filter(function (file) {
+        return Boolean(file);
+      })
+      .map(function (file) {
+        return {
+          path: "review/" + team + "/" + itemSelected + "/" + makeid(12),
+          file: file,
+        };
+      });
+    uploadReviewImages(uploads);
   } else {
     sendToReview();
   }
@@ -400,22 +395,11 @@ function testforSend() {
 
   switch (currentMode) {
     case 0: // One pic mode
-      const image = document.getElementById("insertPicture");
-      var style = image.currentStyle || window.getComputedStyle(image, false);
-      var bi = style.backgroundImage.slice(4, -1).replace(/"/g, "");
-      if (bi != "") {
-        return true;
-      } else {
-        return false;
-      }
-      break;
+      return Boolean(imageToUpload);
     case 1: // Some pics mode
-      if (imagesUploaded > 0) {
-        return true;
-      } else {
-        return false;
-      }
-      break;
+      return imagesToUpload.some(function (file) {
+        return Boolean(file);
+      });
     // case 2: // Video
     //   const videoInput = document.getElementById('tas').value;
     //   if (videoInput != '') {
@@ -439,36 +423,30 @@ function testforSend() {
 
 // Send to cloud
 
-var imageToUpload;
+var imageToUpload = null;
 
-function uploadImage(input) {
+async function uploadImage(input) {
   if (input.files && input.files[0]) {
-    // https://stackoverflow.com/a/44505315/6496084
-    var fileSize = input.files[0].size / 1024 / 1024; // in MB
-    if (fileSize > 10) {
-      alert(
-        "A imagem selecionada é muito grande. " +
-          "Apenas imagens com menos de 10 MB são aceitas. " +
-          "E cara, não sei como vc consegiu uma imagem desse tamanho. " +
-          "Tá enviando em RAW só pode. " +
-          "Ah, e só dá pra enviar em PNG, JPG e TIFF (n sei quem usa esse último mas tá aí a opção)."
-      );
-      location.reload();
-    }
+    const addText = document.getElementById("addText");
+    imageToUpload = null;
+    input.disabled = true;
+    addText.innerHTML = "Comprimindo imagem...";
 
-    var reader = new FileReader();
-
-    reader.onload = function (e) {
+    try {
+      const result = await compressImageFile(input.files[0]);
       document.getElementById("insertPicture").style.backgroundImage =
-        "url('" + e.target.result + "')";
+        "url('" + result.previewURL + "')";
       document.getElementById("cameraDiv").className = "afterUpload";
-      document.getElementById("addText").innerHTML = "Alterar Imagem";
-
+      addText.innerHTML = "Alterar Imagem";
+      imageToUpload = result.file;
+    } catch (error) {
       imageToUpload = null;
-      imageToUpload = dataURLtoFile(e.target.result, "profile.png");
-    };
-
-    reader.readAsDataURL(input.files[0]);
+      addText.innerHTML = "Adicionar Imagem";
+      alert(error.message || "Não foi possível preparar a imagem.");
+    } finally {
+      input.disabled = false;
+      input.value = "";
+    }
   }
 }
 
@@ -477,25 +455,28 @@ $("#inputFile").change(function () {
 });
 
 var imagesUploaded = 0; // This variable is only useful to set a id to the items;
+var imagesToUpload = [];
 
-function uploadOneMoreImage(input) {
+async function uploadOneMoreImage(input) {
   if (input.files && input.files[0]) {
-    var reader = new FileReader();
+    const addText = document.getElementById("addText2");
+    input.disabled = true;
+    addText.innerHTML = "Comprimindo imagem...";
 
-    reader.onload = function (e) {
-      content = e.target.result;
-
+    try {
+      const result = await compressImageFile(input.files[0]);
       const span = document.getElementById("toUpload");
       const imageDiv = document.createElement("div");
       const closeButton = document.createElement("span");
+      const imageIndex = imagesUploaded;
 
       imageDiv.className = "smallPicture";
-      imageDiv.style.backgroundImage = "url('" + content + "')";
-      imageDiv.id = "dpic/" + imagesUploaded;
+      imageDiv.style.backgroundImage = "url('" + result.previewURL + "')";
+      imageDiv.id = "dpic/" + imageIndex;
 
       closeButton.className = "closeSmallPic";
       closeButton.innerHTML = "&times";
-      closeButton.id = "spic/" + imagesUploaded;
+      closeButton.id = "spic/" + imageIndex;
       closeButton.onclick = function () {
         closeSmallPic(this.id);
       };
@@ -503,10 +484,16 @@ function uploadOneMoreImage(input) {
       imageDiv.appendChild(closeButton);
       span.appendChild(imageDiv);
 
+      imagesToUpload[imageIndex] = result.file;
       imagesUploaded++;
-    };
-
-    reader.readAsDataURL(input.files[0]);
+      addText.innerHTML = "Adicionar Imagem";
+    } catch (error) {
+      addText.innerHTML = "Adicionar Imagem";
+      alert(error.message || "Não foi possível preparar a imagem.");
+    } finally {
+      input.disabled = false;
+      input.value = "";
+    }
   }
 }
 
@@ -520,10 +507,13 @@ function closeSmallPic(id) {
 
   const span = document.getElementById("toUpload");
   const child = document.getElementById("dpic/" + id);
-  span.removeChild(child);
+  if (child) {
+    span.removeChild(child);
+    imagesToUpload[id] = null;
+  }
 }
 
-function storeImage(path, img, isLast) {
+function uploadReviewImages(uploads) {
   document.getElementById("myModal").style.display = "block";
   const progressBar = document.getElementById("progressbar");
   const progressPercentage = document.getElementById("progressPercentage");
@@ -531,86 +521,62 @@ function storeImage(path, img, isLast) {
   progressBar.className = "";
 
   document.getElementById("sendingStatus").innerHTML = "Carregando imagem...";
-
-  const promises = [];
-
-  const uploadTask = firebase.storage().ref(path).put(img);
-  promises.push(uploadTask);
   openModal();
 
-  uploadTask.on(
-    "state_changed",
-    (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log(progress);
-      progressPercentage.style.width = progress + "%";
-      progressInd.innerHTML = Math.round(progress, 2) + "%";
+  const progresses = uploads.map(function () {
+    return 0;
+  });
 
-      if (progress > 50) {
+  const promises = uploads.map(function (upload, index) {
+    return storeImage(upload.path, upload.file, function (progress) {
+      progresses[index] = progress;
+      const totalProgress =
+        progresses.reduce(function (total, value) {
+          return total + value;
+        }, 0) / progresses.length;
+
+      progressPercentage.style.width = totalProgress + "%";
+      progressInd.innerHTML = Math.round(totalProgress) + "%";
+      if (totalProgress > 50) {
         progressInd.style.color = "white";
-      }
-    },
-    (error) => {
-      console.log(error);
-    },
-    () => {
-      uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-        console.log(downloadURL);
-      });
-    }
-  );
-  Promise.all(promises).then((tasks) => {
-    console.log("File uploaded");
-
-    // Get downloadURL to variable
-    const imageRef = firebase.storage().ref(path);
-    imageRef.getDownloadURL().then(function (url) {
-      console.log(url);
-      imageDownloadURL.push(url);
-
-      if (isLast) {
-        setTimeout(function () {
-          document.getElementById("sendingStatus").innerHTML =
-            "Salvando atividade...";
-          sendToReview();
-        }, 1500);
       }
     });
   });
+
+  Promise.all(promises)
+    .then(function (urls) {
+      imageDownloadURL = urls;
+      document.getElementById("sendingStatus").innerHTML =
+        "Salvando atividade...";
+      sendToReview();
+    })
+    .catch(function (error) {
+      console.log(error);
+      document.getElementById("sendingStatus").innerHTML =
+        "Não foi possível enviar as imagens";
+      alert("Falha no envio das imagens. Verifique sua conexão e tente novamente.");
+    });
 }
 
-var extension;
+function storeImage(path, img, onProgress) {
+  return new Promise(function (resolve, reject) {
+    const uploadTask = firebase.storage().ref(path).put(img, {
+      contentType: img.type,
+    });
 
-function dataURLtoFile(dataurl, filename) {
-  console.log(dataurl.charAt(11));
-  switch (dataurl.charAt(11)) {
-    case "p":
-      extension = ".png";
-      break;
-    case "j":
-      extension = ".jpg";
-      break;
-    case "t":
-      extension = ".tiff";
-    default:
-      alert("O arquivo é inválido");
-      uhsasuaUSIUSIUAH(hue);
-  }
-
-  var arr = dataurl.split(","),
-    mime = arr[0].match(/:(.*?);/)[1],
-    bstr = atob(arr[1]),
-    n = bstr.length,
-    u8arr = new Uint8Array(n);
-  while (n--) {
-    u8arr[n] = bstr.charCodeAt(n);
-  }
-  return [
-    new File([u8arr], filename, {
-      type: mime,
-    }),
-    extension,
-  ];
+    uploadTask.on(
+      "state_changed",
+      function (snapshot) {
+        onProgress(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+      },
+      reject,
+      function () {
+        uploadTask.snapshot.ref.getDownloadURL().then(resolve).catch(reject);
+      }
+    );
+  });
 }
 
 // Verify account

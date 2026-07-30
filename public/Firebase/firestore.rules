@@ -1,0 +1,18 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.uid in [
+          "fEiVGYL79XMbAzk7VQba3Vvezi42",
+          "Ge5TjRvSwFZNYTGCPJdH5mQu1b73",
+          "xnQA3IDbzrRZwvPn81NhnSKYkY62"
+        ];
+    }
+
+    match /{document=**} {
+      allow read, write: if isAdmin();
+    }
+  }
+}

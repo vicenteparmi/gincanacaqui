@@ -55,7 +55,8 @@
 				<p id="points"></p>
 				<div id="infobox" class="infobox"></div>
 				<div id="sendOnePhoto" class="hidden">
-					<input type="file" name="file" id="inputFile" accept="image/*">
+					<input type="file" name="file" id="inputFile"
+						accept="image/*,.heic,.heif,.avif,.webp,.tif,.tiff">
 					<!-- <div id="insertPicture" onclick="uploadImage()"> -->
 					<label for="inputFile" id="insertPicture">
 						<div id="cameraDiv" class="">
@@ -66,8 +67,9 @@
 				</div>
 				<div id="sendMorePhotos" class="hidden">
 					<span id="toUpload"></span>
-					<input type="file" name="file2" id="inputFile2" accept="image/*">
-					<label for="inputFile2" id="insertSmallPicture" onclick="uploadOneMoreImage()">
+					<input type="file" name="file2" id="inputFile2"
+						accept="image/*,.heic,.heif,.avif,.webp,.tif,.tiff">
+					<label for="inputFile2" id="insertSmallPicture">
 						<div id="cameraDiv2" class="">
 							<i id="camera2" class="material-icons" md-48 md-light>photo_camera</i><br />
 							<text id="addText2">Adicionar Imagem</text>
@@ -169,6 +171,7 @@
 		<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-storage.js"></script>
 
 		<script type="text/javascript" src="tasks/activity_list.js"></script>
+		<script type="text/javascript" src="files/modules/image-compression.js"></script>
 		<script type="text/javascript" src="send/send.js" onload="loadPage()"></script>
 	</body>
 
